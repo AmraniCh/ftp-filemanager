@@ -1,0 +1,23 @@
+{
+    "name": "ftp-filemanager/ftp-filemanager",
+    "description": "An open source FTP filemanager website with modern user interface",
+    "keywords": [
+        "ftp",
+        "filemanager",
+        "website"
+    ],
+    "type": "project",
+    "license": "MIT",
+    "homepage": "https://github.com/ELAMRANI744/ftp-filemanager",
+    "authors": [
+        {
+            "name": "elamrani744",
+            "email": "elamrani.sv.laza@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "lazzard/php-ftp-client": "dev-master"
+    }
+}

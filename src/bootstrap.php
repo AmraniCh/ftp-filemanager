@@ -32,7 +32,6 @@ if (defined('ENV')) {
             break;
 
         case 'PRODUCTION':
-
             // Pushing a callback handler to the whoops handlers stack
             $whoops->pushHandler(function (Exception $e) {
                 // Build a message string
@@ -48,10 +47,7 @@ if (defined('ENV')) {
                 error_log($message, 3, ERROR_LOG_FILE);
 
                 // Redirect to a custom error page
-                header ('Location: http://' . $_SERVER['HTTP_HOST'] . '/ftp-filemanager/public/error.php',
-                    true,
-                    302
-                );
+                header ('Location: http://' . $_SERVER['HTTP_HOST'] . '/ftp-filemanager/public/error.php', true, 301);
                 exit();
             });
             break;

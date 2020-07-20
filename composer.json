@@ -23,9 +23,7 @@
         }
     },
     "require": {
-        "lazzard/php-ftp-client": "dev-master"
-    },
-    "require-dev": {
+        "lazzard/php-ftp-client": "dev-master",
         "filp/whoops": "^2.7"
     }
 }

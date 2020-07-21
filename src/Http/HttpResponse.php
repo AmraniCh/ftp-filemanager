@@ -149,6 +149,22 @@ class HttpResponse
     }
 
     /**
+     * Clears all ready headers.
+     *
+     * @return void
+     */
+    public function clearReadyHeaders()
+    {
+        if (headers_sent() || empty(headers_list())) {
+            return;
+        }
+
+        foreach (($this->getReadyHeaders()) as $name => $value) {
+            header_remove($name);
+        }
+    }
+
+    /**
      * Sets the Http status code.
      */
     protected function setResponseCode()
@@ -164,13 +180,16 @@ class HttpResponse
         $headers = [];
 
         foreach (headers_list() as $header) {
-            $parts                             = explode(' ', $header);
+            $parts = explode(' ', $header);
             $headers[substr($parts[0], 0, -1)] = $parts[1];
         }
 
         return $headers;
     }
 
+    /**
+     * @param mixed $content
+     */
     protected function sendContent($content)
     {
         $this->sendRawHeaders();

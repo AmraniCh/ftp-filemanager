@@ -2,17 +2,18 @@
 
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
+use FTPApp\Http\HttpRedirect;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 define('ENV', 'DEVELOPMENT');
-define('ERROR_LOG_FILE', __DIR__ . '/../php-errors.log');
+define('ERROR_LOG_FILE', __DIR__.'/../php-errors.log');
 
 if (defined('ENV')) {
     // Reporting all types of errors
     error_reporting(E_ALL);
 
-    // Enable error logging for both production and developments
+    // Enable error logging
     ini_set('log_errors', TRUE);
 
     // Create an instance of whoops object
@@ -47,8 +48,11 @@ if (defined('ENV')) {
                 error_log($message, 3, ERROR_LOG_FILE);
 
                 // Redirect to a custom error page
-                header ('Location: http://' . $_SERVER['HTTP_HOST'] . '/ftp-filemanager/public/error.php', true, 301);
-                exit();
+                $response = new HttpRedirect(
+                    'http://' . $_SERVER['HTTP_HOST'] . '/ftp-filemanager/public/error.php', 301
+                );
+                $response->clearReadyHeaders();
+                $response->redirect();
             });
             break;
 

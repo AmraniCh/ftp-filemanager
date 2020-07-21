@@ -37,6 +37,8 @@ class HttpResponse
      * @param string $value
      *
      * @throws InvalidArgumentHttpException
+     *
+     * @return $this
      */
     public function addHeader($name, $value)
     {
@@ -45,6 +47,8 @@ class HttpResponse
         }
 
         $this->headers[$name] = $value;
+
+        return $this;
     }
 
     /**
@@ -52,6 +56,8 @@ class HttpResponse
      * @param string $value
      *
      * @throws InvalidArgumentHttpException
+     *
+     * @return $this
      */
     public function setHeader($name, $value)
     {
@@ -60,38 +66,46 @@ class HttpResponse
         }
 
         $this->headers[$name] = $value;
+
+        return $this;
     }
 
     /**
-     * @return void
+     * @return $this
      */
     public function send()
     {
         $this->sendContent($this->content);
+
+        return $this;
     }
 
     /**
-     * @return void
+     * @return $this
      */
     public function sendJSON()
     {
         $this->sendContent(json_encode($this->content));
+
+        return $this;
     }
 
     /**
-     * @return void
+     * @return $this
      */
     public function removeXPoweredByHeader()
     {
         if (!headers_sent() && $this->hasResponseHeader('X-Powered-By')) {
             header_remove('X-Powered-By');
         }
+
+        return $this;
     }
 
     /**
      * @param string $name
      *
-     * @return void
+     * @return $this
      */
     public function removeHeader($name)
     {
@@ -100,6 +114,8 @@ class HttpResponse
         }
 
         header_remove($name);
+
+        return $this;
     }
 
     /**
@@ -123,13 +139,33 @@ class HttpResponse
     }
 
     /**
-     * @return void
+     * @return $this
      */
     public function cleanContent()
     {
         if (ob_get_contents()) {
             ob_clean();
         }
+
+        return $this;
+    }
+
+    /**
+     * Clears all ready headers.
+     *
+     * @return $this
+     */
+    public function clearReadyHeaders()
+    {
+        if (headers_sent() || empty(headers_list())) {
+            return $this;
+        }
+
+        foreach (($this->getReadyHeaders()) as $name => $value) {
+            header_remove($name);
+        }
+
+        return $this;
     }
 
     /**
@@ -145,22 +181,6 @@ class HttpResponse
 
         foreach ($this->headers as $name => $value) {
             header(sprintf("%s: %s", ucfirst(strtolower($name)), $value), false);
-        }
-    }
-
-    /**
-     * Clears all ready headers.
-     *
-     * @return void
-     */
-    public function clearReadyHeaders()
-    {
-        if (headers_sent() || empty(headers_list())) {
-            return;
-        }
-
-        foreach (($this->getReadyHeaders()) as $name => $value) {
-            header_remove($name);
         }
     }
 

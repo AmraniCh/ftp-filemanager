@@ -1,12 +1,12 @@
 <?php
 
-
 require __DIR__ . '/../src/bootstrap.php';
 
-$request = new \FTPApp\Http\HttpRequest;
-
-var_dump($request->getMethod());
-var_dump($request->getQueryString());
-var_dump($request->getParameters());
-var_dump($request->hasHeader('host'));
-var_dump($request->isAjaxRequest());
+$response = new \FTPApp\Http\HttpResponse(202, [
+    'data' => 'File was successfully created'
+], [
+    'X-Custom' => 'mamak'
+]);
+$response->removeXPoweredByHeader();
+$response->cleanContent();
+$response->sendJSON();

@@ -21,11 +21,11 @@ class HttpResponse
     /**
      * HttpResponse constructor.
      *
+     * @param null  $content
      * @param int   $statusCode
-     * @param mixed $content
      * @param array $headers
      */
-    public function __construct($statusCode, $content, $headers = [])
+    public function __construct($content = null, $statusCode = 200, $headers = [])
     {
         $this->statusCode = $statusCode;
         $this->content    = $content;
@@ -178,6 +178,11 @@ class HttpResponse
         if (headers_sent() && empty($this->headers)) {
             return;
         }
+
+        /*
+        if ($this->content) {
+            $this->addHeader('Content-type', 'text/plain');
+        }*/
 
         foreach ($this->headers as $name => $value) {
             header(sprintf("%s: %s", ucfirst(strtolower($name)), $value), false);

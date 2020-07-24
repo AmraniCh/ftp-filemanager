@@ -23,4 +23,22 @@ class RouteCollection
     {
         return $this->routes;
     }
+
+    /**
+     * @param array $routes
+     */
+    public function setRoutes($routes)
+    {
+        $this->routes = $routes;
+    }
+
+    /**
+     * @param Route $route
+     *
+     * @return void
+     */
+    public function addRoute(Route $route)
+    {
+        $this->routes[] = $route;
+    }
 }

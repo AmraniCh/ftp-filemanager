@@ -50,18 +50,18 @@ class RouteDispatcher
     }
 
     /**
-     * handles the routes collection.
+     * Handles the routes collection and returns the response.
      *
      * @param callable $dispatchCallback If not callback was provided the dispatch foundCallback will be used.
      *
-     * @return void
+     * @return mixed
      */
     public function dispatch($dispatchCallback = null)
     {
         /** @var Route $route */
         foreach ($this->routes->getRoutes() as $route) {
             if ($this->matchMethod($route->getMethod()) !== 0) {
-                call_user_func($this->methodNotAllowedHandler);
+                return call_user_func($this->methodNotAllowedHandler);
             }
 
             if (($matches = $this->matchUri($route->getPath())) !== false) {
@@ -71,11 +71,12 @@ class RouteDispatcher
                     $route->getHandler(),
                     $matches
                 ];
-                call_user_func_array($dispatchCallback ?: $this->foundedHandler, [$routeInfo]);
-            } else {
-                call_user_func($this->notFoundedHandler);
+                return call_user_func_array($dispatchCallback ?: $this->foundedHandler, [$routeInfo]);
             }
         }
+
+        // If not callback was returned that's means no matching was founded for the request
+        return call_user_func($this->notFoundedHandler);
     }
 
     public function methodNotAllowedHandler($handler)
@@ -118,8 +119,6 @@ class RouteDispatcher
 
         $escape = str_replace('/', '\\/', $replace);
         $regex = "/^$escape$/i";
-
-        showContent($regex);
 
         if (preg_match_all($regex, trim($this->uri, '/'), $matches)) {
             return $this->extractMatches($matches);

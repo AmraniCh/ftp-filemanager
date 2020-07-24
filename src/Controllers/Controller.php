@@ -23,9 +23,7 @@ abstract class Controller
      */
     public function render($uri, $responseCode = 200)
     {
-        return (new HttpResponse($responseCode, $this->fetch($uri)))
-            ->clearReadyHeaders()
-            ->send();
+        return (new HttpResponse($this->fetch($uri), $responseCode))->clearReadyHeaders();
     }
 
     /**

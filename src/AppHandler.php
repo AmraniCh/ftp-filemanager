@@ -3,8 +3,6 @@
 namespace FTPApp;
 
 use FTPApp\Http\HttpRequest;
-use FTPApp\Http\HttpResponse;
-use FTPApp\Routing\Route;
 use FTPApp\Routing\RouteCollection;
 use FTPApp\Routing\RouteDispatcher;
 use FTPApp\Controllers\ErrorController;

@@ -2,7 +2,7 @@
 
 namespace FTPApp\Controllers;
 
-class Homepage extends Controller
+class HomepageController extends Controller
 {
     public function index()
     {

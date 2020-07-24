@@ -12,8 +12,8 @@ class RouteDispatcher
      * @var array
      */
     const matchTypes = [
-        'i' => '[0-9]+',
-        's' => '[a-zA-z]+',
+        'i'   => '[0-9]+',
+        's'   => '[a-zA-z]+',
         'any' => '.*',
     ];
 
@@ -60,22 +60,23 @@ class RouteDispatcher
     {
         /** @var Route $route */
         foreach ($this->routes->getRoutes() as $route) {
-            if ($this->matchMethod($route->getMethod()) !== 0) {
+            if (!$this->matchMethod($route->getMethods())) {
                 return call_user_func($this->methodNotAllowedHandler);
             }
 
-            if (($matches = $this->matchUri($route->getPath())) !== false) {
+            if (($matches = $this->matchUri($route->getPath()))) {
+                $route->setMatches($matches);
                 $routeInfo = [
-                    $route->getMethod(),
+                    $route->getMethods(),
                     $route->getPath(),
                     $route->getHandler(),
-                    $matches
+                    $route->getMatches(),
                 ];
                 return call_user_func_array($dispatchCallback ?: $this->foundedHandler, [$routeInfo]);
             }
         }
 
-        // If not callback was returned that's means no matching was founded for the request
+        // If no callback was returned that's means no matching was founded for the request uri
         return call_user_func($this->notFoundedHandler);
     }
 
@@ -96,40 +97,49 @@ class RouteDispatcher
 
     protected function matchUri($compare)
     {
+        // If the route uri matches the requested uri then returns the match
+        if (strcmp($this->uri, $compare) === 0) {
+            return [$compare];
+        }
+
+        // Remove slashes from the route uri => avoiding troubles after
         $compare = trim($compare, '/');
 
-        $matchTypes = [];
-
+        // Get the match types from the routes
         if (preg_match_all('/:(\w+)/i', $compare, $matches)) {
             $matchTypes = $this->extractMatches($matches);
-        }
 
-        $subject = $compare;
-        $replace = '';
-        foreach ($matchTypes as $param) {
-            if (!array_key_exists($param, self::matchTypes)) {
-                throw new RouteMatchingException("[$param] is unknown match type.");
+            // Replace each match type in the route uri with the appropriate match type regex
+            $subject = $compare;
+            $replace = '';
+            foreach ($matchTypes as $param) {
+                // If the match type is not registered throws an exception
+                if (!array_key_exists($param, self::matchTypes)) {
+                    throw new RouteMatchingException("[$param] is unknown match type.");
+                }
+                $regex   = sprintf('/:(%s)/i', $param);
+                $replace = preg_replace($regex, '(' . self::matchTypes[$param] . ')', $subject);
+                $subject = $replace;
             }
 
-            $regex = sprintf('/:(%s)/i', $param);
+            // Escape the slashes
+            $escape = str_replace('/', '\\/', $replace);
 
-            $replace = preg_replace($regex, '('.self::matchTypes[$param].')', $subject);
-            $subject = $replace;
-        }
+            // Build a new regex
+            $regex = "/^$escape$/i";
 
-        $escape = str_replace('/', '\\/', $replace);
-        $regex = "/^$escape$/i";
-
-        if (preg_match_all($regex, trim($this->uri, '/'), $matches)) {
-            return $this->extractMatches($matches);
+            // Matches the request uri using the regex '$regex'
+            if (preg_match_all($regex, trim($this->uri, '/'), $matches)) {
+                return $this->extractMatches($matches);
+            }
         }
 
         return false;
     }
 
-    protected function matchMethod($compare)
+    protected function matchMethod($routeMethods)
     {
-        return strcmp($this->method, $compare);
+        return in_array($this->method, $routeMethods, true);
     }
 
     protected function extractMatches($matches)

@@ -4,30 +4,39 @@ namespace FTPApp\Routing;
 
 class Route
 {
-    protected $method;
+    /** @var array */
+    protected $methods;
+
+    /** @var string  */
     protected $path;
+
+    /** @var array|callable */
     protected $handler;
+
+    /** @var array */
+    protected $matches;
 
     /**
      * Route constructor.
      *
-     * @param $method
+     * @param $methods
      * @param $path
      * @param $handler
      */
-    public function __construct($method, $path, $handler)
+    public function __construct($methods, $path, $handler)
     {
-        $this->method  = $method;
+        $this->methods  = $methods;
         $this->path    = $path;
         $this->handler = $handler;
+        $this->matches = [];
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getMethod()
+    public function getMethods()
     {
-        return $this->method;
+        return $this->methods;
     }
 
     /**
@@ -39,11 +48,51 @@ class Route
     }
 
     /**
-     * @return mixed
+     * @return array|callable
      */
     public function getHandler()
     {
         return $this->handler;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMatches()
+    {
+        return $this->matches;
+    }
+
+    /**
+     * @param array $methods
+     */
+    public function setMethods($methods)
+    {
+        $this->methods = $methods;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * @param array|callable $handler
+     */
+    public function setHandler($handler)
+    {
+        $this->handler = $handler;
+    }
+
+    /**
+     * @param array $matches
+     */
+    public function setMatches($matches)
+    {
+        $this->matches = $matches;
     }
 
     /**
@@ -56,7 +105,7 @@ class Route
      */
     public static function get($path, $handler)
     {
-        return new static('GET', $path, $handler);
+        return new static(['GET'], $path, $handler);
     }
 
     /**
@@ -69,6 +118,6 @@ class Route
      */
     public static function post($path, $handler)
     {
-        return new static('POST', $path, $handler);
+        return new static(['POST'], $path, $handler);
     }
 }

@@ -35,19 +35,9 @@ class AppHandler
      */
     public function handle()
     {
-        $routes = new RouteCollection([
+        $routesCollection = new RouteCollection(include('routes.php'));
 
-            Route::get('/', function () {
-                return new HttpResponse("Homepage!");
-            }),
-
-            Route::get('/posts/:any-:i', function ($slug, $id) {
-                return new HttpResponse("Article $slug and id $id");
-            }),
-
-        ]);
-
-        $dispatcher = new RouteDispatcher($routes, $this->request->getUri(), $this->request->getMethod());
+        $dispatcher = new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
 
         $badRouteHandlers = [
             'notFoundedHandler',
@@ -57,7 +47,7 @@ class AppHandler
         foreach ($badRouteHandlers as $handler) {
             $method = $handler;
             $dispatcher->$method(function () {
-                (new ErrorController())->index();
+                return (new ErrorController())->index();
             });
         }
 

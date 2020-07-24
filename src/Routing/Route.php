@@ -7,7 +7,7 @@ class Route
     /** @var array */
     protected $methods;
 
-    /** @var string  */
+    /** @var string */
     protected $path;
 
     /** @var array|callable */
@@ -16,18 +16,23 @@ class Route
     /** @var array */
     protected $matches;
 
+    /** @var string */
+    protected $name;
+
     /**
      * Route constructor.
      *
-     * @param $methods
-     * @param $path
-     * @param $handler
+     * @param array    $methods
+     * @param string   $path
+     * @param callable $handler
+     * @param string   $name
      */
-    public function __construct($methods, $path, $handler)
+    public function __construct($methods, $path, $handler, $name = '')
     {
-        $this->methods  = $methods;
+        $this->methods = $methods;
         $this->path    = $path;
         $this->handler = $handler;
+        $this->name    = $name;
         $this->matches = [];
     }
 
@@ -61,6 +66,14 @@ class Route
     public function getMatches()
     {
         return $this->matches;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -98,26 +111,28 @@ class Route
     /**
      * Creates a new route instance for a 'GET' request.
      *
-     * @param string $path
+     * @param string   $path
      * @param callable $handler
+     * @param string   $name
      *
      * @return Route
      */
-    public static function get($path, $handler)
+    public static function get($path, $handler, $name = '')
     {
-        return new static(['GET'], $path, $handler);
+        return new static(['GET'], $path, $handler, $name);
     }
 
     /**
      * Creates a new route instance for a 'POST' request.
      *
-     * @param string $path
+     * @param string   $path
      * @param callable $handler
+     * @param string   $name
      *
      * @return Route
      */
-    public static function post($path, $handler)
+    public static function post($path, $handler, $name = '')
     {
-        return new static(['POST'], $path, $handler);
+        return new static(['POST'], $path, $handler, $name);
     }
 }

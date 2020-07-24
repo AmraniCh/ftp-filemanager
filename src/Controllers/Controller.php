@@ -33,6 +33,10 @@ abstract class Controller
      */
     protected function fetch($uri)
     {
-        return file_get_contents($uri);
+        ob_start();
+        include($uri);
+        $content = ob_get_contents();
+        ob_end_clean();
+        return $content;
     }
 }

@@ -6,6 +6,6 @@ class HomepageController extends Controller
 {
     public function index()
     {
-        return $this->render('homepage.html');
+        return $this->render('homepage.php');
     }
 }

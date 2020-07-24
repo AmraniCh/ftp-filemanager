@@ -95,22 +95,22 @@ class RouteDispatcher
         $this->notFoundedHandler = $handler;
     }
 
-    protected function matchUri($compare)
+    protected function matchUri($routeUri)
     {
         // If the route uri matches the requested uri then returns the match
-        if (strcmp($this->uri, $compare) === 0) {
-            return [$compare];
+        if (strcmp($this->uri, $routeUri) === 0) {
+            return [$routeUri];
         }
 
         // Remove slashes from the route uri => avoiding troubles after
-        $compare = trim($compare, '/');
+        $routeUri = trim($routeUri, '/');
 
         // Get the match types from the routes
-        if (preg_match_all('/:(\w+)/i', $compare, $matches)) {
+        if (preg_match_all('/:(\w+)/i', $routeUri, $matches)) {
             $matchTypes = $this->extractMatches($matches);
 
             // Replace each match type in the route uri with the appropriate match type regex
-            $subject = $compare;
+            $subject = $routeUri;
             $replace = '';
             foreach ($matchTypes as $param) {
                 // If the match type is not registered throws an exception

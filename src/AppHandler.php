@@ -34,7 +34,6 @@ class AppHandler
     public function handle()
     {
         $routesCollection = new RouteCollection(include('routes.php'));
-
         $dispatcher = new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
 
         $badRouteHandlers = [

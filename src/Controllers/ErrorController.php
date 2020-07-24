@@ -18,8 +18,6 @@ class ErrorController extends Controller
     public function index()
     {
         $url = urlencode('error.php');
-        (new HttpResponse(file_get_contents($url, false), 404))
-            ->clearReadyHeaders()
-            ->send();
+        return (new HttpResponse(file_get_contents($url, false), 404))->clearReadyHeaders();
     }
 }

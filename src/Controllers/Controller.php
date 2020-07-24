@@ -19,11 +19,11 @@ abstract class Controller
      * @param string $uri
      * @param int    $responseCode
      *
-     * @return void
+     * @return HttpResponse
      */
     public function render($uri, $responseCode = 200)
     {
-        (new HttpResponse($responseCode, $this->fetch($uri)))
+        return (new HttpResponse($responseCode, $this->fetch($uri)))
             ->clearReadyHeaders()
             ->send();
     }

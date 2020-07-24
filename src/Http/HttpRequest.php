@@ -33,12 +33,12 @@ class HttpRequest
      */
     public function __construct()
     {
-        $this->get = $_GET;
-        $this->post = $_POST;
-        $this->files = $_FILES;
+        $this->get     = $_GET;
+        $this->post    = $_POST;
+        $this->files   = $_FILES;
         $this->cookies = $_COOKIE;
         $this->headers = getallheaders() ?: [];
-        $this->server = $_SERVER;
+        $this->server  = $_SERVER;
     }
 
     /**
@@ -50,11 +50,15 @@ class HttpRequest
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getQueryString()
     {
-        return $this->server['QUERY_STRING'];
+        if (isset($this->server['QUERY_STRING'])) {
+            return $this->server['QUERY_STRING'];
+        }
+
+        return null;
     }
 
     /**
@@ -110,4 +114,10 @@ class HttpRequest
 
         return false;
     }
+
+    public function getUri()
+    {
+        return $this->server['REQUEST_URI'];
+    }
+
 }

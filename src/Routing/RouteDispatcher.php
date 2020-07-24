@@ -122,8 +122,7 @@ class RouteDispatcher
         showContent($regex);
 
         if (preg_match_all($regex, trim($this->uri, '/'), $matches)) {
-            $m = $this->extractMatches($matches);
-            return $m;
+            return $this->extractMatches($matches);
         }
 
         return false;

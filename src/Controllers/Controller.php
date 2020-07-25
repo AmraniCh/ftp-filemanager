@@ -2,16 +2,26 @@
 
 namespace FTPApp\Controllers;
 
-use FTPApp\Template\Template;
-use FTPApp\Template\TemplateException;
+use FTPApp\Http\HttpRequest;
+use FTPApp\Templating\Template;
+use FTPApp\Templating\TemplateException;
 
 abstract class Controller
 {
+    /** @var HttpRequest */
+    protected $request;
+
+    /** @var array */
+    protected static $services;
+
     /**
      * Controller constructor.
+     *
+     * @param HttpRequest $request
      */
-    public function __construct()
+    public function __construct(HttpRequest $request)
     {
+        $this->request = $request;
     }
 
     /**
@@ -28,5 +38,20 @@ abstract class Controller
     {
         $template = new Template($template, $params);
         return $template->render();
+    }
+
+    public static function getServices()
+    {
+        return array_keys(self::$services);
+    }
+
+    public static function addService($name, $definition)
+    {
+        self::$services[$name] = $definition;
+    }
+
+    public static function getService($name)
+    {
+        return self::$services[$name];
     }
 }

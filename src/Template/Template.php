@@ -67,15 +67,15 @@ class Template
     {
         $injected = $content;
 
-        if ($varsNames = preg_match_all('/({\w+})/', $content, $matches)) {
+        if ($varsNames = preg_match_all('/({\s?\w+\s?})/', $content, $matches)) {
             array_shift($matches);
 
             $subject = $content;
             foreach ($this->vars as $varKey => $varValue) {
                 foreach ($matches[0] as $match) {
-                    $match = substr($match, 1, -1);
-                    if ($varKey === $match) {
-                        $regex = "/(\{$match\})+/";
+                    $varName = preg_replace('/([{}\s+])/', '', $match);
+                    if ($varKey === $varName) {
+                        $regex = "/({\s?$varName\s?})/";
                         $injected = preg_replace($regex, $varValue, $subject);
                         $subject = $injected;
                     }

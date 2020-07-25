@@ -1,6 +1,6 @@
 <?php
 
-namespace FTPApp\Template;
+namespace FTPApp\Templating;
 
 class Template
 {

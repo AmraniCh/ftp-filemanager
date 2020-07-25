@@ -1,7 +1,7 @@
 <?php
 
 
-namespace FTPApp\Template;
+namespace FTPApp\Templating;
 
 
 class TemplateException extends \Exception

@@ -6,58 +6,61 @@ use FTPApp\Http\HttpRedirect;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-define('ENV', 'DEVELOPMENT');
-define('ERROR_LOG_FILE', __DIR__.'/../php-errors.log');
+// Define the application environment constant
+define('ENV', 'PRODUCTION', false);
 
-if (defined('ENV')) {
-    // Reporting all types of errors
-    error_reporting(E_ALL);
+// Reporting all types of errors
+error_reporting(E_ALL);
 
-    // Enable error logging
-    ini_set('log_errors', TRUE);
+// Enable error logging
+ini_set('log_errors', true);
 
-    // Create an instance of whoops object
-    $whoops = new Run;
+// Enable display errors
+ini_set('display_errors', true);
 
-    switch (ENV) {
-        case 'DEVELOPMENT':
-            // Enable display errors
-            ini_set('display_errors', TRUE);
-            // Enable php errors concerning configuration, extensions ...
-            ini_set('display_startup_errors', TRUE);
-            // Reporting all types of errors
-            error_reporting(E_ALL);
+// Enable php errors concerning configuration, extensions ...
+ini_set('display_startup_errors', true);
 
-            // Using whoops PrettyPageHandler to show errors in the development mode
-            $whoops->pushHandler(new PrettyPageHandler);
-            break;
+// Create an instance of whoops object
+$whoops = new Run;
 
-        case 'PRODUCTION':
-            // Pushing a callback handler to the whoops handlers stack
-            $whoops->pushHandler(function (Exception $e) {
-                // Build a message string
-                $message = sprintf(
-                    "[%s] [%s] [%s] [Line : %s]\n",
-                    date('Y:m:d h:m:s'),
-                    $e->getFile(),
-                    $e->getMessage(),
-                    $e->getLine()
-                );
+switch (ENV) {
+    case 'DEVELOPMENT':
+        // Using whoops PrettyPageHandler to show errors in the development mode
+        $whoops->pushHandler(new PrettyPageHandler);
+        break;
 
-                // Logging the error info to the predefined logs file
-                error_log($message, 3, ERROR_LOG_FILE);
+    case 'PRODUCTION':
+        /**
+         * Whoops already handles the errors this is just for
+         * more security to make sure the errors will not be displayed
+         */
+        ini_set('display_errors', false);
 
-                // Redirect to a custom error page
-                (new HttpRedirect('error.php', 301))
-                    ->clearReadyHeaders()
-                    ->redirect();
-            });
-            break;
+        // Pushing a callback handler to the whoops handlers stack
+        $whoops->pushHandler(function (Exception $e) {
+            // Build a message string
+            $message = sprintf(
+                "[%s] [%s] [%s] [Line : %s]\n",
+                date('Y:m:d h:m:s'),
+                $e->getFile(),
+                $e->getMessage(),
+                $e->getLine()
+            );
 
-        default:
-            exit('Application environment is not set correctly.');
-    }
+            // Logging the error info to the predefined logs file
+            error_log($message, 3,  __DIR__ . '/../php-errors.log');
 
-    // Register this whoops instance as the error & exception handler
-    $whoops->register();
+            // Redirect to a custom error page
+            (new HttpRedirect('error.php', 301))
+                ->clearReadyHeaders()
+                ->redirect();
+        });
+        break;
+
+    default:
+        exit('Application environment is not set correctly.');
 }
+
+// Register this whoops instance as the error & exception handler
+$whoops->register();

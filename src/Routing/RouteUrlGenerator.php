@@ -27,7 +27,7 @@ class RouteUrlGenerator
      * @param string $routeName
      * @param array  $params
      *
-     * @return mixed|string|string[]|null
+     * @return string
      */
     public function generate($routeName, $params = [])
     {

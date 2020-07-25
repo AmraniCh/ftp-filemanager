@@ -7,7 +7,7 @@ use FTPApp\Http\HttpRedirect;
 require __DIR__ . '/../vendor/autoload.php';
 
 // Define the application environment constant
-define('ENV', 'PRODUCTION', false);
+define('ENV', 'DEVELOPMENT', false);
 
 // Reporting all types of errors
 error_reporting(E_ALL);

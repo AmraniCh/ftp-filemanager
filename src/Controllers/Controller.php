@@ -1,10 +1,9 @@
 <?php
 
-
 namespace FTPApp\Controllers;
 
-
-use FTPApp\Http\HttpResponse;
+use FTPApp\Template\Template;
+use FTPApp\Template\TemplateException;
 
 abstract class Controller
 {
@@ -16,27 +15,18 @@ abstract class Controller
     }
 
     /**
-     * @param string $uri
-     * @param int    $responseCode
+     * Renders the template and returns the gathered content as a string.
      *
-     * @return HttpResponse
-     */
-    public function render($uri, $responseCode = 200)
-    {
-        return (new HttpResponse($this->fetch($uri), $responseCode))->clearReadyHeaders();
-    }
-
-    /**
-     * @param $uri
+     * @param string $template
+     * @param array  $params
      *
      * @return string|false
+     *
+     * @throws TemplateException
      */
-    protected function fetch($uri)
+    public function render($template, $params = [])
     {
-        ob_start();
-        include($uri);
-        $content = ob_get_contents();
-        ob_end_clean();
-        return $content;
+        $template = new Template($template, $params);
+        return $template->render();
     }
 }

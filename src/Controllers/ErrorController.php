@@ -6,18 +6,8 @@ use FTPApp\Http\HttpResponse;
 
 class ErrorController extends Controller
 {
-
-    /**
-     * ErrorController constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function index()
     {
-        $url = urlencode('error.php');
-        return (new HttpResponse(file_get_contents($url, false), 404))->clearReadyHeaders();
+        return new HttpResponse($this->render('error', ['ErrorCode' => 404]), 404);
     }
 }

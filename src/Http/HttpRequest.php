@@ -70,6 +70,20 @@ class HttpRequest
     }
 
     /**
+     * @param  string $name
+     *
+     * @return string|false
+     */
+    public function getParameter($name)
+    {
+        if (array_key_exists($name, $this->getParameters())) {
+            return $this->getParameters()[$name];
+        }
+
+        return false;
+    }
+
+    /**
      * @return array
      */
     public function getQueryParameters()

@@ -21,7 +21,7 @@ class AppHandler
      */
     public function __construct(HttpRequest $request)
     {
-        $this->request = $request;
+        $this->request  = $request;
     }
 
     /**
@@ -34,17 +34,18 @@ class AppHandler
     public function handle()
     {
         $routesCollection = new RouteCollection(include('routes.php'));
-        $dispatcher = new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
+        $dispatcher       =
+            new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
 
         $badRouteHandlers = [
             'notFoundedHandler',
-            'methodNotAllowedHandler'
+            'methodNotAllowedHandler',
         ];
 
         foreach ($badRouteHandlers as $handler) {
             $method = $handler;
             $dispatcher->$method(function () {
-                return (new ErrorController())->index();
+                return (new ErrorController($this->request))->index();
             });
         }
 
@@ -53,7 +54,7 @@ class AppHandler
             $handler = $routeInfo[2];
 
             // Callback
-            if (!is_array($handler)){
+            if (!is_array($handler)) {
                 return call_user_func_array($handler, $routeInfo[3]);
             }
 
@@ -61,8 +62,13 @@ class AppHandler
             $class  = $handler[0];
             $method = $handler[1];
 
-            $controller = new $class;
-            return $controller->$method();
+            $vars = '';
+            if (isset($handler[2])) {
+                $vars = implode(',', $handler[2]);
+            }
+
+            $controller = new $class($this->request);
+            return $controller->$method($vars);
         });
     }
 }

@@ -40,16 +40,30 @@ abstract class Controller
         return $template->render();
     }
 
+    /**
+     * @return array
+     */
     public static function getServices()
     {
         return array_keys(self::$services);
     }
 
+    /**
+     * @param string $name
+     * @param string $definition
+     *
+     * @return void
+     */
     public static function addService($name, $definition)
     {
         self::$services[$name] = $definition;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
     public static function getService($name)
     {
         return self::$services[$name];

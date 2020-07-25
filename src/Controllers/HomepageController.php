@@ -3,6 +3,8 @@
 namespace FTPApp\Controllers;
 
 use FTPApp\Http\HttpResponse;
+use FTPApp\Routing\RouteCollection;
+use FTPApp\Routing\RouteUrlGenerator;
 
 class HomepageController extends Controller
 {
@@ -13,6 +15,15 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        return new HttpResponse($this->render('homepage', ['name' => 'chakir']));
+        $generator = new RouteUrlGenerator(
+            new RouteCollection(
+                include(dirname(__FILE__) . '/../routes.php')
+            )
+        );
+
+        return new HttpResponse($this->render('homepage', [
+            'name' => 'chakir',
+            'contact-url' => $generator->generate('contact')
+        ]));
     }
 }

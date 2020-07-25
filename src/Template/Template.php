@@ -67,7 +67,7 @@ class Template
     {
         $injected = $content;
 
-        if ($varsNames = preg_match_all('/({\s?\w+\s?})/', $content, $matches)) {
+        if ($varsNames = preg_match_all('/({\s?.*\s?})/', $content, $matches)) {
             array_shift($matches);
 
             $subject = $content;

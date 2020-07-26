@@ -7,11 +7,11 @@ use FTPApp\Routing\Exception\RouteMatchingException;
 class RouteDispatcher
 {
     /**
-     * Type matches.
+     * Define the match types.
      *
      * @var array
      */
-    const matchTypes = [
+    const MATCH_TYPES = [
         'i'   => '[0-9]+',
         's'   => '[a-zA-z]+',
         'any' => '.*',
@@ -36,7 +36,7 @@ class RouteDispatcher
     protected $foundedHandler;
 
     /**
-     * Dispatcher constructor.
+     * RouteDispatcher constructor.
      *
      * @param RouteCollection $routes
      * @param string          $uri
@@ -50,7 +50,7 @@ class RouteDispatcher
     }
 
     /**
-     * Handles the routes collection and returns the response.
+     * Handles the routes collection and returns the result of the defined handler.
      *
      * @param callable $dispatchCallback If not callback was provided the dispatch foundCallback will be used.
      *
@@ -111,22 +111,23 @@ class RouteDispatcher
 
             // Replace each match type in the route uri with the appropriate match type regex
             $subject = $routeUri;
+
             $replace = '';
             foreach ($matchTypes as $param) {
                 // If the match type is not registered throws an exception
-                if (!array_key_exists($param, self::matchTypes)) {
+                if (!array_key_exists($param, self::MATCH_TYPES)) {
                     throw new RouteMatchingException("[$param] is unknown match type.");
                 }
                 $regex   = sprintf('/:(%s)/i', $param);
-                $replace = preg_replace($regex, '(' . self::matchTypes[$param] . ')', $subject);
+                $replace = preg_replace($regex, '(' . self::MATCH_TYPES[$param] . ')', $subject);
                 $subject = $replace;
             }
 
-            // Escape the slashes
-            $escape = str_replace('/', '\\/', $replace);
+            // Escape the special chars
+            $replace = $this->escapedSpecialChars($replace);
 
             // Build a new regex
-            $regex = "/^$escape$/i";
+            $regex = "/^$replace$/i";
 
             // Matches the request uri using the regex '$regex'
             if (preg_match_all($regex, trim($this->uri, '/'), $matches)) {
@@ -140,6 +141,20 @@ class RouteDispatcher
     protected function matchMethod($routeMethods)
     {
         return in_array($this->method, $routeMethods, true);
+    }
+
+    protected function escapedSpecialChars($uri)
+    {
+        $specialChars = ['/', '?'];
+
+        $subject = $uri;
+        $replace = '';
+        foreach ($specialChars as $char) {
+            $replace = str_replace($char, '\\'.$char, $subject);
+            $subject = $replace;
+        }
+
+        return $replace;
     }
 
     protected function extractMatches($matches)

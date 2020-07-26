@@ -2,10 +2,10 @@
 
 namespace FTPApp;
 
+use FTPApp\Controllers\Error\ErrorController;
 use FTPApp\Http\HttpRequest;
 use FTPApp\Routing\RouteCollection;
 use FTPApp\Routing\RouteDispatcher;
-use FTPApp\Controllers\ErrorController;
 
 class AppHandler
 {
@@ -33,9 +33,10 @@ class AppHandler
      */
     public function handle()
     {
-        $routesCollection = new RouteCollection(include('routes.php'));
-        $dispatcher       =
-            new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
+        $routesCollection = new RouteCollection(
+            include(dirname(__DIR__) . '/config/routes.php')
+        );
+        $dispatcher = new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
 
         $badRouteHandlers = [
             'notFoundedHandler',
@@ -45,11 +46,11 @@ class AppHandler
         foreach ($badRouteHandlers as $handler) {
             $method = $handler;
             $dispatcher->$method(function () {
-                return (new ErrorController($this->request))->index();
+                return (new ErrorController($this->request))->index(404);
             });
         }
 
-        // Dispatches and handles
+        // Dispatches the routes and define the founded handler as a callback
         return $dispatcher->dispatch(function ($routeInfo) {
             $handler = $routeInfo[2];
 

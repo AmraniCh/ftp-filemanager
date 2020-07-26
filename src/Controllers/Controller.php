@@ -3,8 +3,6 @@
 namespace FTPApp\Controllers;
 
 use FTPApp\Http\HttpRequest;
-use FTPApp\Templating\Template;
-use FTPApp\Templating\TemplateException;
 
 abstract class Controller
 {
@@ -25,36 +23,12 @@ abstract class Controller
     }
 
     /**
-     * Renders the template and returns the gathered content as a string.
-     *
-     * @param string $template
-     * @param array  $params
-     *
-     * @return string|false
-     *
-     * @throws TemplateException
-     */
-    public function render($template, $params = [])
-    {
-        $template = new Template($template, $params);
-        return $template->render();
-    }
-
-    /**
-     * @return array
-     */
-    public static function getServices()
-    {
-        return array_keys(self::$services);
-    }
-
-    /**
      * @param string $name
      * @param string $definition
      *
      * @return void
      */
-    public static function addService($name, $definition)
+    public static function set($name, $definition)
     {
         self::$services[$name] = $definition;
     }
@@ -64,8 +38,34 @@ abstract class Controller
      *
      * @return mixed
      */
-    public static function getService($name)
+    public static function get($name)
     {
         return self::$services[$name];
+    }
+
+    /**
+     * Renders a view.
+     *
+     * @param string $view
+     * @param array  $params
+     *
+     * @return string
+     */
+    public function render($view, $params = [])
+    {
+        return self::get('Renderer')->render($view, $params);
+    }
+
+    /**
+     * Generates a dynamic url from a route path.
+     *
+     * @param string $name
+     * @param array  $params
+     *
+     * @return string
+     */
+    public function generateUrl($name, $params = [])
+    {
+        return self::get('RouteUrlGenerator')->generate($name, $params);
     }
 }

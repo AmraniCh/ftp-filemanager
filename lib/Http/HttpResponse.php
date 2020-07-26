@@ -2,7 +2,7 @@
 
 namespace FTPApp\Http;
 
-use FTPApp\Http\Exception\InvalidArgumentHttpException;
+use FTPApp\Http\Exception\HttpInvalidArgumentException;
 
 /**
  * Class HttpResponse represents an http response with a basic methods.
@@ -36,14 +36,14 @@ class HttpResponse
      * @param string $name
      * @param string $value
      *
-     * @throws InvalidArgumentHttpException
+     * @throws HttpInvalidArgumentException
      *
      * @return $this
      */
     public function addHeader($name, $value)
     {
         if (array_key_exists($name, $this->headers)) {
-            throw new InvalidArgumentHttpException("Cannot add Http header [$name], it already exists.");
+            throw new HttpInvalidArgumentException("Cannot add Http header [$name], it already exists.");
         }
 
         $this->headers[$name] = $value;
@@ -55,14 +55,14 @@ class HttpResponse
      * @param string $name
      * @param string $value
      *
-     * @throws InvalidArgumentHttpException
+     * @throws HttpInvalidArgumentException
      *
      * @return $this
      */
     public function setHeader($name, $value)
     {
         if (!array_key_exists($name, $this->headers)) {
-            throw new InvalidArgumentHttpException("Http header [$name] doesn't exists to overwrite their value.");
+            throw new HttpInvalidArgumentException("Http header [$name] doesn't exists to overwrite their value.");
         }
 
         $this->headers[$name] = $value;
@@ -110,7 +110,7 @@ class HttpResponse
     public function removeHeader($name)
     {
         if (!array_key_exists($name, $this->getResponseHeaders())) {
-            throw new InvalidArgumentHttpException("Http header [$name] doesn't exists to remove.");
+            throw new HttpInvalidArgumentException("Http header [$name] doesn't exists to remove.");
         }
 
         header_remove($name);
@@ -179,6 +179,7 @@ class HttpResponse
             return;
         }
 
+        // TODO Should send the content-type header ??
         /*
         if ($this->content) {
             $this->addHeader('Content-type', 'text/plain');

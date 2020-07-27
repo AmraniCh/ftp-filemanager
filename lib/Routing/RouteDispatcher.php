@@ -58,12 +58,9 @@ class RouteDispatcher
      */
     public function dispatch($dispatchCallback = null)
     {
+        $routeInfo = [];
         /** @var Route $route */
         foreach ($this->routes->getRoutes() as $route) {
-            if (!$this->matchMethod($route->getMethods())) {
-                return call_user_func($this->methodNotAllowedHandler);
-            }
-
             if (($matches = $this->matchUri($route->getPath()))) {
                 $route->setMatches($matches);
                 $routeInfo = [
@@ -72,12 +69,18 @@ class RouteDispatcher
                     $route->getHandler(),
                     $route->getMatches(),
                 ];
+
+                // If the request matches the URI then matches the request Method
+                if (!$this->matchMethod($route->getMethods())) {
+                    return call_user_func_array($this->methodNotAllowedHandler, [$routeInfo]);
+                }
+
                 return call_user_func_array($dispatchCallback ?: $this->foundedHandler, [$routeInfo]);
             }
         }
 
         // If no callback was returned that's means no matching was founded for the request uri
-        return call_user_func($this->notFoundedHandler);
+        return call_user_func_array($this->notFoundedHandler, [$routeInfo]);
     }
 
     public function methodNotAllowedHandler($handler)

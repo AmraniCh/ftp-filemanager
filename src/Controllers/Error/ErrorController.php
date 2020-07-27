@@ -6,8 +6,12 @@ use FTPApp\Controllers\Controller;
 
 class ErrorController extends Controller
 {
-    public function index($errorCode)
+    public function index($errorCode, $headers = [])
     {
-        return $this->renderWithResponse('error', [ 'errorCode' => $errorCode ]);
+        return $this->renderWithResponse('error',
+            [ 'errorCode' => $errorCode ],
+            $errorCode,
+            $headers
+        );
     }
 }

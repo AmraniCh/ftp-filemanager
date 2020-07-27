@@ -40,20 +40,23 @@ class AppHandler
         $routesCollection = new RouteCollection(
             include(dirname(__DIR__) . '/config/routes.php')
         );
-        $dispatcher       =
-            new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
+        $dispatcher = new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
 
-        $badRouteHandlers = [
-            'notFoundedHandler',
-            'methodNotAllowedHandler',
-        ];
+        $dispatcher->notFoundedHandler(function () {
+            return (new ErrorController($this->request))->index(404);
+        });
 
-        foreach ($badRouteHandlers as $handler) {
-            $method = $handler;
-            $dispatcher->$method(function () {
-                return (new ErrorController($this->request))->index(404);
-            });
-        }
+        $dispatcher->methodNotAllowedHandler(function ($routeInfo) {
+            return (new ErrorController($this->request))->index(405, [
+                /**
+                 * Sending the 'Allow' header including the allowed methods
+                 * for the request as defined in RFC 7231.
+                 *
+                 * @link https://tools.ietf.org/html/rfc7231#section-6.5.5
+                 */
+                'Allow' => implode(', ', $routeInfo[0]),
+            ]);
+        });
 
         // Dispatches the routes and define the founded handler as a callback
         return $dispatcher->dispatch(function ($routeInfo) {

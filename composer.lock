@@ -4,64 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3679f7f3b6eff5409fa6267609b2ef5e",
+    "content-hash": "05b6eb35e72d3d801744515324719720",
     "packages": [
-        {
-            "name": "altorouter/altorouter",
-            "version": "2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dannyvankooten/AltoRouter.git",
-                "reference": "127f6e96998708a31ef32252985bea82e3b03888"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dannyvankooten/AltoRouter/zipball/127f6e96998708a31ef32252985bea82e3b03888",
-                "reference": "127f6e96998708a31ef32252985bea82e3b03888",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "codeclimate/php-test-reporter": "dev-master",
-                "phpunit/phpunit": "5.7.*",
-                "squizlabs/php_codesniffer": "3.4.2"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "AltoRouter.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Danny van Kooten",
-                    "email": "dannyvankooten@gmail.com",
-                    "homepage": "http://dannyvankooten.com/"
-                },
-                {
-                    "name": "Koen Punt",
-                    "homepage": "https://github.com/koenpunt"
-                },
-                {
-                    "name": "niahoo",
-                    "homepage": "https://github.com/niahoo"
-                }
-            ],
-            "description": "A lightning fast router for PHP",
-            "homepage": "https://github.com/dannyvankooten/AltoRouter",
-            "keywords": [
-                "lightweight",
-                "router",
-                "routing"
-            ],
-            "time": "2019-11-23T11:01:41+00:00"
-        },
         {
             "name": "filp/whoops",
             "version": "2.7.3",
@@ -167,52 +111,6 @@
                 "ftp-library"
             ],
             "time": "2020-06-15T05:58:34+00:00"
-        },
-        {
-            "name": "nikic/fast-route",
-            "version": "v1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikic/FastRoute.git",
-                "reference": "181d480e08d9476e61381e04a71b34dc0432e812"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/181d480e08d9476e61381e04a71b34dc0432e812",
-                "reference": "181d480e08d9476e61381e04a71b34dc0432e812",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.35|~5.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "FastRoute\\": "src/"
-                },
-                "files": [
-                    "src/functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Nikita Popov",
-                    "email": "nikic@php.net"
-                }
-            ],
-            "description": "Fast request router for PHP",
-            "keywords": [
-                "router",
-                "routing"
-            ],
-            "time": "2018-02-13T20:26:39+00:00"
         },
         {
             "name": "psr/log",

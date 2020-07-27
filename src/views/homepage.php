@@ -4,5 +4,6 @@
         ]);
 ?>
 
+<h1>Homepage!</h1>
 
 <?= $renderer->render('layout/footer') ?>

@@ -21,6 +21,22 @@ class Renderer
     }
 
     /**
+     * @return mixed
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    }
+
+    /**
      * Renders a view and returns the gathered content as a string.
      *
      * @param string $view
@@ -59,13 +75,5 @@ class Renderer
         ob_end_clean();
 
         return $content;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPath()
-    {
-        return $this->path;
     }
 }

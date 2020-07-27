@@ -2,7 +2,9 @@
 
 namespace FTPApp;
 
+use FTPApp\Controllers\Controller;
 use FTPApp\Controllers\Error\ErrorController;
+use FTPApp\DIC\DIC;
 use FTPApp\Http\HttpRequest;
 use FTPApp\Routing\RouteCollection;
 use FTPApp\Routing\RouteDispatcher;
@@ -18,10 +20,12 @@ class AppHandler
      * AppHandler constructor.
      *
      * @param HttpRequest $request
+     * @param DIC         $container
      */
-    public function __construct(HttpRequest $request)
+    public function __construct(HttpRequest $request, DIC $container)
     {
-        $this->request  = $request;
+        $this->request = $request;
+        Controller::setContainer($container);
     }
 
     /**
@@ -36,7 +40,8 @@ class AppHandler
         $routesCollection = new RouteCollection(
             include(dirname(__DIR__) . '/config/routes.php')
         );
-        $dispatcher = new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
+        $dispatcher       =
+            new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
 
         $badRouteHandlers = [
             'notFoundedHandler',

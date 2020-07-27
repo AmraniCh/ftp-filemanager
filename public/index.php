@@ -1,16 +1,16 @@
 <?php
 
 use FTPApp\AppHandler;
-use FTPApp\Http\HttpRequest;
-use FTPApp\Http\HttpResponse;
+use FTPApp\DIC\DIC;
+use FTPApp\Http\HttpRequest as Request;
+use FTPApp\Http\HttpResponse as Response;
 
 require __DIR__ . '/../config/bootstrap.php';
-require __DIR__ . '/../config/services.php';
 
-// Handle the request
-$request = new HttpRequest();
-$handler = new AppHandler($request);
-$response = $handler->handle();
-if ($response instanceof HttpResponse) {
+$request = new Request();
+$container = new DIC(include(dirname(__DIR__) . '/config/services.php'));
+$app = new AppHandler($request, $container);
+$response = $app->handle();
+if ($response instanceof Response) {
     $response->clearReadyHeaders()->send();
 }

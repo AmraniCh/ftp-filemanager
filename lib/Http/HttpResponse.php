@@ -21,7 +21,7 @@ class HttpResponse
     /**
      * HttpResponse constructor.
      *
-     * @param null  $content
+     * @param mixed $content
      * @param int   $statusCode
      * @param array $headers
      */
@@ -33,12 +33,52 @@ class HttpResponse
     }
 
     /**
+     * @return int
+     */
+    public function getStatusCode()
+    {
+        return $this->statusCode;
+    }
+
+    /**
+     * @param int $statusCode
+     *
+     * @return $this
+     */
+    public function setStatusCode($statusCode)
+    {
+        $this->statusCode = $statusCode;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param mixed $content
+     *
+     * @return $this
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @param string $value
      *
+     * @return $this
      * @throws HttpInvalidArgumentException
      *
-     * @return $this
      */
     public function addHeader($name, $value)
     {
@@ -55,9 +95,9 @@ class HttpResponse
      * @param string $name
      * @param string $value
      *
+     * @return $this
      * @throws HttpInvalidArgumentException
      *
-     * @return $this
      */
     public function setHeader($name, $value)
     {
@@ -161,11 +201,19 @@ class HttpResponse
             return $this;
         }
 
-        foreach (($this->getReadyHeaders()) as $name => $value) {
+        foreach ($this->getReadyHeaders() as $name => $value) {
             header_remove($name);
         }
 
         return $this;
+    }
+
+    /**
+     * Clear all headers that's not sent yet.
+     */
+    public function clearAllHeaders()
+    {
+        $this->headers = [];
     }
 
     /**

@@ -6,6 +6,9 @@ use FTPApp\Http\HttpRequest;
 
 abstract class Controller
 {
+    /** @var DIC */
+    protected static $container;
+
     /** @var HttpRequest */
     protected $request;
 

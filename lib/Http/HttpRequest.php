@@ -42,6 +42,30 @@ class HttpRequest
     }
 
     /**
+     * @return array
+     */
+    public function getQueryParameters()
+    {
+        return $this->get;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBodyParameters()
+    {
+        return $this->post;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
      * @return string
      */
     public function getMethod()
@@ -86,17 +110,9 @@ class HttpRequest
     /**
      * @return array
      */
-    public function getQueryParameters()
+    public function getCookies()
     {
-        return $this->get;
-    }
-
-    /**
-     * @return array
-     */
-    public function getBodyParameters()
-    {
-        return $this->post;
+        return $this->cookies;
     }
 
     /**
@@ -105,6 +121,14 @@ class HttpRequest
     public function getHeaders()
     {
         return $this->headers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getServer()
+    {
+        return $this->server;
     }
 
     /**
@@ -133,5 +157,6 @@ class HttpRequest
     {
         return $this->server['REQUEST_URI'];
     }
+
 
 }

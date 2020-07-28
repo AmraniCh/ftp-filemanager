@@ -2,7 +2,6 @@
 
 namespace FTPApp\Http;
 
-use FTPApp\Http\Cookie\HttpCookie;
 use FTPApp\Http\Exception\HttpInvalidArgumentException;
 
 /**
@@ -139,7 +138,7 @@ class HttpResponse
      */
     public function removeXPoweredByHeader()
     {
-        if (!headers_sent() && $this->hasResponseHeader('X-Powered-By')) {
+        if (!headers_sent() && $this->hasHeader('X-Powered-By')) {
             header_remove('X-Powered-By');
         }
 
@@ -177,7 +176,7 @@ class HttpResponse
      *
      * @return bool
      */
-    public function hasResponseHeader($name)
+    public function hasHeader($name)
     {
         return array_key_exists($name, $this->getResponseHeaders());
     }
@@ -246,6 +245,10 @@ class HttpResponse
 
     protected function sendCookies()
     {
+        if (empty($this->cookies)) {
+            return;
+        }
+
         /** @var HttpCookie $cookie */
         foreach ($this->cookies as $cookie) {
             setcookie(
@@ -258,16 +261,18 @@ class HttpResponse
                 $cookie->isHttpOnly()
             );
             // Same site
-            header(
-                sprintf(
-                    'Set-cookie: %s=%s;samesite=%s',
-                    $cookie->getName(),
-                    $cookie->getValue(),
-                    $cookie->getSameSite()
-                ),
-                false, // Disable replacing
-                null
-            );
+            if ($cookie->getSameSite() !== HttpCookie::SAMESITE_NONE) {
+                header(
+                    sprintf(
+                        'Set-cookie: %s=%s;samesite=%s',
+                        $cookie->getName(),
+                        $cookie->getValue(),
+                        $cookie->getSameSite()
+                    ),
+                    false, // Disable replacing
+                    null
+                );
+            }
         }
     }
 

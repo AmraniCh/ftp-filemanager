@@ -2,6 +2,7 @@
 
 namespace FTPApp\Http;
 
+use FTPApp\Http\Cookie\HttpCookie;
 use FTPApp\Http\Exception\HttpInvalidArgumentException;
 
 /**
@@ -17,6 +18,9 @@ class HttpResponse
 
     /** @var array $headers */
     public $headers;
+
+    /** @var array */
+    public $cookies;
 
     /**
      * HttpResponse constructor.
@@ -217,6 +221,57 @@ class HttpResponse
     }
 
     /**
+     * @param array $cookies
+     *
+     * @return $this
+     */
+    public function withCookies($cookies)
+    {
+        if (!is_array($cookies)) {
+            throw new HttpInvalidArgumentException(
+                sprintf("An array must be passed to %s, %s given.",
+                    __METHOD__,
+                    gettype($cookies)
+                ));
+        }
+
+        foreach ($cookies as $cookie) {
+            if ($cookie instanceof HttpCookie) {
+                $this->cookies[] = $cookie;
+            }
+        }
+
+        return $this;
+    }
+
+    protected function sendCookies()
+    {
+        /** @var HttpCookie $cookie */
+        foreach ($this->cookies as $cookie) {
+            setcookie(
+                $cookie->getName(),
+                $cookie->getValue(),
+                $cookie->getExpire(),
+                $cookie->getPath(),
+                $cookie->getDomain(),
+                $cookie->isSecure(),
+                $cookie->isHttpOnly()
+            );
+            // Same site
+            header(
+                sprintf(
+                    'Set-cookie: %s=%s;samesite=%s',
+                    $cookie->getName(),
+                    $cookie->getValue(),
+                    $cookie->getSameSite()
+                ),
+                false, // Disable replacing
+                null
+            );
+        }
+    }
+
+    /**
      * Sends all Http headers if not already sent.
      *
      * @return void
@@ -267,6 +322,7 @@ class HttpResponse
     protected function sendContent($content)
     {
         $this->sendRawHeaders();
+        $this->sendCookies();
         $this->setResponseCode();
         echo $content;
         exit();

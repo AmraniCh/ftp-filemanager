@@ -1,6 +1,17 @@
-body {
-    background-color: #17354f;
-    color: #FFF;
-    font-size: 2rem;
-    transition: .4s;
-}
+// Base
+@import "base/reset";
+@import "base/utilities";
+
+// Variables
+@import "variables/variables";
+@import "variables/mixins";
+
+// Components
+@import "components/button";
+@import "components/checkbox";
+@import "components/input";
+
+// Pages
+@import "pages/error";
+@import "pages/hompage";
+

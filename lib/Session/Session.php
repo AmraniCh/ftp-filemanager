@@ -10,7 +10,9 @@ class Session
 
     public static function setID($id)
     {
-        if (session_id($id) !== $id) {
+        session_id($id);
+
+        if (self::getID() !== $id) {
             throw new SessionRuntimeException("Failed to set session id to [$id].");
         }
 
@@ -21,7 +23,7 @@ class Session
     {
         session_name($name);
 
-        if (session_name() !== $name) {
+        if (self::getName() !== $name) {
             throw new SessionRuntimeException("Failed to set session name to [$name].");
         }
 

@@ -28,7 +28,6 @@ gulp.task('scripts', function() {
         .pipe(iife())
         .pipe(gulp.dest('public/dist'))
         .pipe(livereload())
-        .pipe(notify('JS Files minified!'));
 });
 
 gulp.task('styles', function() {
@@ -47,13 +46,12 @@ gulp.task('styles', function() {
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('public/dist'))
         .pipe(livereload())
-        .pipe(notify('SASS file compiled!'));
 });
 
 gulp.task('watch', function() {
     livereload.listen();
-    gulp.watch('assets/js/app.js', ['scripts']);
-    gulp.watch('assets/scss/style.scss', ['styles']);
+    gulp.watch('assets/js/**/*.js', ['scripts']);
+    gulp.watch('assets/scss/**/*.scss', ['styles']);
 });
 
 gulp.task('default', ['watch']);

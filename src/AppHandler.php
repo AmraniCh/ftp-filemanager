@@ -37,9 +37,7 @@ class AppHandler
      */
     public function handle()
     {
-        $routesCollection = new RouteCollection(
-            include(dirname(__DIR__) . '/config/routes.php')
-        );
+        $routesCollection = new RouteCollection(include(dirname(__DIR__) . '/config/routes.php'));
         $dispatcher = new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
 
         $dispatcher->notFoundedHandler(function () {

@@ -1,6 +1,6 @@
 {
     "name": "ftp-filemanager/ftp-filemanager",
-    "description": "An open source FTP filemanager website with modern user interface",
+    "description": "An open source FTP filemanager website with modern interface without any framework",
     "keywords": [
         "ftp",
         "filemanager",

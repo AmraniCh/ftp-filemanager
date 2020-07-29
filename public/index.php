@@ -12,5 +12,5 @@ $container = new DIC(include(dirname(__DIR__) . '/config/services.php'));
 $app = new AppHandler($request, $container);
 $response = $app->handle();
 if ($response instanceof Response) {
-    $response->clearReadyHeaders()->send();
+    $response->removeXPoweredByHeader()->send();
 }

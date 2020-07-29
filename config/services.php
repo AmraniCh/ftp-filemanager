@@ -3,7 +3,6 @@
 use FTPApp\Routing\RouteUrlGenerator;
 use FTPApp\Routing\RouteCollection;
 use FTPApp\Renderer\Renderer;
-use FTPApp\Modules\FtpClientAdapter;
 
 return [
 
@@ -15,5 +14,4 @@ return [
 
     'Renderer' => new Renderer(dirname(__DIR__) . '/src/views'),
 
-    'FtpClientAdapter' => new FtpClientAdapter(),
 ];

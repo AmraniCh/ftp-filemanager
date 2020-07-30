@@ -1,0 +1,14 @@
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $primaryRed;
+    color: #FFF;
+    font-size: 6rem;
+    text-transform: uppercase;
+    user-select: none;
+
+    .error-code {
+        margin-left: 3rem;
+    }
+}

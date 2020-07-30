@@ -5,8 +5,10 @@
         ]) ?>
     </head>
     <body>
-        <h1>Error page! <?= $errorCode ?></h1>
-
+        <div class="error-container">
+            <span class="error-text">Error</span>
+            <h3 class="error-code"><?= $errorCode ?></h3>
+        </div>
         <?= $renderer->render('includes/scripts.html') ?>
     </body>
 </html>

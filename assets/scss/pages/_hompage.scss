@@ -1,0 +1,30 @@
+.header {
+    background-color: $primaryRed;
+    color: #FFF;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 2px -2px #999;
+
+    .brand {
+        background-color: $secondaryBlue;
+        height: 100%;
+        padding: 0 25px;
+
+        h3 {
+            @include center-vertically();
+            font-size: 2rem;
+        }
+    }
+
+    nav.actions {
+        padding-right: 30px;
+
+        ul {
+            li:not(:last-of-type) {
+                margin-right: 15px;
+            }
+        }
+    }
+}

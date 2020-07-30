@@ -1,0 +1,15 @@
+@mixin center-vertically($position: 'relative') {
+    position: #{$position};
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@mixin set-font($font) {
+    font-family: #{$font}, Helvetica, sans-serif;
+}
+
+@mixin btn-hover-color($color, $amount: 7%) {
+    &:hover {
+        background-color: lighten($color, $amount);
+    }
+}

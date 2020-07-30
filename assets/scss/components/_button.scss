@@ -1,0 +1,39 @@
+%btn {
+    cursor: pointer;
+    background-color: transparent;
+    padding: 8px 24px;
+    border-radius: 5px;
+    border: 2px solid transparent;
+
+    &:focus {
+        border: 2px solid #23e8e8;
+    }
+}
+
+.btn-primary {
+    @extend %btn;
+    background-color: $secondaryBlue;
+    color: #FFF;
+    @include btn-hover-color($secondaryBlue);
+}
+
+.btn-secondary {
+    @extend %btn;
+    background-color: $thirdLightBrown;
+    color: $secondaryBlue;
+    @include btn-hover-color($thirdLightBrown);
+}
+
+.btn-svg {
+    position: relative;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-right: 24px;
+    padding-left: 36px;
+
+    svg {
+        @include center-vertically('absolute');
+        vertical-align: middle;
+        left: 10px;
+    }
+}

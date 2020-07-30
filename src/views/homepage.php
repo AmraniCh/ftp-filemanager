@@ -15,7 +15,7 @@
                 <nav class="actions">
                     <ul class="list-inline">
                         <li>
-                            <a href="https://github.com/ELAMRANI744/ftp-filemanager">
+                            <a target="_blank" href="https://github.com/ELAMRANI744/ftp-filemanager">
                                 <button type="button" class="btn-primary btn-svg">
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -40,7 +40,7 @@
                         <h1 class="title">Best FTP Application online!</h1>
                         <p class="desc">Flexible and secure web application to manage your FTP files, with many basic
                             and advanced features.</p>
-                        <ul class="buttons list-inline">
+                        <ul class="actions list-inline">
                             <li>
                                 <a href="/login">
                                     <button type="button" class="btn-primary">

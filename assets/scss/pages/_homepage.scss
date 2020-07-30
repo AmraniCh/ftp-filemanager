@@ -64,27 +64,28 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -45%);
-        }
 
-        .app-desc {
-            color: $textBlack;
-            padding-top: 25px;
+            .app-desc {
+                color: $textBlack;
+                padding-top: 25px;
 
-            .title {
-                text-transform: uppercase;
-                font-size: 2.8rem;
-                margin-bottom: 50px;
-            }
+                .title {
+                    text-transform: uppercase;
+                    font-size: 2.8rem;
+                    margin-bottom: 50px;
+                }
 
-            .desc {
-                font-size: 1.2rem;
-            }
+                .desc {
+                    font-size: 1.4rem;
+                    line-height: 1.6;
+                }
 
-            ul.actions {
-                margin-top: 50px;
+                ul.actions {
+                    margin-top: 50px;
 
-                li:not(:last-of-type) {
-                    margin-right: 15px;
+                    li:not(:last-of-type) {
+                        margin-right: 15px;
+                    }
                 }
             }
         }
@@ -102,6 +103,5 @@
         svg.shape-right {
             right: 0;
         }
-
     }
 }

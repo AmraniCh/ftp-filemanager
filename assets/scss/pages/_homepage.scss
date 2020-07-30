@@ -1,8 +1,4 @@
-.wrapper {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-
+.homepage-wrapper {
     .overlay {
         position: absolute;
         top: 0;
@@ -88,20 +84,6 @@
                     }
                 }
             }
-        }
-
-        svg.shape-right,
-        svg.shape-left {
-            position: absolute;
-            bottom: 0;
-            z-index: -1;
-        }
-
-        svg.shape-left {
-            left: 0;
-        }
-        svg.shape-right {
-            right: 0;
         }
     }
 }

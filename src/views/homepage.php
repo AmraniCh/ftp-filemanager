@@ -6,11 +6,11 @@
         ]) ?>
     </head>
     <body>
-        <div class="wrapper">
+        <div class="homepage-wrapper">
             <div class="overlay"></div>
             <header class="header">
                 <div class="brand">
-                    <h3 class="name">FTP APP</h3>
+                    <h3 class="name uppercase">ftp app</h3>
                 </div>
                 <nav class="actions">
                     <ul class="list-inline">

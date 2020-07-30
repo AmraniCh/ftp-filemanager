@@ -1,0 +1,12 @@
+$inputBackground: #FFF5E7;
+
+.input-area {
+    input {
+        width: 100%;
+        padding: 12px 8px;
+        border-radius: 6px;
+        border: 2px solid $secondaryBlue;
+        background-color: $inputBackground;
+        color: $textBlack;
+    }
+}

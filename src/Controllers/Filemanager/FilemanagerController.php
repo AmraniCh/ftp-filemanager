@@ -29,4 +29,9 @@ class FilemanagerController extends Controller
     {
         return new HttpResponse($this->adapter->getFiles('')[0]);
     }
+
+    public function index()
+    {
+        return $this->renderWithResponse('login');
+    }
 }

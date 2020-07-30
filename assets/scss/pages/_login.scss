@@ -1,11 +1,11 @@
 .login-wrapper {
     background-color: $primaryRed;
 
-        a {
-            position: absolute;
-            left: 25px;
-            bottom: 25px;
-        }
+    a.shape-arrow {
+        position: absolute;
+        left: 25px;
+        bottom: 25px;
+    }
 
     header.header {
         padding-top: 30px;
@@ -25,7 +25,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 30%;
+        width: 400px;
         padding: 40px 15px 15px 15px;
         border-radius: 15px;
         box-shadow: 0 0 10px 0px #333;
@@ -46,6 +46,29 @@
             input[type="submit"] {
                 display: block;
                 margin: 0 auto;
+            }
+        }
+    }
+
+    .github-btn {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0;
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+
+        svg {
+            vertical-align: middle;
+        }
+
+        &:hover {
+            background-color: #FFF;
+
+            svg path {
+                fill: $primaryRed;
             }
         }
     }

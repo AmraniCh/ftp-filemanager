@@ -6,11 +6,13 @@ button {
     text-transform: capitalize;
 }
 
-.homepage-wrapper, .login-wrapper {
+.homepage-wrapper, .login-wrapper, .error-container {
     position: fixed;
     width: 100%;
     height: 100%;
+}
 
+.homepage-wrapper, .login-wrapper {
     svg.shape-right,
     svg.shape-left {
         position: absolute;

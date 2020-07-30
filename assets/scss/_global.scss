@@ -2,18 +2,6 @@
     font-family: Arvo, Helvetica, sans-serif;
 }
 
-.wrapper {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-}
-
-.container {
-    margin: 0 auto;
-}
-
-@media screen and (min-width: 1200px) {
-    .container {
-        width: 1280px;
-    }
+button {
+    text-transform: capitalize;
 }

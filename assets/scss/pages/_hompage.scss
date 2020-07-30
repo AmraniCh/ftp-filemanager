@@ -1,30 +1,115 @@
-.header {
-    background-color: $primaryRed;
-    color: #FFF;
-    height: 70px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 2px -2px #999;
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
 
-    .brand {
-        background-color: $secondaryBlue;
-        height: 100%;
-        padding: 0 25px;
+.wrapper {
+    position: fixed;
+    width: 100%;
+    height: 100%;
 
-        h3 {
-            @include center-vertically();
-            font-size: 2rem;
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 999;
+        background-color: rgba(#FFF, .95);
+        transition: .8s;
+        visibility: visible;
+        opacity: 1;
+
+        &.hide {
+            visibility: hidden;
+            opacity: 0;
         }
     }
 
-    nav.actions {
-        padding-right: 30px;
+    header.header {
+        background-color: $primaryRed;
+        color: #FFF;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 2px -2px #999;
 
-        ul {
-            li:not(:last-of-type) {
-                margin-right: 15px;
+        .brand {
+            background-color: $secondaryBlue;
+            height: 100%;
+            padding: 0 25px;
+
+            h3 {
+                @include center-vertically();
+                font-size: 2rem;
             }
+        }
+
+        nav.actions {
+            padding-right: 30px;
+
+            ul {
+                li:not(:last-of-type) {
+                    margin-right: 15px;
+                }
+            }
+        }
+    }
+
+    section.intro {
+        position: relative;
+        height: calc(100% - 70px);
+
+        .row {
+            position: absolute;
+            display: flex;
+            justify-content: space-around;
+            width: 85%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -45%);
+        }
+
+        .app-desc {
+            color: $textBlack;
+            padding-top: 25px;
+
+            .title {
+                text-transform: uppercase;
+                font-size: 2.8rem;
+                margin-bottom: 50px;
+            }
+
+            .desc {
+                font-size: 1.2rem;
+            }
+
+            ul.buttons {
+                margin-top: 50px;
+
+                li:not(:last-of-type) {
+                    margin-right: 15px;
+                }
+            }
+        }
+
+        svg.shape-right {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        svg.shape-left {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            z-index: -1;
         }
     }
 }

@@ -6,8 +6,8 @@ use FTPApp\Controllers\Home\HomeController;
 
 return [
 
-    Route::get('/', [HomeController::class, 'index']),
+    Route::get('/', [HomeController::class, 'index'], 'home'),
 
-    Route::get('/login', [FilemanagerController::class, 'index']),
+    Route::get('/filemanager', [FilemanagerController::class, 'index'], 'filemanager'),
 
 ];

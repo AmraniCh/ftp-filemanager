@@ -42,7 +42,7 @@
                             and advanced features.</p>
                         <ul class="actions list-inline">
                             <li>
-                                <a href="/login">
+                                <a href="<?= $filemanagerUrl ?>">
                                     <button type="button" class="btn-primary">
                                         get started!
                                     </button>

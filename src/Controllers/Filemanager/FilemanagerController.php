@@ -1,8 +1,6 @@
 <?php
 
-
 namespace FTPApp\Controllers\Filemanager;
-
 
 use FTPApp\Controllers\Controller;
 use FTPApp\Http\HttpRequest;
@@ -32,6 +30,6 @@ class FilemanagerController extends Controller
 
     public function index()
     {
-        return $this->renderWithResponse('login');
+        return $this->renderWithResponse('filemanager', ['homeUrl' => $this->generateUrl('home')]);
     }
 }

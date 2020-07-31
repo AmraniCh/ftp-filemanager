@@ -1,13 +1,14 @@
-var gulp = require('gulp');
-var rename = require('gulp-rename');
-var prefixer = require('gulp-autoprefixer');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var livereload = require('gulp-livereload');
-var uglify = require('gulp-uglify-es').default;
-var notify = require('gulp-notify');
-var plumber = require('gulp-plumber');
-var iife = require('gulp-iife');
+var
+    gulp = require('gulp'),
+    rename = require('gulp-rename'),
+    prefixer = require('gulp-autoprefixer'),
+    sass = require('gulp-sass'),
+    sourcemaps = require('gulp-sourcemaps'),
+    livereload = require('gulp-livereload'),
+    uglify = require('gulp-uglify-es').default,
+    notify = require('gulp-notify'),
+    plumber = require('gulp-plumber'),
+    iife = require('gulp-iife');
 
 var onError = function(err) {
     notify.onError({
@@ -21,7 +22,7 @@ var onError = function(err) {
 };
 
 gulp.task('scripts', function() {
-    return gulp.src('assets/js/*.js')
+    return gulp.src('assets/js/app.js')
         .pipe(plumber({ errorHandler: onError }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(uglify())

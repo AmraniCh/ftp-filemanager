@@ -12,7 +12,7 @@
                     <h3 class="name uppercase">ftp app</h3>
                 </div>
             </header>
-            <form class="login-form">
+            <form id="loginForm" class="login-form">
                 <div class="input-area">
                     <input type="text" placeholder="Host">
                 </div>
@@ -25,16 +25,16 @@
                 <div class="input-area">
                     <input type="text" placeholder="Port" value="21">
                 </div>
-                <label class="checkbox">
-                    <input type="checkbox">
+                <label class="checkbox" for="useSsm">
+                    <input type="checkbox" name="useSsl">
                     <span class="checkbox-text">use SSL connection (If available)</span>
                 </label>
-                <label class="checkbox">
-                    <input type="checkbox">
+                <label class="checkbox" for="usePassive">
+                    <input type="checkbox" name="usePassive">
                     <span class="checkbox-text">use passive connection</span>
                 </label>
                 <div class="form-actions">
-                    <input type="submit" class="btn-primary" value="login">
+                    <input type="submit" id="loginBtn" class="btn-primary" value="login">
                 </div>
             </form>
             <a target="_blank" href="https://github.com/ELAMRANI744/ftp-filemanager">

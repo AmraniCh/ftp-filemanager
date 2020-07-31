@@ -14,23 +14,23 @@
             </header>
             <form id="loginForm" class="login-form">
                 <div class="input-area">
-                    <input type="text" placeholder="Host">
+                    <input type="text" name="host" placeholder="Host">
                 </div>
                 <div class="input-area">
-                    <input type="text" placeholder="Username">
+                    <input type="text" name="username" placeholder="Username">
                 </div>
                 <div class="input-area">
-                    <input type="text" placeholder="Password">
+                    <input type="text" name="password" placeholder="Password">
                 </div>
                 <div class="input-area">
-                    <input type="text" placeholder="Port" value="21">
+                    <input type="text" name="port" placeholder="Port" value="21">
                 </div>
-                <label class="checkbox" for="useSsm">
-                    <input type="checkbox" name="useSsl">
+                <label class="checkbox" for="useSsl">
+                    <input type="checkbox" id="useSsl" name="useSsl">
                     <span class="checkbox-text">use SSL connection (If available)</span>
                 </label>
                 <label class="checkbox" for="usePassive">
-                    <input type="checkbox" name="usePassive">
+                    <input type="checkbox" id="usePassive" name="usePassive">
                     <span class="checkbox-text">use passive connection</span>
                 </label>
                 <div class="form-actions">

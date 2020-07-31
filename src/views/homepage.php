@@ -247,6 +247,10 @@
                 </svg>
             </section>
         </div>
-        <?= $renderer->render('includes/scripts.html') ?>
+        <script>
+            window.addEventListener('load', function () {
+                document.querySelector('.overlay').classList.add('hide');
+            });
+        </script>
     </body>
 </html>

@@ -8,25 +8,28 @@ var
     uglify = require('gulp-uglify-es').default,
     notify = require('gulp-notify'),
     plumber = require('gulp-plumber'),
-    iife = require('gulp-iife');
-
-var onError = function(err) {
+    rollup = require('gulp-rollup'),
+    onError = function(err) {
     notify.onError({
         title:    "Gulp",
         subtitle: "Failure!",
         message:  "Error: <%= error.message %>",
         sound:    "Beep"
     })(err);
-
     this.emit('end');
 };
 
-gulp.task('scripts', function() {
-    return gulp.src('assets/js/app.js')
+gulp.task('bundle', function() {
+    gulp.src('./assets/js/**/*.js')
         .pipe(plumber({ errorHandler: onError }))
+        .pipe(rollup({
+            input: './assets/js/app.js',
+            output: {
+                format: 'iife'
+            }
+        }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(uglify())
-        .pipe(iife())
         .pipe(gulp.dest('public/dist'))
         .pipe(livereload())
 });
@@ -51,7 +54,7 @@ gulp.task('styles', function() {
 
 gulp.task('watch', function() {
     livereload.listen();
-    gulp.watch('assets/js/**/*.js', ['scripts']);
+    gulp.watch('assets/js/**/*.js', ['bundle']);
     gulp.watch('assets/scss/**/*.scss', ['styles']);
 });
 

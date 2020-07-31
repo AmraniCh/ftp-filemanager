@@ -1,14 +1,12 @@
 <html lang="en">
     <head>
-        <?= $renderer->render('includes/head.php', [
-            'title' => 'Error ' . $errorCode,
-        ]) ?>
+        <?= $renderer->render('includes/meta.html') ?>
+        <title><?= 'Error ' . $errorCode ?></title>
     </head>
     <body>
         <div class="error-container">
             <span class="error-text">Error</span>
             <h3 class="error-code"><?= $errorCode ?></h3>
         </div>
-        <?= $renderer->render('includes/scripts.html') ?>
     </body>
 </html>

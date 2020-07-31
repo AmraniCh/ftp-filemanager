@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <?= $renderer->render('includes/head.php', [
-            'title' => 'A flexible FTP web application!',
-        ]) ?>
+        <?= $renderer->render('includes/meta.html') ?>
+        <title>A flexible FTP web application!</title>
     </head>
     <body>
         <div class="homepage-wrapper">

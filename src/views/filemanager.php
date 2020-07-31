@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <?= $renderer->render('includes/head.php', [
-            'title' => 'Login!',
-        ]) ?>
+        <?= $renderer->render('includes/meta.html') ?>
+        <title>FTP File Manager</title>
+        <link rel="stylesheet" href="./vendor/filemanager-template.min.css">
     </head>
     <body>
+
         <div class="login-wrapper">
             <header class="header">
                 <div class="brand">
@@ -62,6 +63,8 @@
                 </svg>
             </a>
         </div>
-        <?= $renderer->render('includes/scripts.html') ?>
+
+        <script src="./vendor/filemanager-template.min.js"></script>
+        <script src="./dist/app.min.js"></script>
     </body>
 </html>

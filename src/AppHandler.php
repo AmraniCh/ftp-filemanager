@@ -6,7 +6,6 @@ use FTPApp\Controllers\Controller;
 use FTPApp\Controllers\Error\ErrorController;
 use FTPApp\DIC\DIC;
 use FTPApp\Http\HttpRequest;
-use FTPApp\Routing\RouteCollection;
 use FTPApp\Routing\RouteDispatcher;
 
 class AppHandler
@@ -16,35 +15,49 @@ class AppHandler
      */
     protected $request;
 
+    /** @var RouteDispatcher */
+    protected $dispatcher;
+
+    /** @var DIC */
+    protected $container;
+
     /**
      * AppHandler constructor.
      *
-     * @param HttpRequest $request
-     * @param DIC         $container
+     * @param HttpRequest     $request
+     * @param RouteDispatcher $dispatcher
+     * @param DIC             $container
      */
-    public function __construct(HttpRequest $request, DIC $container)
+    public function __construct(HttpRequest $request, RouteDispatcher $dispatcher, DIC $container)
     {
-        $this->request = $request;
-        Controller::setContainer($container);
+        $this->request    = $request;
+        $this->dispatcher = $dispatcher;
+        $this->container  = $container;
+    }
+
+    /**
+     * Initializes the application.
+     *
+     * @return void
+     */
+    public function init()
+    {
+        // Set the base controller container
+        Controller::setContainer($this->container);
     }
 
     /**
      * Handles the request and returns the appropriate response.
      *
      * @return mixed
-     *
-     * @throws \Exception
      */
     public function handle()
     {
-        $routesCollection = new RouteCollection(include(dirname(__DIR__) . '/config/routes.php'));
-        $dispatcher = new RouteDispatcher($routesCollection, $this->request->getUri(), $this->request->getMethod());
-
-        $dispatcher->notFoundedHandler(function () {
+        $this->dispatcher->notFoundedHandler(function () {
             return (new ErrorController($this->request))->index(404);
         });
 
-        $dispatcher->methodNotAllowedHandler(function ($routeInfo) {
+        $this->dispatcher->methodNotAllowedHandler(function ($routeInfo) {
             return (new ErrorController($this->request))->index(405, [
                 /**
                  * Sending the 'Allow' header including the allowed methods
@@ -57,7 +70,7 @@ class AppHandler
         });
 
         // Dispatches the routes and define the founded handler as a callback
-        return $dispatcher->dispatch(function ($routeInfo) {
+        return $this->dispatcher->dispatch(function ($routeInfo) {
             $handler = $routeInfo[2];
 
             // Callback

@@ -70,12 +70,13 @@ class RouteDispatcher
                     $route->getMatches(),
                 ];
 
-                // If the request matches the URI then matches the request Method
-                if (!$this->matchMethod($route->getMethods())) {
+                if ($this->isMethodNotAllowed($route)) {
                     return call_user_func_array($this->methodNotAllowedHandler, [$routeInfo]);
                 }
 
-                return call_user_func_array($dispatchCallback ?: $this->foundedHandler, [$routeInfo]);
+                if ($this->matchMethod($route->getMethods())) {
+                    return call_user_func_array($dispatchCallback ?: $this->foundedHandler, [$routeInfo]);
+                }
             }
         }
 
@@ -153,7 +154,7 @@ class RouteDispatcher
         $subject = $uri;
         $replace = '';
         foreach ($specialChars as $char) {
-            $replace = str_replace($char, '\\'.$char, $subject);
+            $replace = str_replace($char, '\\' . $char, $subject);
             $subject = $replace;
         }
 
@@ -171,5 +172,24 @@ class RouteDispatcher
             }
         }
         return $result;
+    }
+
+    protected function isMethodNotAllowed($route)
+    {
+        $methods = [];
+
+        // Loop through the routes collection
+        /** @var Route $r */
+        foreach ($this->routes->getRoutes() as $r) {
+            if ($route->getPath() !== $r->getPath()) {
+                continue;
+            }
+
+            foreach ($r->getMethods() as $m) {
+                $methods[] = $m;
+            }
+        }
+
+        return !in_array($this->method, $methods);
     }
 }

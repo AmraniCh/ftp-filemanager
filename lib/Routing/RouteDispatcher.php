@@ -185,8 +185,8 @@ class RouteDispatcher
                 continue;
             }
 
-            foreach ($r->getMethods() as $m) {
-                $methods[] = $m;
+            foreach ($r->getMethods() as $method) {
+                $methods[] = $method;
             }
         }
 

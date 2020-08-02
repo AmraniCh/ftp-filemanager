@@ -44,7 +44,7 @@ class Session
     {
         if (!empty($options)) {
             foreach ($options as $key => $value) {
-                if (!ini_set('session.' . $key, (int)$value)) {
+                if (!ini_set('session.' . $key, $value)) {
                     throw new SessionRuntimeException(sprintf(
                         "Cannot set directive [%s] to [%s]",
                         $key,

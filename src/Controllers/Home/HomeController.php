@@ -8,6 +8,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return $this->renderWithResponse('homepage', ['filemanagerUrl' => $this->generateUrl('filemanager')]);
+        return $this->renderWithResponse('homepage', ['loginUrl' => $this->generateUrl('login')]);
     }
 }

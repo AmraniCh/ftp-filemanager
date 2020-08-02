@@ -6,6 +6,7 @@ use FTPApp\DIC\DIC;
 use FTPApp\Http\HttpRedirect;
 use FTPApp\Http\HttpRequest;
 use FTPApp\Http\HttpResponse;
+use FTPApp\Modules\FtpClientAdapter;
 
 abstract class Controller
 {
@@ -14,6 +15,9 @@ abstract class Controller
 
     /** @var HttpRequest */
     protected $request;
+
+    /** @var FtpClientAdapter */
+    protected $ftpClientAdapter;
 
     /**
      * Controller constructor.
@@ -132,7 +136,9 @@ abstract class Controller
      */
     public function redirect($uri, $statusCode = 301, $headers = [])
     {
-        return (new HttpRedirect($uri, $statusCode, $headers))->redirect();
+        return (new HttpRedirect($uri, $statusCode, $headers))
+            ->removeXPoweredByHeader()
+            ->redirect();
     }
 
     /**
@@ -146,6 +152,8 @@ abstract class Controller
      */
     public function redirectToRoute($route, $statusCode = 301, $headers = [])
     {
-        return (new HttpRedirect($this->generateUrl($route), $statusCode, $headers))->redirect();
+        return (new HttpRedirect($this->generateUrl($route), $statusCode, $headers))
+            ->removeXPoweredByHeader()
+            ->redirect();
     }
 }

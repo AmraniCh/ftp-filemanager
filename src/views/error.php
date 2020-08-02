@@ -1,6 +1,7 @@
 <html lang="en">
     <head>
         <?= $renderer->render('includes/meta.html') ?>
+        <?= $renderer->render('includes/styles.html') ?>
         <title><?= 'Error ' . $errorCode ?></title>
     </head>
     <body>

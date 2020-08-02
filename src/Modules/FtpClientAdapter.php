@@ -13,4 +13,14 @@ class FtpClientAdapter
             'file2'
         ];
     }
+
+    public function openConnection()
+    {
+        $this->connection->open();
+    }
+
+    public function setPassive($bool)
+    {
+        $this->config->setPassive($bool);
+    }
 }

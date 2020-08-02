@@ -28,7 +28,7 @@
         width: 400px;
         padding: 40px 15px 15px 15px;
         border-radius: 15px;
-        box-shadow: 0 0 10px 0px #333;
+        box-shadow: 0 0 10px 0 #333;
         background-color: #FFF;
 
         .input-area {
@@ -38,6 +38,11 @@
         .checkbox {
             display: block;
             margin-bottom: 10px;
+        }
+
+        .server-error {
+            color: $primaryRed;
+            font-size: .8rem;
         }
 
         .form-actions {

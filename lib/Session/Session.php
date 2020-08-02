@@ -6,67 +6,64 @@ use FTPApp\Session\Exception\SessionRuntimeException;
 
 class Session
 {
-    protected static $id;
+    protected $options;
 
-    public static function setID($id)
+    /**
+     * Session constructor.
+     *
+     * @param $options
+     */
+    public function __construct($options)
+    {
+        $this->options = $options;
+        $this->setDirectivesConfiguration();
+    }
+
+    public function setID($id)
     {
         session_id($id);
 
-        if (self::getID() !== $id) {
+        if ($this->getID() !== $id) {
             throw new SessionRuntimeException("Failed to set session id to [$id].");
         }
 
         return true;
     }
 
-    public static function setName($name)
+    public function setName($name)
     {
         session_name($name);
 
-        if (self::getName() !== $name) {
+        if ($this->getName() !== $name) {
             throw new SessionRuntimeException("Failed to set session name to [$name].");
         }
 
         return true;
     }
 
-    public static function getID()
+    public function getID()
     {
         return session_id();
     }
 
-    public static function getName()
+    public function getName()
     {
         return session_name();
     }
 
-    public static function setDirectivesConfiguration($options)
+    public function start()
     {
-        if (!empty($options)) {
-            foreach ($options as $key => $value) {
-                if (!ini_set('session.' . $key, $value)) {
-                    throw new SessionRuntimeException(sprintf(
-                        "Cannot set directive [%s] to [%s]",
-                        $key,
-                        gettype($value) === 'boolean' ? $value ? 'true' : 'false' : $value
-                    ));
-                }
-            }
-        }
-    }
-
-    public static function start()
-    {
-        if (self::isNone()) {
+        if ($this->isNone()) {
+            session_name(ini_get('session.name'));
             return session_start();
         }
 
         return false;
     }
 
-    public static function regenerateID($deleteOldSession = true)
+    public function regenerateID($deleteOldSession = true)
     {
-        if (self::start()) {
+        if ($this->start()) {
             if (session_regenerate_id()) {
                 return session_regenerate_id($deleteOldSession);
             }
@@ -89,22 +86,22 @@ class Session
         return session_get_cookie_params();
     }
 
-    public static function isActive()
+    public function isActive()
     {
         return session_status() === PHP_SESSION_ACTIVE;
     }
 
-    public static function isDisabled()
+    public function isDisabled()
     {
         return session_status() === PHP_SESSION_DISABLED;
     }
 
-    public static function isNone()
+    public function isNone()
     {
         return session_status() === PHP_SESSION_NONE;
     }
 
-    public static function destroy()
+    public function destroy()
     {
         if (Session::isActive()) {
             return session_destroy();
@@ -113,12 +110,27 @@ class Session
         return false;
     }
 
-    public static function deleteCookie()
+    public function deleteCookie()
     {
-        $cookieName = self::getName();
+        $cookieName = $this->getName();
         if (isset($_COOKIE[$cookieName])) {
             unset($_COOKIE[$cookieName]);
             setcookie($cookieName, '', time() - 3600);
+        }
+    }
+
+    protected function setDirectivesConfiguration()
+    {
+        if (!empty($this->options)) {
+            foreach ($this->options as $key => $value) {
+                if (ini_set('session.' . $key, $value) === false) {
+                    throw new SessionRuntimeException(sprintf(
+                        "Cannot set directive [%s] to [%s]",
+                        $key,
+                        gettype($value) === 'boolean' ? $value ? 'true' : 'false' : $value
+                    ));
+                }
+            }
         }
     }
 }

@@ -4,12 +4,12 @@ namespace FTPApp\Session;
 
 class SessionStorage
 {
-    public static function setVariable($key, $value)
+    public function setVariable($key, $value)
     {
         $_SESSION[$key] = $value;
     }
 
-    public static function getVariable($key)
+    public function getVariable($key)
     {
         if (isset($_SESSION[$key])) {
             return $_SESSION[$key];
@@ -18,14 +18,14 @@ class SessionStorage
         return false;
     }
 
-    public static function show()
+    public function show()
     {
         echo '<pre>';
         print_r($_SESSION);
         echo '</pre>';
     }
 
-    public static function unsetVars()
+    public function unsetVars()
     {
         if (isset($_SESSION)) {
             foreach ($_SESSION as $key => $value) {

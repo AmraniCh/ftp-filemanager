@@ -732,7 +732,7 @@
                         </span>
                         <ul class="themes-list list-inline text-center">
                             <li class="theme-option selected" data-theme="default-theme"></li>
-                            <li class="theme-option" data-theme="dark-red-theme"></li>
+                            <li class="theme-option" data-theme="dark-blue-theme"></li>
                             <li class="theme-option" data-theme="gray-brown-theme"></li>
                         </ul>
                     </div>
@@ -878,6 +878,8 @@
         </div>
 
         <script src="./vendor/filemanager-template.min.js"></script>
+        <script src="./vendor/promises-polyfill.min.js"></script>
+        <script src="./vendor/fetch-umd-polyfill.min.js"></script>
         <script src="./dist/app.min.js"></script>
     </body>
 </html>

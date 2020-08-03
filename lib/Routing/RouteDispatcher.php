@@ -12,9 +12,10 @@ class RouteDispatcher
      * @var array
      */
     const MATCH_TYPES = [
-        'i'   => '[0-9]+',
-        's'   => '[a-zA-z]+',
-        'any' => '.*',
+        'i'      => '[0-9]+',
+        's'      => '[a-zA-z]+',
+        'encoded' => '[^;,/?:@&=+$]+',
+        'any'    => '.*',
     ];
 
     /** @var RouteCollection */

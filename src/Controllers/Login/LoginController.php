@@ -2,16 +2,15 @@
 
 namespace FTPApp\Controllers\Login;
 
-use FTPApp\Controllers\Controller;
+use FTPApp\Controllers\FilemanagerControllerAbstract;
 use FTPApp\Modules\FtpClientAdapter;
-use FTPApp\Session\Session;
 use Lazzard\FtpClient\Config\FtpConfig;
 use Lazzard\FtpClient\Connection\FtpConnection;
 use Lazzard\FtpClient\Connection\FtpSSLConnection;
 use Lazzard\FtpClient\Exception\FtpClientException;
 use Lazzard\FtpClient\FtpClient;
 
-class LoginController extends Controller
+class LoginController extends FilemanagerControllerAbstract
 {
     public function index()
     {
@@ -21,17 +20,17 @@ class LoginController extends Controller
     public function login()
     {
         try {
-            $cardinals  = $this->request->getBodyParameters();
+            $credentials  = $this->request->getBodyParameters();
 
             $connectionInitializer = FtpConnection::class;
-            if (isset($cardinals['useSsl']) && $cardinals['useSsl']) {
+            if (isset($credentials['useSsl']) && $credentials['useSsl']) {
                 $connectionInitializer = FtpSSLConnection::class;
             }
 
-            $connection = new $connectionInitializer($cardinals['host'],
-                $cardinals['username'],
-                $cardinals['password'],
-                $cardinals['port']
+            $connection = new $connectionInitializer($credentials['host'],
+                $credentials['username'],
+                $credentials['password'],
+                $credentials['port']
             );
 
             $config = new FtpConfig($connection);
@@ -40,9 +39,12 @@ class LoginController extends Controller
             $this->ftpClientAdapter = new FtpClientAdapter($connection, $config, $client);
             $this->ftpClientAdapter->openConnection();
 
-            if (isset($cardinals['usePassive']) && $cardinals['usePassive']) {
+            if (isset($credentials['usePassive']) && $credentials['usePassive']) {
                 $this->ftpClientAdapter->setPassive(true);
             }
+
+            // Store the adapter in the session
+            $this->storeInSession();
 
         } catch (FtpClientException $ex) {
             return $this->renderWithResponse('/login', [
@@ -50,13 +52,6 @@ class LoginController extends Controller
                 'homeUrl' => $this->generateUrl('home')
             ], 500);
         }
-
-        Session::setDirectivesConfiguration([
-            'name' => 'FTPAPPSESSID',
-            'cookie_httponly' => true,
-        ]);
-        // TODO samesite=Strict for the session
-        Session::start();
 
         $this->redirectToRoute('filemanager');
     }

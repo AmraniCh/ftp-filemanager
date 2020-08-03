@@ -157,18 +157,30 @@ abstract class Controller
     }
 
     /**
+     * Gets the configured session service.
+     *
      * @return Session
      */
     public function session()
     {
+        if (!$this->has('Session')) {
+            throw new \LogicException("Session service not registered for the base controller.");
+        }
+
         return self::get('Session');
     }
 
     /**
+     * Gets the session storage service.
+     *
      * @return SessionStorage
      */
     public function sessionStorage()
     {
+        if (!$this->has('Session')) {
+            throw new \LogicException("SessionStorage service not available in the base controller.");
+        }
+
         return self::get('SessionStorage');
     }
 }

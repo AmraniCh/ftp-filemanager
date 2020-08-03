@@ -5,8 +5,12 @@ namespace FTPApp\Controllers;
 use FTPApp\Http\HttpRequest;
 use FTPApp\Modules\FtpClientAdapter;
 
-abstract class FilemanagerControllerAbstract extends Controller {
-
+/**
+ * FilemanagerControllerAbstract retrieves the ftpClientAdapter from the session and preparing it
+ * for the sub controllers that's need an ftpClientAdapter.
+ */
+abstract class FilemanagerControllerAbstract extends Controller
+{
     /** @var FtpClientAdapter */
     protected $ftpClientAdapter;
 
@@ -29,14 +33,26 @@ abstract class FilemanagerControllerAbstract extends Controller {
     }
 
     /**
-     * Sets the FtpClient adapter restored from the session variable. 
+     * @param FtpClientAdapter $ftpClientAdapter
+     */
+    private function setFtpClientAdapter($ftpClientAdapter)
+    {
+        if ($ftpClientAdapter instanceof FtpClientAdapter) {
+            $this->ftpClientAdapter = $ftpClientAdapter;
+        }
+    }
+
+    /**
+     * Retrieves the FtpClientAdapter from the session.
      * 
      * @return void
      */
     private function retrieveAdapterFromSession()
     {
         $this->session()->start();
-        $this->ftpClientAdapter = $this->sessionStorage()->getVariable('ftpClientAdapter');
+        if ($adapter = $this->sessionStorage()->getVariable('ftpClientAdapter')) {
+            $this->setFtpClientAdapter($adapter);
+        }
     }
 
     /**
@@ -44,6 +60,8 @@ abstract class FilemanagerControllerAbstract extends Controller {
      */
     private function prepareAdapter()
     {
-        $this->ftpClientAdapter->openConnection();
+        if ($this->ftpClientAdapter instanceof FtpClientAdapter) {
+            $this->ftpClientAdapter->openConnection();
+        }
     }
 }

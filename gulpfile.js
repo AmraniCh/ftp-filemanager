@@ -5,38 +5,42 @@ var
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     livereload = require('gulp-livereload'),
-    uglify = require('gulp-uglify-es').default,
+    uglify = require('gulp-uglify'),
     notify = require('gulp-notify'),
     plumber = require('gulp-plumber'),
-    rollup = require('gulp-rollup'),
-    onError = function(err) {
+    browserify = require('browserify'),
+    babelify = require('babelify'),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer');
+
+var onError = function (err) {
     notify.onError({
-        title:    "Gulp",
+        title: "Gulp",
         subtitle: "Failure!",
-        message:  "Error: <%= error.message %>",
-        sound:    "Beep"
+        message: "Error: <%= error.message %>",
+        sound: "Beep"
     })(err);
     this.emit('end');
 };
 
-gulp.task('bundle', function() {
-    gulp.src('./assets/js/**/*.js')
-        .pipe(plumber({ errorHandler: onError }))
-        .pipe(rollup({
-            input: './assets/js/app.js',
-            output: {
-                format: 'iife'
-            }
-        }))
+gulp.task('bundle', function () {
+    return browserify({
+            entries: ['./assets/js/app.js']
+        })
+        .transform(babelify, { 'presets': ['env'] })
+        .bundle()
+        .pipe(plumber({errorHandler: onError}))
+        .pipe(plumber({errorHandler: onError}))
+        .pipe(source('app.js'))
         .pipe(rename({ suffix: '.min' }))
+        .pipe(buffer())
         .pipe(uglify())
-        .pipe(gulp.dest('public/dist'))
-        .pipe(livereload())
+        .pipe(gulp.dest('./public/dist/'))
 });
 
-gulp.task('styles', function() {
+gulp.task('styles', function () {
     return gulp.src('assets/scss/style.scss')
-        .pipe(plumber({ errorHandler: onError }))
+        .pipe(plumber({errorHandler: onError}))
         .pipe(sourcemaps.init())
         .pipe(sass({
             outputStyle: 'compressed'
@@ -47,12 +51,12 @@ gulp.task('styles', function() {
             'ie >= 9'
         ]))
         .pipe(sourcemaps.write())
-        .pipe(rename({ suffix: '.min' }))
+        .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('public/dist'))
         .pipe(livereload())
 });
 
-gulp.task('watch', function() {
+gulp.task('watch', function () {
     livereload.listen();
     gulp.watch('assets/js/**/*.js', ['bundle']);
     gulp.watch('assets/scss/**/*.scss', ['styles']);

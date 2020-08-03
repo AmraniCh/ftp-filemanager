@@ -43,8 +43,8 @@ class LoginController extends FilemanagerControllerAbstract
                 $this->ftpClientAdapter->setPassive(true);
             }
 
-            // Store the adapter in the session
-            $this->storeInSession();
+            // Store the ftpClientAdapter in the session
+            $this->storeAdapterInSession();
 
         } catch (FtpClientException $ex) {
             return $this->renderWithResponse('/login', [

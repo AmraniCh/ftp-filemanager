@@ -2,7 +2,6 @@
 
 namespace FTPApp\Controllers;
 
-use FTPApp\Controllers\Controller;
 use FTPApp\Http\HttpRequest;
 use FTPApp\Modules\FtpClientAdapter;
 
@@ -14,8 +13,8 @@ abstract class FilemanagerControllerAbstract extends Controller {
     public function __construct(HttpRequest $request)
     {
         parent::__construct($request);
-        $this->retrieveFromSession();       
-        $this->prepare();
+        $this->retrieveAdapterFromSession();
+        $this->prepareAdapter();
     }
 
     /**
@@ -23,7 +22,7 @@ abstract class FilemanagerControllerAbstract extends Controller {
      * 
      * @return void
      */
-    protected function storeInSession()
+    protected function storeAdapterInSession()
     {
         $this->session()->start();
         $this->sessionStorage()->setVariable('ftpClientAdapter', $this->ftpClientAdapter);
@@ -34,7 +33,7 @@ abstract class FilemanagerControllerAbstract extends Controller {
      * 
      * @return void
      */
-    private function retrieveFromSession()
+    private function retrieveAdapterFromSession()
     {
         $this->session()->start();
         $this->ftpClientAdapter = $this->sessionStorage()->getVariable('ftpClientAdapter');
@@ -43,7 +42,7 @@ abstract class FilemanagerControllerAbstract extends Controller {
     /**
      * @return void
      */
-    private function prepare()
+    private function prepareAdapter()
     {
         $this->ftpClientAdapter->openConnection();
     }

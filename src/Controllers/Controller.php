@@ -7,6 +7,8 @@ use FTPApp\Http\HttpRedirect;
 use FTPApp\Http\HttpRequest;
 use FTPApp\Http\HttpResponse;
 use FTPApp\Modules\FtpClientAdapter;
+use FTPApp\Session\Session;
+use FTPApp\Session\SessionStorage;
 
 abstract class Controller
 {
@@ -15,9 +17,6 @@ abstract class Controller
 
     /** @var HttpRequest */
     protected $request;
-
-    /** @var FtpClientAdapter */
-    protected $ftpClientAdapter;
 
     /**
      * Controller constructor.
@@ -155,5 +154,21 @@ abstract class Controller
         return (new HttpRedirect($this->generateUrl($route), $statusCode, $headers))
             ->removeXPoweredByHeader()
             ->redirect();
+    }
+
+    /**
+     * @return Session
+     */
+    public function session()
+    {
+        return self::get('Session');
+    }
+
+    /**
+     * @return SessionStorage
+     */
+    public function sessionStorage()
+    {
+        return self::get('SessionStorage');
     }
 }

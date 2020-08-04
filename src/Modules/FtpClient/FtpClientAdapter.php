@@ -1,12 +1,13 @@
 <?php
 
-namespace FTPApp\Modules;
+namespace FTPApp\Modules\FtpClient;
 
+use FTPApp\Modules\FtpAdapter;
 use Lazzard\FtpClient\Config\FtpConfig;
 use Lazzard\FtpClient\Connection\ConnectionInterface;
 use Lazzard\FtpClient\FtpClient;
 
-class FtpClientAdapter
+class FtpClientAdapter implements FtpAdapter
 {
     /** @var ConnectionInterface */
     public $connection;
@@ -39,5 +40,10 @@ class FtpClientAdapter
     public function setPassive($bool)
     {
         $this->config->setPassive($bool);
+    }
+
+    public function browse($dir)
+    {
+        return $this->client->listDirectoryDetails($dir);
     }
 }

@@ -63,7 +63,7 @@ class Session
 
     public function regenerateID($deleteOldSession = true)
     {
-        if ($this->start()) {
+        if ($this->isActive()) {
             if (session_regenerate_id()) {
                 return session_regenerate_id($deleteOldSession);
             }
@@ -117,6 +117,11 @@ class Session
             unset($_COOKIE[$cookieName]);
             setcookie($cookieName, '', time() - 3600);
         }
+    }
+
+    public function cookieExists()
+    {
+        return isset($_COOKIE[$this->getName()]);
     }
 
     protected function setDirectivesConfiguration()

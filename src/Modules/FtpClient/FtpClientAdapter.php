@@ -5,6 +5,9 @@ namespace FTPApp\Modules\FtpClient;
 use FTPApp\Modules\FtpAdapter;
 use Lazzard\FtpClient\Config\FtpConfig;
 use Lazzard\FtpClient\Connection\ConnectionInterface;
+use Lazzard\FtpClient\Connection\FtpConnection;
+use Lazzard\FtpClient\Connection\FtpSSLConnection;
+use Lazzard\FtpClient\Exception\FtpClientException;
 use Lazzard\FtpClient\FtpClient;
 
 class FtpClientAdapter implements FtpAdapter
@@ -19,31 +22,44 @@ class FtpClientAdapter implements FtpAdapter
     public $client;
 
     /**
-     * FtpClientAdapter constructor.
-     *
-     * @param ConnectionInterface $connection
-     * @param FtpConfig           $config
-     * @param FtpClient           $client
+     * @inheritDoc
      */
-    public function __construct(ConnectionInterface $connection, FtpConfig $config, FtpClient $client)
+    public function openConnection($config)
     {
-        $this->connection = $connection;
-        $this->config     = $config;
-        $this->client     = $client;
+        try {
+            $connectionInitializer = FtpConnection::class;
+            if (isset($config['useSsl']) && $config['useSsl']) {
+                $connectionInitializer = FtpSSLConnection::class;
+            }
+
+            $connection = new $connectionInitializer(
+                $config['host'],
+                $config['username'],
+                $config['password'],
+                $config['port']
+            );
+
+            $connection->open();
+
+            $this->connection = $connection;
+            $this->config     = new FtpConfig($connection);
+            $this->client     = new FtpClient($connection);
+
+            if (isset($config['usePassive']) && $config['usePassive']) {
+                $this->setPassive($config['usePassive']);
+                $this->setPassive(true);
+            }
+
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException("Connection failed to remote server.");
+        }
     }
 
-    public function openConnection()
-    {
-        $this->connection->open();
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function setPassive($bool)
     {
         $this->config->setPassive($bool);
-    }
-
-    public function browse($dir)
-    {
-        return $this->client->listDirectoryDetails($dir);
     }
 }

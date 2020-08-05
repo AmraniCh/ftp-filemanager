@@ -6,6 +6,7 @@ use FTPApp\DIC\DIC;
 use FTPApp\Http\HttpRedirect;
 use FTPApp\Http\HttpRequest;
 use FTPApp\Http\HttpResponse;
+use FTPApp\Modules\FtpAdapter;
 use FTPApp\Session\Session;
 use FTPApp\Session\SessionStorage;
 
@@ -177,5 +178,15 @@ abstract class Controller
         }
 
         return self::get('SessionStorage');
+    }
+
+    /**
+     * Gets the http request parameters.
+     *
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->request->getParameters();
     }
 }

@@ -21,7 +21,13 @@ abstract class FilemanagerControllerAbstract extends Controller
         // Resume the existing session and not start a new one.
         if ($this->session()->cookieExists()) {
             $this->session()->start();
-            $this->ftpAdapter()->openConnection($this->sessionStorage()->getVariable('config'));
+
+            $config = $this->sessionStorage()->getVariable('config');
+            $loggedIn = $this->sessionStorage()->getVariable('loggedIn');
+
+            if (is_array($config) && is_bool($loggedIn) && $loggedIn) {
+                $this->ftpAdapter()->openConnection($config);
+            }
         }
     }
 }

@@ -2,34 +2,26 @@
 
 namespace FTPApp\Controllers\Filemanager;
 
-use FTPApp\Controllers\Controller;
-use FTPApp\Http\HttpRequest;
-use FTPApp\Http\HttpResponse;
-use FTPApp\Modules\FtpClientAdapter;
+use FTPApp\Controllers\FilemanagerControllerAbstract;
 
-class FilemanagerController extends Controller
+class FilemanagerController extends FilemanagerControllerAbstract
 {
-    /** @var FtpClientAdapter */
-    protected $adapter;
-
-    /**
-     * FilemanagerController constructor.
-     *
-     * @param HttpRequest $request
-     */
-    public function __construct(HttpRequest $request)
-    {
-        parent::__construct($request);
-        $this->adapter = $this->get('FtpClientAdapter');
-    }
-
-    public function getFiles()
-    {
-        return new HttpResponse($this->adapter->getFiles('')[0]);
-    }
-
     public function index()
     {
+        /**
+         * Check if the session cookie exists, if doesn't
+         * make a redirection to login page.
+         */
+        if (!$this->session()->cookieExists()) {
+            return $this->redirectToRoute('login');
+        }
+
+        /**
+         * If a session already exists regenerate the session ID
+         * and delete the old session data.
+         */
+        $this->session()->regenerateID(true);
+
         return $this->renderWithResponse('filemanager', ['homeUrl' => $this->generateUrl('home')]);
     }
 }

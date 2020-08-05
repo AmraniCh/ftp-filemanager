@@ -189,4 +189,16 @@ abstract class Controller
     {
         return $this->request->getParameters();
     }
+
+    /**
+     * @return FtpAdapter
+     */
+    public function ftpAdapter()
+    {
+        if (!$this->has('FtpAdapter')) {
+            throw new \LogicException("FtpAdapter service not registered.");
+        }
+
+        return self::get('FtpAdapter');
+    }
 }

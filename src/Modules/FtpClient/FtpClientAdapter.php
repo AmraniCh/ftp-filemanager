@@ -62,4 +62,16 @@ class FtpClientAdapter implements FtpAdapter
     {
         $this->config->setPassive($bool);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function browse($dir)
+    {
+        try {
+            return $this->client->listDirectoryDetails($dir);
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException("Cannot get directory files list.");
+        }
+    }
 }

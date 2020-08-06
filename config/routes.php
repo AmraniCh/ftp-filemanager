@@ -8,11 +8,13 @@ use FTPApp\Controllers\Home\HomeController;
 return [
 
     Route::get('/', [HomeController::class, 'index'], 'home'),
-
     Route::get('/login', [LoginController::class, 'index'], 'login'),
-
     Route::post('/login', [LoginController::class, 'login']),
-
     Route::get('/filemanager', [FilemanagerController::class, 'index'], 'filemanager'),
+
+    /**
+     * Api routing
+     */
+    Route::get('/api?action=browse&path=:encoded', [FilemanagerController::class, 'browse']),
 
 ];

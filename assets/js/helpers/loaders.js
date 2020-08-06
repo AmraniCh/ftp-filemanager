@@ -1,0 +1,12 @@
+function toggleTableLoader() {
+    fmWrapper.querySelector('.table-section .loader').classList.toggle('show');
+}
+
+function toggleSidebarLoader() {
+    fmWrapper.querySelector('.sidebar .loader').classList.toggle('show');
+}
+
+export {
+    toggleSidebarLoader,
+    toggleTableLoader,
+};

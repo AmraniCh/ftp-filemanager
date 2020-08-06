@@ -3,6 +3,7 @@
 namespace FTPApp\Controllers\Filemanager;
 
 use FTPApp\Controllers\FilemanagerControllerAbstract;
+use FTPApp\Http\JsonResponse;
 
 class FilemanagerController extends FilemanagerControllerAbstract
 {
@@ -18,10 +19,17 @@ class FilemanagerController extends FilemanagerControllerAbstract
 
         /**
          * If a session already exists regenerate the session ID
-         * and delete the old session data.
+         * and delete the old session associated file.
          */
         $this->session()->regenerateID(true);
 
         return $this->renderWithResponse('filemanager', ['homeUrl' => $this->generateUrl('home')]);
+    }
+
+    public function browse()
+    {
+        return new JsonResponse([
+            'result' => $this->ftpAdapter()->browse($this->getParameters()['path']),
+        ]);
     }
 }

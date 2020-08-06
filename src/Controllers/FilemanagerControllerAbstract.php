@@ -46,7 +46,7 @@ abstract class FilemanagerControllerAbstract extends Controller
      */
     public function onException($exception)
     {
-        (new JsonResponse(['error' => $exception->getMessage()]))
+        (new JsonResponse(['error' => $exception->getMessage()], 500))
             ->removeXPoweredByHeader()
             ->send();
     }

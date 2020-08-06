@@ -34,7 +34,7 @@ class LoginController extends Controller
             return $this->renderWithResponse('/login', [
                 'serverError' => $ex->getMessage(),
                 'homeUrl' => $this->generateUrl('home')
-            ], 500);
+            ], 400);
         }
 
         return $this->redirectToRoute('filemanager');

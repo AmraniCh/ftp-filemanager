@@ -69,7 +69,20 @@ class FtpClientAdapter implements FtpAdapter
     public function browse($dir)
     {
         try {
-            return $this->client->listDirectoryDetails($dir);
+            $list = $this->client->listDirectoryDetails($dir);
+
+            $files = [];
+            foreach ($list as $file) {
+                $files[] = [
+                    'name'         => $file['name'],
+                    'type'         => $file['type'],
+                    'size'         => $file['size'],
+                    'modifiedTime' => sprintf("%s %s %s", $file['day'], $file['month'], $file['time']),
+                    'permissions'  => $file['chmod'],
+                ];
+            }
+
+            return $files;
         } catch (FtpClientException $ex) {
             throw new FtpClientAdapterException("Cannot get directory files list.");
         }

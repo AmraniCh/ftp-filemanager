@@ -5,12 +5,15 @@ const fetchGet = function (uri, success) {
         .then(response => {
             const contentType = response.headers.get('Content-type');
             if (contentType && contentType.indexOf('application/json') !== -1) {
-                if (response.ok) {
-                    return response.json();
-                }
-                return Promise.reject(response.error);
+                return response.json().then((json) => {
+                    if (response.ok) {
+                        success(json);
+                        return response;
+                    }
+                    return Promise.reject(json.error);
+                });
             }
-        }).then(response => success(response))
+        })
         .catch((err) => {
             fetchConfig.errorHandler(err);
         });

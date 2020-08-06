@@ -10,7 +10,7 @@ export default function (fileItem) {
 
     return `
         <li class="dir-item item" data-open="false">
-            ${fileItem.type === 'dir' ? dirIcon() : fileIcon()}
+            ${fileItem.isDir() ? dirIcon() : fileIcon()}
             <span class="name">${fileItem.name}</span>
         </li>`;
 }

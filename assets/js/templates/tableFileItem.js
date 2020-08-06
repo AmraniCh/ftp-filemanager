@@ -17,13 +17,13 @@ export default function (fileItem) {
                 </label>
             </td>
             <td>
-                ${fileItem.type === 'file' ? fileIcon() : dirIcon()}
+                ${fileItem.isFile() ? fileIcon() : dirIcon()}
                 <span class="file-name">
                     ${fileItem.name}
                 </span>
             </td>
-            <td>${fileItem.size}</td>
-            <td>${fileItem.lastModified}</td>
+            <td>${fileItem.bytesToSize()}</td>
+            <td>${fileItem.modifiedTime}</td>
             <td>${fileItem.permissions}</td>
         </tr>`;
 };

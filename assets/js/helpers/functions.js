@@ -31,7 +31,14 @@ function on(event, selector, fn) {
     });
 }
 
+function getElement(selector, findIn) {
+    if (typeof selector !== 'string') return;
+    return (findIn || document).querySelector(selector) || false;
+}
+
+
 export {
     bindEvent,
-    on
+    on,
+    getElement,
 };

@@ -3,14 +3,15 @@
  * @return {string}
  */
 function getSelectedPath() {
-    const ele = document.querySelector('.sidebar .dir-item[data-open="true"]');
+    const element = document.querySelector('.sidebar .dir-item[data-open="true"]');
 
-    if (!ele) {
+    if (!element) {
         return '/';
     }
 
-    var child = ele.querySelector('.sidebar .dir-item[data-open="true"]'),
-        path = ele.dataset.name;
+    var
+        child = element.querySelector('.dir-item[data-open="true"]'),
+        path = element.dataset.name;
 
     while (child) {
         path += '/' + child.dataset.name;
@@ -19,11 +20,10 @@ function getSelectedPath() {
 
     return path;
 }
-
 /**
- * Closes all sibling directories of passed element.
+ * Closes the sibling tree of the passed element
  */
-function closeSublingTreeOf(element) {
+function closeSiblingTreeOf(element) {
     var
         result = [],
         node = element.parentNode.firstChild;
@@ -51,7 +51,23 @@ function closeSublingTreeOf(element) {
     });
 }
 
+/**
+ * Gets the element that will receive the next request files content
+ * @param {string} path
+ * @return {string}
+ */
+function getAppendToSelector(path)
+{
+    if (path !== '/') {
+        const name = path.split('/').pop();
+        return '.sidebar .dir-item[data-name="'+name+'"] .sub-files';
+    }
+
+    return '.sidebar .files-list';
+}
+
 export {
     getSelectedPath,
-    closeSublingTreeOf,
+    closeSiblingTreeOf,
+    getAppendToSelector
 };

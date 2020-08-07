@@ -5,19 +5,15 @@ import tableFileItem from "../templates/tableFileItem";
 import File from '../entities/File';
 import {toggleLoaders} from "../helpers/loaders";
 import {getElement} from "../helpers/functions";
+import {getAppendToSelector} from "../helpers/treeView";
 
 function browse(path) {
     toggleLoaders();
+    const appendTo = getAppendToSelector(path);
     fetchGet('api?action=browse&path='+encodeURIComponent(path), function (data) {
         if (Array.isArray(data.result)) {
             // Clear table content
             getElement('.files-table tbody').textContent = '';
-
-            var appendTo = '.sidebar .files-list';
-            if (path !== '/') {
-                const name = path.split('/').pop();
-                appendTo = '.dir-item[data-name="'+name+'"] .sub-files';
-            }
 
             data.result.forEach(function (item) {
                 DOMRender(sidebarFileItem(new File(item)), appendTo, false);
@@ -26,6 +22,9 @@ function browse(path) {
 
             toggleLoaders();
         }
+    }, function () {
+        // in case of request fail close the last sidebar clicked dir item
+        getElement(appendTo.split(' ').slice(0, -1).join(' ')).dataset.open = 'false';
     });
 }
 

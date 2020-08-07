@@ -1,6 +1,6 @@
 import browse from "./actions/browse";
 import {bindEvent, getElement, on} from "./helpers/functions";
-import {closeSublingTreeOf, getSelectedPath} from "./helpers/treeView";
+import {closeSiblingTreeOf, getSelectedPath} from "./helpers/treeView";
 
 const App = function () {
 
@@ -27,7 +27,7 @@ const App = function () {
                     item.querySelector('.sub-files').textContent = '';
                 }
 
-                closeSublingTreeOf(item);
+                closeSiblingTreeOf(item);
                 browse(state.path = getSelectedPath());
             }
         });
@@ -40,6 +40,11 @@ const App = function () {
                 .trim();
 
             const path = getSelectedPath() + '/' + fileName;
+
+            // find the sidebar alternative file and make it open
+            if (path !== '/') {
+                getElement('.sidebar .dir-item[data-name="' + fileName + '"]').dataset.open = 'true';
+            }
 
             browse(state.path = path);
         });

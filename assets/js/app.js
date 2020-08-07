@@ -1,20 +1,16 @@
 import browse from "./actions/browse";
-import state from "./state";
+import {bindEvent} from "./helpers/functions";
 
 const App = function () {
 
-    this.init = function() {
-      this.load();
+    // Storing state variables
+    var state = {
+        path: '/',
     };
 
-    App.prototype.load = function () {
-        document.addEventListener('DOMContentLoaded', this.browse());
+    this.initEvents = function () {
+        bindEvent('DOMContentLoaded', document, browse(state.path));
     };
-
-    App.prototype.browse = function () {
-        browse(state.path);
-    };
-
 };
 
 export default App;

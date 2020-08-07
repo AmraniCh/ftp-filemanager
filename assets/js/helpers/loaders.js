@@ -6,7 +6,13 @@ function toggleSidebarLoader() {
     fmWrapper.querySelector('.sidebar .loader').classList.toggle('show');
 }
 
+function toggleLoaders() {
+    toggleTableLoader();
+    toggleSidebarLoader();
+}
+
 export {
     toggleSidebarLoader,
     toggleTableLoader,
+    toggleLoaders,
 };

@@ -16,5 +16,7 @@ return [
      * Api routing
      */
     Route::get('/api?action=browse&path=:encoded', [FilemanagerController::class, 'browse']),
+    Route::post('/api?action=addFile', [FilemanagerController::class, 'addFile']),
+    Route::post('/api?action=addFolder', [FilemanagerController::class, 'addFolder']),
 
 ];

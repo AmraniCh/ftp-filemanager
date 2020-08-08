@@ -3,6 +3,7 @@ import {closeSiblingTreeOf, getSelectedPath} from "./helpers/treeView";
 import refresh from "./actions/refersh";
 import state from "./state";
 import addFile from "./actions/addFile";
+import addFolder from "./actions/addFolder";
 
 const App = function () {
 
@@ -43,7 +44,7 @@ const App = function () {
             if (path !== '/') {
                 getElement('.sidebar .dir-item[data-name="' + fileName + '"]').dataset.open = 'true';
             }
-            console.log(state.path);
+
             browse(state.path = path);
 
             // Disable footer right buttons
@@ -60,6 +61,11 @@ const App = function () {
         // Add file action
         bindEvent('click', '#addFileBtn', function () {
             addFile(getElement('#addFileModal #fileName').value, state.path);
+        });
+
+        // Add Folder action
+        bindEvent('click', '#addFolderBtn', function () {
+            addFolder(getElement('#addFolderModal #folderName').value, state.path);
         });
     };
 };

@@ -76,25 +76,41 @@ class FtpClientAdapter implements FtpAdapter
      */
     public function browse($dir)
     {
-        //throw new \Exception('ddd');
-        $list = $this->client->listDirectoryDetails($dir);
+        try {
+            $list = $this->client->listDirectoryDetails($dir);
 
-        $files = [];
-        foreach ($list as $file) {
-            $files[] = [
-                'name'         => $file['name'],
-                'type'         => $file['type'],
-                'size'         => $file['size'],
-                'modifiedTime' => sprintf("%s %s %s", $file['day'], $file['month'], $file['time']),
-                'permissions'  => $file['chmod'],
-            ];
+            $files = [];
+            foreach ($list as $file) {
+                $files[] = [
+                    'name'         => $file['name'],
+                    'type'         => $file['type'],
+                    'size'         => $file['size'],
+                    'modifiedTime' => sprintf("%s %s %s", $file['day'], $file['month'], $file['time']),
+                    'permissions'  => $file['chmod'],
+                ];
+            }
+
+            return $files;
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
         }
-
-        return $files;
     }
 
     public function addFile($file)
     {
-        return $this->client->createFile($file);
+        try {
+            return $this->client->createFile($file);
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+        }
+    }
+
+    public function addFolder($dir)
+    {
+        try {
+            return $this->client->createDirectory($dir);
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+        }
     }
 }

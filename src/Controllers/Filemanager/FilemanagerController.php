@@ -36,9 +36,18 @@ class FilemanagerController extends FilemanagerControllerAbstract
     public function addFile()
     {
         $params = $this->request->getJSONBodyParameters();
-        $path = $params['path'] !== '/' ? $params['path'] : '';
+        $path = $params['path'] !== '/' ? $params['path'] . '/' : '';
         return new JsonResponse([
-            'result' => $this->ftpAdapter()->addFile($path . '/'. $params['name'])
-        ]);
+            'result' => $this->ftpAdapter()->addFile($path . $params['name'])
+        ], 201);
+    }
+
+    public function addFolder()
+    {
+        $params = $this->request->getJSONBodyParameters();
+        $path = $params['path'] !== '/' ? $params['path'] . '/' : '';
+        return new JsonResponse([
+            'result' => $this->ftpAdapter()->addFolder($path . $params['name'])
+        ], 201);
     }
 }

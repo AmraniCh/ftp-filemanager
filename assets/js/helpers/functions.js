@@ -1,4 +1,4 @@
-import {toggleLoaders} from "./loaders";
+import {hideLoading, showLoading} from "./loading";
 import {getAppendToSelector} from "./treeView";
 import {fetchGet} from "./fetch";
 import DOMRender from "./DOMRender";
@@ -41,12 +41,16 @@ function on(event, selector, fn) {
 }
 
 function getElement(selector, findIn) {
+    return getElements(selector, findIn)[0];
+}
+
+function getElements(selector, findIn) {
     if (typeof selector !== 'string') return;
-    return (findIn || document).querySelector(selector) || false;
+    return (findIn || document).querySelectorAll(selector) || false;
 }
 
 function browse(path) {
-    toggleLoaders();
+    showLoading();
     const appendTo = getAppendToSelector(path);
     fetchGet('api?action=browse&path='+encodeURIComponent(path), function (data) {
         if (Array.isArray(data.result)) {
@@ -57,14 +61,16 @@ function browse(path) {
                 DOMRender(sidebarFileItem(new File(item)), appendTo, false);
                 DOMRender(tableFileItem(new File(item)), '.files-table tbody', false);
             });
-
-            toggleLoaders();
         }
-    }, function () {
+    }, function (err) {
         // in case of request fail close the last sidebar clicked dir item
         getElement(appendTo.split(' ').slice(0, -1).join(' ')).dataset.open = 'false';
         // back path
         state.path = state.path.substring(0, state.path.lastIndexOf('/'));
+        // show the error message
+        alert('Error : ' + err);
+    }, function () {
+        hideLoading();
     });
 }
 
@@ -72,5 +78,6 @@ export {
     bindEvent,
     on,
     getElement,
-    browse,
+    getElements,
+    browse
 };

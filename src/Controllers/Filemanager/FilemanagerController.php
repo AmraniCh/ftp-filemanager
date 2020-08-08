@@ -32,4 +32,13 @@ class FilemanagerController extends FilemanagerControllerAbstract
             'result' => $this->ftpAdapter()->browse($this->getParameters()['path']),
         ]);
     }
+
+    public function addFile()
+    {
+        $params = $this->request->getJSONBodyParameters();
+        $path = $params['path'] === '/' ? '' : $params['path'];
+        return new JsonResponse([
+            'result' => $this->ftpAdapter()->addFile($path . '/'. $params['name'])
+        ]);
+    }
 }

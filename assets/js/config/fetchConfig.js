@@ -1,5 +1,3 @@
-import {toggleLoaders} from "../helpers/loading";
-
 const fetchConfig = {
 
     get: {

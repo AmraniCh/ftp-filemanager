@@ -1,7 +1,8 @@
-import {bindEvent, browse, getElement, on} from "./helpers/functions";
+import {bindEvent, browse, getElement, getElements, on} from "./helpers/functions";
 import {closeSiblingTreeOf, getSelectedPath} from "./helpers/treeView";
 import refresh from "./actions/refersh";
 import state from "./state";
+import addFile from "./actions/addFile";
 
 const App = function () {
 
@@ -25,6 +26,7 @@ const App = function () {
 
                 closeSiblingTreeOf(item);
                 browse(state.path = getSelectedPath());
+                console.log(state.path);
             }
         });
 
@@ -41,13 +43,23 @@ const App = function () {
             if (path !== '/') {
                 getElement('.sidebar .dir-item[data-name="' + fileName + '"]').dataset.open = 'true';
             }
-
+            console.log(state.path);
             browse(state.path = path);
+
+            // Disable footer right buttons
+            getElements('.right-buttons *[data-action]').forEach(function (button) {
+               button.disabled = true;
+            });
         });
 
         // Refresh button
         bindEvent('click', 'button[data-action="refresh"]', function () {
             refresh(state.path);
+        });
+
+        // Add file action
+        bindEvent('click', '#addFileBtn', function () {
+            addFile(getElement('#addFileModal #fileName').value, state.path);
         });
     };
 };

@@ -4,6 +4,8 @@ namespace FTPApp\Controllers;
 
 use FTPApp\Http\HttpRequest;
 use FTPApp\Http\JsonResponse;
+use FTPApp\Modules\FtpClient\FtpClientAdapter;
+use Lazzard\FtpClient\Exception\FtpClientException;
 
 abstract class FilemanagerControllerAbstract extends Controller
 {
@@ -46,7 +48,14 @@ abstract class FilemanagerControllerAbstract extends Controller
      */
     public function onException($exception)
     {
-        (new JsonResponse(['error' => $exception->getMessage()], 500))
+        $message = $exception->getMessage();
+
+        // normalize FtpClient Exception message
+        if ($exception instanceof FtpClientException) {
+            $message = FtpClientAdapter::normalizeExceptionMessage($exception);
+        }
+
+        (new JsonResponse(['error' => $message], 500))
             ->removeXPoweredByHeader()
             ->send();
     }

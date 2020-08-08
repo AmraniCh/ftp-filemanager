@@ -9,9 +9,9 @@ interface FtpAdapter
      *
      * @param array $config
      *
-     * @throws FtpAdapterException
-     *
      * @return void
+     *
+     * @throws FtpAdapterException
      */
     public function openConnection($config);
 
@@ -30,6 +30,10 @@ interface FtpAdapter
      * @param string $dir
      *
      * @return mixed
+     *
+     * @throws FtpAdapterException
      */
     public function browse($dir);
+
+    public function addFile($filename);
 }

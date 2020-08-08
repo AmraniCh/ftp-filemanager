@@ -22,6 +22,16 @@ class FtpClientAdapter implements FtpAdapter
     public $client;
 
     /**
+     * @param FtpClientException $exception
+     *
+     * @return string|string[]|null
+     */
+    public static function normalizeExceptionMessage($exception)
+    {
+        return preg_replace('/([\[\w\]]+)\s-\s/i', '', $exception->getMessage());
+    }
+
+    /**
      * @inheritDoc
      */
     public function openConnection($config)
@@ -46,12 +56,10 @@ class FtpClientAdapter implements FtpAdapter
             $this->client     = new FtpClient($connection);
 
             if (isset($config['usePassive']) && $config['usePassive']) {
-                $this->setPassive($config['usePassive']);
                 $this->setPassive(true);
             }
-
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException("Connection failed to remote server.");
+            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
         }
     }
 
@@ -68,23 +76,25 @@ class FtpClientAdapter implements FtpAdapter
      */
     public function browse($dir)
     {
-        try {
-            $list = $this->client->listDirectoryDetails($dir);
+        //throw new \Exception('ddd');
+        $list = $this->client->listDirectoryDetails($dir);
 
-            $files = [];
-            foreach ($list as $file) {
-                $files[] = [
-                    'name'         => $file['name'],
-                    'type'         => $file['type'],
-                    'size'         => $file['size'],
-                    'modifiedTime' => sprintf("%s %s %s", $file['day'], $file['month'], $file['time']),
-                    'permissions'  => $file['chmod'],
-                ];
-            }
-
-            return $files;
-        } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException("Cannot get directory files list.");
+        $files = [];
+        foreach ($list as $file) {
+            $files[] = [
+                'name'         => $file['name'],
+                'type'         => $file['type'],
+                'size'         => $file['size'],
+                'modifiedTime' => sprintf("%s %s %s", $file['day'], $file['month'], $file['time']),
+                'permissions'  => $file['chmod'],
+            ];
         }
+
+        return $files;
+    }
+
+    public function addFile($file)
+    {
+        return $this->client->createFile($file);
     }
 }

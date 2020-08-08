@@ -1,13 +1,9 @@
-import browse from "./actions/browse";
-import {bindEvent, getElement, on} from "./helpers/functions";
+import {bindEvent, browse, getElement, on} from "./helpers/functions";
 import {closeSiblingTreeOf, getSelectedPath} from "./helpers/treeView";
+import refresh from "./actions/refersh";
+import state from "./state";
 
 const App = function () {
-
-    // Storing state variables
-    var state = {
-        path: '/',
-    };
 
     this.initEvents = function () {
         // load event
@@ -47,6 +43,11 @@ const App = function () {
             }
 
             browse(state.path = path);
+        });
+
+        // Refresh button
+        bindEvent('click', 'button[data-action="refresh"]', function () {
+            refresh(state.path);
         });
     };
 };

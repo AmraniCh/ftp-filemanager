@@ -1,9 +1,10 @@
-import {bindEvent, browse, getElement, getElements, on} from "./helpers/functions";
+import {bindEvent, browse, getElement, getElements, on, setEditorFileContent} from "./helpers/functions";
 import {closeSiblingTreeOf, getSelectedPath} from "./helpers/treeView";
 import refresh from "./actions/refersh";
 import state from "./state";
 import addFile from "./actions/addFile";
 import addFolder from "./actions/addFolder";
+import modal from "./helpers/modal";
 
 const App = function () {
 
@@ -35,21 +36,21 @@ const App = function () {
         on('dblclick', '.files-table .file-item[data-type="dir"]', function (e) {
             const fileName =
                 getElement('.file-name', e.target.closest('.file-item[data-type="dir"]'))
-                .textContent
-                .trim();
+                    .textContent
+                    .trim();
 
             const path = getSelectedPath() + '/' + fileName;
 
             // find the sidebar alternative file and make it open
             if (path !== '/') {
-                getElement('.sidebar .dir-item[data-name="' + fileName + '"]').dataset.open = 'true';
+                getElement('.sidebar .dir-item[data-name="' + encodeURI(fileName) + '"]').dataset.open = 'true';
             }
 
             browse(state.path = path);
 
             // Disable footer right buttons
             getElements('.right-buttons *[data-action]').forEach(function (button) {
-               button.disabled = true;
+                button.disabled = true;
             });
         });
 

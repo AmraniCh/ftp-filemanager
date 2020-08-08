@@ -68,6 +68,18 @@ const App = function () {
         bindEvent('click', '#addFolderBtn', function () {
             addFolder(getElement('#addFolderModal #folderName').value, state.path);
         });
+
+        // Get editor file content when double clicking in a table file item
+        on('dblclick', '.files-table .file-item[data-type="file"]', function (e) {
+            modal('#editorModal').show();
+            setEditorFileContent(getElement('.file-name', e.target.closest('.file-item')).textContent.trim());
+        });
+
+        // Get editor file content when clicking in a sidebar file item
+        on('click', '.sidebar .file-item', function (e) {
+            modal('#editorModal').show();
+            setEditorFileContent(e.target.closest('.file-item').dataset.name);
+        });
     };
 };
 

@@ -113,4 +113,13 @@ class FtpClientAdapter implements FtpAdapter
             throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
         }
     }
+
+    public function getFileContent($file)
+    {
+        try {
+            return $this->client->getFileContent($file);
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+        }
+    }
 }

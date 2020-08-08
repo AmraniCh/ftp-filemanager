@@ -4,6 +4,7 @@ namespace FTPApp\Controllers\Filemanager;
 
 use FTPApp\Controllers\FilemanagerControllerAbstract;
 use FTPApp\Http\JsonResponse;
+use mysql_xdevapi\Exception;
 
 class FilemanagerController extends FilemanagerControllerAbstract
 {
@@ -49,5 +50,12 @@ class FilemanagerController extends FilemanagerControllerAbstract
         return new JsonResponse([
             'result' => $this->ftpAdapter()->addFolder($path . $params['name'])
         ], 201);
+    }
+
+    public function getFileContent()
+    {
+        return new JsonResponse([
+            'result' => $this->ftpAdapter()->getFileContent($this->request->getParameters()['file'])
+        ]);
     }
 }

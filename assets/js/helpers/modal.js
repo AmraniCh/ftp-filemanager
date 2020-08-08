@@ -7,21 +7,22 @@ var modal = function (modalId) {
 
     return {
 
-        show: function() {
-          ele.classList.add('show');
-          getElement('.modal-overlay').classList.add('show');
+        show: function () {
+            errorDiv.classList.remove('show');
+            ele.classList.add('show');
+            getElement('.modal-overlay').classList.add('show');
 
-          return this;
+            return this;
         },
 
         showError: function (err) {
             errorDiv.classList.add('show');
             errorDiv.textContent = err;
 
-            // hide the error after 3 secs
+            // hide the error after 5 secs
             setTimeout(function () {
                 errorDiv.classList.remove('show');
-            }, 3000);
+            }, 5000);
 
             return this;
         },

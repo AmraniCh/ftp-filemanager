@@ -45,11 +45,20 @@ interface FtpAdapter
     public function addFile($file);
 
     /**
-     * @param $folder
+     * @param string $folder
      *
      * @return bool
      *
      * @throws FtpAdapterException
      */
     public function addFolder($folder);
+
+    /**
+     * @param string $file
+     *
+     * @return string
+     *
+     * @throws FtpAdapterException
+     */
+    public function getFileContent($file);
 }

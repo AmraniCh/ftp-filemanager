@@ -6,6 +6,7 @@ import sidebarFileItem from "../templates/sidebarFileItem";
 import File from "../entities/File";
 import tableFileItem from "../templates/tableFileItem";
 import state from "../state";
+import modal from "./modal";
 
 function bindEvent(event, elements, fn) {
     // checks if 'elements' is a selector
@@ -52,7 +53,7 @@ function getElements(selector, findIn) {
 function browse(path) {
     showLoading();
     const appendTo = getAppendToSelector(path);
-    fetchGet('api?action=browse&path='+encodeURIComponent(path), function (data) {
+    fetchGet('api?action=browse&path=' + encodeURIComponent(path), function (data) {
         if (Array.isArray(data.result)) {
             // Clear table content
             getElement('.files-table tbody').textContent = '';
@@ -74,10 +75,24 @@ function browse(path) {
     });
 }
 
+function setEditorFileContent(file) {
+    fmEditor.clear().showLoading();
+    fetchGet('api?action=getFileContent&file=' + encodeURIComponent(file), function (res) {
+        if (res.result) {
+            fmEditor.set(res.result);
+        }
+    }, function (err) {
+        modal('#editorModal').showError(err);
+    }, function () {
+        fmEditor.hideLoading();
+    });
+}
+
 export {
     bindEvent,
     on,
     getElement,
     getElements,
-    browse
+    browse,
+    setEditorFileContent,
 };

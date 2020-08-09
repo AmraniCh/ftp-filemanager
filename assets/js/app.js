@@ -8,6 +8,7 @@ import modal from "./helpers/modal";
 import getFileContent from "./actions/getFileContent";
 import browse from "./actions/browse";
 import edit from "./actions/edit";
+import remove from "./actions/remove";
 
 const App = function () {
 
@@ -91,6 +92,20 @@ const App = function () {
         // Edit file action
         bindEvent('click', '#updateFileBtn', function () {
             edit(state.editableFile, fmEditor.get());
+        });
+
+        // Remove files action
+        bindEvent('click', '#removeFileBtn', function () {
+           const
+               selectedItems = getElements('.files-table .file-item.selected'),
+               files = [];
+
+           selectedItems.forEach(function (item) {
+               const name = getElement('.file-name', item).textContent.trim();
+               files.push(state.path + name);
+           });
+
+           remove(files);
         });
     };
 };

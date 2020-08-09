@@ -4,7 +4,6 @@ namespace FTPApp\Controllers\Filemanager;
 
 use FTPApp\Controllers\FilemanagerControllerAbstract;
 use FTPApp\Http\JsonResponse;
-use mysql_xdevapi\Exception;
 
 class FilemanagerController extends FilemanagerControllerAbstract
 {
@@ -37,18 +36,17 @@ class FilemanagerController extends FilemanagerControllerAbstract
     public function addFile()
     {
         $params = $this->request->getJSONBodyParameters();
-        $path = $params['path'] !== '/' ? $params['path'] . '/' : '';
         return new JsonResponse([
-            'result' => $this->ftpAdapter()->addFile($path . $params['name'])
+            'result' => $this->ftpAdapter()->addFile($params['path'] . $params['name'])
         ], 201);
     }
 
     public function addFolder()
     {
         $params = $this->request->getJSONBodyParameters();
-        $path = $params['path'] !== '/' ? $params['path'] . '/' : '';
+        $folder = ltrim($params['path'] . $params['name'], '/');
         return new JsonResponse([
-            'result' => $this->ftpAdapter()->addFolder($path . $params['name'])
+            'result' => $this->ftpAdapter()->addFolder($folder)
         ], 201);
     }
 
@@ -66,6 +64,13 @@ class FilemanagerController extends FilemanagerControllerAbstract
                 $this->request->getJSONBodyParameters()['file'],
                 $this->request->getJSONBodyParameters()['content']
             )
+        ]);
+    }
+
+    public function remove()
+    {
+        return new JsonResponse([
+            'result' => $this->ftpAdapter()->remove($this->request->getJSONBodyParameters()['files'])
         ]);
     }
 }

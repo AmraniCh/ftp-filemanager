@@ -701,6 +701,7 @@
                 </div>
                 <div class="modal-body">
                     <div id="fm-editor">
+                        <div class="pending">loading content ...</div>
                         <div class="line-numbers"></div>
                         <textarea class="content-area"></textarea>
                     </div>

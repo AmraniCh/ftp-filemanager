@@ -131,4 +131,20 @@ class FtpClientAdapter implements FtpAdapter
             throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
         }
     }
+
+    public function remove($files)
+    {
+        try {
+            foreach ($files as $file) {
+                if ($this->client->isDir($file)) {
+                    $this->client->removeDirectory($file);
+                } else {
+                    $this->client->removeFile($file);
+                }
+            }
+            return true;
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+        }
+    }
 }

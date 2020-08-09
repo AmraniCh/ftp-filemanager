@@ -72,4 +72,15 @@ interface FtpAdapter
      * @throws FtpAdapterException
      */
     public function updateFileContent($file, $content);
+
+    /**
+     * Removes a list of files.
+     *
+     * @param array $files
+     *
+     * @return bool
+     *
+     * @throws FtpAdapterException
+     */
+    public function remove($files);
 }

@@ -47,7 +47,14 @@ const fetchUpdate = function (method, uri, data, success, error, complete) {
     }), success, error, complete);
 };
 
+const fetchDelete = function (uri, data, success, error, complete) {
+    doFetch(uri, Object.assign(fetchConfig.delete, {
+        body: JSON.stringify(data),
+    }), success, error, complete);
+};
+
 export {
     fetchGet,
-    fetchUpdate
+    fetchUpdate,
+    fetchDelete,
 };

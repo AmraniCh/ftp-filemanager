@@ -20,8 +20,8 @@ const fetchConfig = {
         }
     },
 
-    patch: {
-        method: 'PATCH',
+    delete: {
+        method: 'DELETE',
         headers: {
             'Content-type': 'application/json'
         }

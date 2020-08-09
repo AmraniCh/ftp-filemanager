@@ -18,9 +18,7 @@ export default function (fileItem) {
             </td>
             <td>
                 ${fileItem.isFile() ? fileIcon() : dirIcon()}
-                <span class="file-name">
-                    ${fileItem.name}
-                </span>
+                <span class="file-name">${fileItem.name}</span>
             </td>
             <td>${fileItem.bytesToSize()}</td>
             <td>${fileItem.modifiedTime}</td>

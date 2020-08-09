@@ -11,10 +11,10 @@ function getSelectedPath() {
 
     var
         child = element.querySelector('.dir-item[data-open="true"]'),
-        path = element.dataset.name;
+        path = decodeURI(element.dataset.name);
 
     while (child) {
-        path += '/' + child.dataset.name;
+        path += '/' + decodeURI(child.dataset.name);
         child = child.querySelector('.dir-item[data-open="true"]');
     }
 
@@ -60,7 +60,7 @@ function getAppendToSelector(path)
 {
     if (path !== '/') {
         const name = path.slice(0, -1).split('/').pop();
-        return `.sidebar .dir-item[data-name="${name}"] .sub-files`;
+        return `.sidebar .dir-item[data-name="${encodeURI(name)}"] .sub-files`;
     }
 
     return '.sidebar .files-list';

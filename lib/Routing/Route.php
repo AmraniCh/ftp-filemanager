@@ -2,8 +2,26 @@
 
 namespace FTPApp\Routing;
 
+use FTPApp\Routing\Exception\RouteInvalidArgumentException;
+
 class Route
 {
+    /**
+     * Define the allowed route request methods.
+     * @var array $allowedMethods
+     */
+    protected static $allowedMethods = [
+        'GET',
+        'POST',
+        'PUT',
+        'PATCH',
+        'DELETE',
+        'HEAD',
+        'OPTIONS',
+        'TRACE',
+        'CONNECT',
+    ];
+
     /** @var array */
     protected $methods;
 
@@ -29,11 +47,25 @@ class Route
      */
     public function __construct($methods, $path, $handler, $name = '')
     {
-        $this->methods = $methods;
-        $this->path    = $path;
-        $this->handler = $handler;
-        $this->name    = $name;
-        $this->matches = [];
+        $this->setMethods($methods);
+        $this->setPath($path);
+        $this->setHandler($handler);
+        $this->setName($name);
+        $this->setMatches([]);
+    }
+
+    /**
+     * Handles the static calls of route methods like Route::get().
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return static Return new route instance.
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        array_unshift($arguments, [strtoupper($name)]);
+        return forward_static_call_array([self::class, 'instanceFactory'], $arguments);
     }
 
     /**
@@ -81,6 +113,12 @@ class Route
      */
     public function setMethods($methods)
     {
+        foreach ($methods as $method) {
+            if (!in_array($method, self::$allowedMethods, true)) {
+                throw new RouteInvalidArgumentException("$method is unknown http method");
+            }
+        }
+
         $this->methods = $methods;
     }
 
@@ -97,6 +135,11 @@ class Route
      */
     public function setHandler($handler)
     {
+        if (!is_callable($handler) && !is_array($handler)) {
+            throw new RouteInvalidArgumentException(
+                "Route handler must be either an array or a function callback, " . gettype($handler) . "giving.");
+        }
+
         $this->handler = $handler;
     }
 
@@ -109,30 +152,15 @@ class Route
     }
 
     /**
-     * Creates a new route instance for a 'GET' request.
-     *
-     * @param string   $path
-     * @param callable $handler
-     * @param string   $name
-     *
-     * @return Route
+     * @param string $name
      */
-    public static function get($path, $handler, $name = '')
+    public function setName($name)
     {
-        return new static(['GET'], $path, $handler, $name);
+        $this->name = $name;
     }
 
-    /**
-     * Creates a new route instance for a 'POST' request.
-     *
-     * @param string   $path
-     * @param callable $handler
-     * @param string   $name
-     *
-     * @return Route
-     */
-    public static function post($path, $handler, $name = '')
+    protected static function instanceFactory($methods, $path, $handler, $name = '')
     {
-        return new static(['POST'], $path, $handler, $name);
+        return new static($methods, $path, $handler, $name);
     }
 }

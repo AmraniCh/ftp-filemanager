@@ -44,9 +44,8 @@ class FilemanagerController extends FilemanagerControllerAbstract
     public function addFolder()
     {
         $params = $this->request->getJSONBodyParameters();
-        $folder = ltrim($params['path'] . $params['name'], '/');
         return new JsonResponse([
-            'result' => $this->ftpAdapter()->addFolder($folder)
+            'result' => $this->ftpAdapter()->addFolder($params['path'] . $params['name'])
         ], 201);
     }
 
@@ -71,6 +70,15 @@ class FilemanagerController extends FilemanagerControllerAbstract
     {
         return new JsonResponse([
             'result' => $this->ftpAdapter()->remove($this->request->getJSONBodyParameters()['files'])
+        ]);
+    }
+
+    public function rename()
+    {
+        $params = $this->request->getJSONBodyParameters();
+        $path = $params['path'];
+        return new JsonResponse([
+            'result' => $this->ftpAdapter()->rename($path . $params['file'], $path . $params['newName'])
         ]);
     }
 }

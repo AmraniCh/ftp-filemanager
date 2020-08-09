@@ -83,4 +83,16 @@ interface FtpAdapter
      * @throws FtpAdapterException
      */
     public function remove($files);
+
+    /**
+     * Renames a file.
+     *
+     * @param string $file
+     * @param string $newName
+     *
+     * @return bool
+     *
+     * @throws FtpAdapterException
+     */
+    public function rename($file, $newName);
 }

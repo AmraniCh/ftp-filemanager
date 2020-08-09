@@ -28,6 +28,7 @@ const doFetch = function (uri, options, successHandler, errorHandler = null, com
             if (typeof errorHandler === 'function') {
                 errorHandler(err);
             }
+            fetchConfig.errorHandler(err);
         });
 };
 

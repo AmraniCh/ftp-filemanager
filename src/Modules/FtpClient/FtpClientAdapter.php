@@ -22,16 +22,6 @@ class FtpClientAdapter implements FtpAdapter
     public $client;
 
     /**
-     * @param FtpClientException $exception
-     *
-     * @return string|string[]|null
-     */
-    public static function normalizeExceptionMessage($exception)
-    {
-        return preg_replace('/([\[\w\]]+)\s-\s/i', '', $exception->getMessage());
-    }
-
-    /**
      * @inheritDoc
      */
     public function openConnection($config)
@@ -59,7 +49,7 @@ class FtpClientAdapter implements FtpAdapter
                 $this->setPassive(true);
             }
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
         }
     }
 
@@ -77,7 +67,13 @@ class FtpClientAdapter implements FtpAdapter
     public function browse($dir)
     {
         try {
-            $list = $this->client->listDirectoryDetails($dir);
+
+            /*
+            print_r($dir);
+            exit();
+*/
+            // escape the spaces rawlist function doesn't do that
+            $list = $this->client->listDirectoryDetails(str_replace(' ', '\ ', $dir));
 
             $files = [];
             foreach ($list as $file) {
@@ -92,25 +88,25 @@ class FtpClientAdapter implements FtpAdapter
 
             return $files;
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
         }
     }
 
     public function addFile($file)
     {
         try {
-            return $this->client->createFile($file);
+            return $this->client->createFile(urldecode(ltrim($file, '/')));
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
         }
     }
 
     public function addFolder($dir)
     {
         try {
-            return $this->client->createDirectory($dir);
+            return $this->client->createDirectory(urldecode(ltrim($dir, '/')));
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
         }
     }
 
@@ -119,7 +115,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             return $this->client->getFileContent($file);
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
         }
     }
 
@@ -128,7 +124,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             return $this->client->createFile($file, $content);
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
         }
     }
 
@@ -144,7 +140,26 @@ class FtpClientAdapter implements FtpAdapter
             }
             return true;
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
         }
+    }
+
+    public function rename($file, $newName)
+    {
+        try {
+            return $this->client->rename($file, $newName);
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+        }
+    }
+
+    /**
+     * @param FtpClientException $exception
+     *
+     * @return string|string[]|null
+     */
+    protected function normalizeExceptionMessage($exception)
+    {
+        return preg_replace('/([\[\w\]]+)\s-\s/i', '', $exception->getMessage());
     }
 }

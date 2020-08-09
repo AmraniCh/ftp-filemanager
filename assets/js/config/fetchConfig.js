@@ -29,7 +29,7 @@ const fetchConfig = {
 
     // Global error handler
     errorHandler: function (err) {
-
+        console.log(err); // debugging
     },
 };
 

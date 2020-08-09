@@ -21,5 +21,6 @@ return [
     Route::get('/api?action=getFileContent&file=:encoded', [FilemanagerController::class, 'getFileContent']),
     Route::put('/api?action=updateFileContent', [FilemanagerController::class, 'updateFileContent']),
     Route::delete('/api?action=remove', [FilemanagerController::class, 'remove']),
+    Route::put('/api?action=rename', [FilemanagerController::class, 'rename']),
 
 ];

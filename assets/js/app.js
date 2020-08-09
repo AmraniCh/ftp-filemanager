@@ -9,6 +9,7 @@ import getFileContent from "./actions/getFileContent";
 import browse from "./actions/browse";
 import edit from "./actions/edit";
 import remove from "./actions/remove";
+import rename from "./actions/rename";
 
 const App = function () {
 
@@ -21,7 +22,7 @@ const App = function () {
             if (!e.target.closest('.file-item')) { // ignore file items click
                 const
                     item = e.target.closest('.dir-item'),
-                    fileName = item.dataset.name;
+                    fileName = decodeURI(item.dataset.name);
 
                 item.dataset.open = 'true';
 
@@ -31,16 +32,16 @@ const App = function () {
                 }
 
                 closeSiblingTreeOf(item);
+
                 browse(state.path = getSelectedPath());
             }
         });
 
         // Table directory listing
         on('dblclick', '.files-table .file-item[data-type="dir"]', function (e) {
-            const fileName =
-                getElement('.file-name', e.target.closest('.file-item[data-type="dir"]'))
-                    .textContent
-                    .trim();
+            const
+                item = e.target.closest('.file-item[data-type="dir"]'),
+                fileName = getElement('.file-name', item).textContent.trim();
 
             const path = getSelectedPath() + fileName + '/';
 
@@ -75,7 +76,7 @@ const App = function () {
         // Get editor file content when double clicking in a table file item
         on('dblclick', '.files-table .file-item[data-type="file"]', function (e) {
             modal('#editorModal').show();
-            const clickedFileName = getElement('.file-name', e.target.closest('.file-item')).textContent.trim();
+            const clickedFileName = getElement('.file-name', e.target.closest('.file-item')).textContent;
             state.editableFile = state.path + clickedFileName;
             console.log(state.editableFile);
             getFileContent(state.editableFile);
@@ -83,9 +84,14 @@ const App = function () {
 
         // Get editor file content when clicking in a sidebar file item
         on('click', '.sidebar .file-item', function (e) {
+            const
+                file = e.target.closest('.file-item'),
+                fileName = file.dataset.name;
+
+            closeSiblingTreeOf(file);
+            state.path = getSelectedPath();
             modal('#editorModal').show();
-            const clickedFileName = e.target.closest('.file-item').dataset.name;
-            state.editableFile = state.path + clickedFileName;
+            state.editableFile = state.path + fileName;
             getFileContent(state.editableFile);
         });
 
@@ -96,16 +102,25 @@ const App = function () {
 
         // Remove files action
         bindEvent('click', '#removeFileBtn', function () {
-           const
-               selectedItems = getElements('.files-table .file-item.selected'),
-               files = [];
+            const
+                selectedItems = getElements('.files-table .file-item.selected'),
+                files = [];
 
-           selectedItems.forEach(function (item) {
-               const name = getElement('.file-name', item).textContent.trim();
-               files.push(state.path + name);
-           });
+            selectedItems.forEach(function (item) {
+                const name = getElement('.file-name', item).textContent;
+                files.push(state.path + name);
+            });
 
-           remove(files);
+            remove(files);
+        });
+
+        // Rename file action
+        bindEvent('click', '#renameFileBtn', function () {
+            const
+                file = getElement('#renameFileModal .name-for').textContent,
+                newName = getElement('#newFileName').value;
+
+            rename(state.path, file, newName);
         });
     };
 };

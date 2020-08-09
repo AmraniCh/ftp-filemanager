@@ -61,4 +61,15 @@ interface FtpAdapter
      * @throws FtpAdapterException
      */
     public function getFileContent($file);
+
+    /**
+     * @param string $file
+     *
+     * @param string $content
+     *
+     * @return string
+     *
+     * @throws FtpAdapterException
+     */
+    public function updateFileContent($file, $content);
 }

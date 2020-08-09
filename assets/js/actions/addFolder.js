@@ -1,7 +1,7 @@
 import modal from "../helpers/modal";
 import {hideLoading, showLoading} from "../helpers/loading";
 import {fetchUpdate} from "../helpers/fetch";
-import refresh from "./refersh";
+import refresh from "./refresh";
 
 function addFolder(folderName, path) {
     modal('#addFolderModal').close();

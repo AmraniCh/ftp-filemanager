@@ -18,5 +18,7 @@ return [
     Route::get('/api?action=browse&path=:encoded', [FilemanagerController::class, 'browse']),
     Route::post('/api?action=addFile', [FilemanagerController::class, 'addFile']),
     Route::post('/api?action=addFolder', [FilemanagerController::class, 'addFolder']),
+    Route::get('/api?action=getFileContent&file=:encoded', [FilemanagerController::class, 'getFileContent']),
+    Route::put('/api?action=updateFileContent', [FilemanagerController::class, 'updateFileContent']),
 
 ];

@@ -86,7 +86,7 @@ class FtpClientAdapter implements FtpAdapter
                     'type'         => $file['type'],
                     'size'         => $file['size'],
                     'modifiedTime' => sprintf("%s %s %s", $file['day'], $file['month'], $file['time']),
-                    'permissions'  => $file['chmod'],
+                    'permissions'  => $file['chmod']
                 ];
             }
 
@@ -118,6 +118,15 @@ class FtpClientAdapter implements FtpAdapter
     {
         try {
             return $this->client->getFileContent($file);
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
+        }
+    }
+
+    public function updateFileContent($file, $content)
+    {
+        try {
+            return $this->client->createFile($file, $content);
         } catch (FtpClientException $ex) {
             throw new FtpClientAdapterException(self::normalizeExceptionMessage($ex));
         }

@@ -18,7 +18,7 @@ function getSelectedPath() {
         child = child.querySelector('.dir-item[data-open="true"]');
     }
 
-    return path;
+    return path + '/';
 }
 /**
  * Closes the sibling tree of the passed element
@@ -59,8 +59,8 @@ function closeSiblingTreeOf(element) {
 function getAppendToSelector(path)
 {
     if (path !== '/') {
-        const name = path.split('/').pop();
-        return '.sidebar .dir-item[data-name="'+name+'"] .sub-files';
+        const name = path.slice(0, -1).split('/').pop();
+        return `.sidebar .dir-item[data-name="${name}"] .sub-files`;
     }
 
     return '.sidebar .files-list';

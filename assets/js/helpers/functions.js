@@ -50,49 +50,9 @@ function getElements(selector, findIn) {
     return (findIn || document).querySelectorAll(selector) || false;
 }
 
-function browse(path) {
-    showLoading();
-    const appendTo = getAppendToSelector(path);
-    fetchGet('api?action=browse&path=' + encodeURIComponent(path), function (data) {
-        if (Array.isArray(data.result)) {
-            // Clear table content
-            getElement('.files-table tbody').textContent = '';
-
-            data.result.forEach(function (item) {
-                DOMRender(sidebarFileItem(new File(item)), appendTo, false);
-                DOMRender(tableFileItem(new File(item)), '.files-table tbody', false);
-            });
-        }
-    }, function (err) {
-        // in case of request fail close the last sidebar clicked dir item
-        getElement(appendTo.split(' ').slice(0, -1).join(' ')).dataset.open = 'false';
-        // back path
-        state.path = state.path.substring(0, state.path.lastIndexOf('/'));
-        // show the error message
-        alert('Error : ' + err);
-    }, function () {
-        hideLoading();
-    });
-}
-
-function setEditorFileContent(file) {
-    fmEditor.clear().showLoading();
-    fetchGet('api?action=getFileContent&file=' + encodeURIComponent(file), function (res) {
-        if (res.result) {
-            fmEditor.set(res.result);
-        }
-    }, function (err) {
-        modal('#editorModal').showError(err);
-    }, function () {
-        fmEditor.hideLoading();
-    });
-}
-
 export {
     bindEvent,
     on,
     getElement,
     getElements,
-    browse,
-    setEditorFileContent,
 };

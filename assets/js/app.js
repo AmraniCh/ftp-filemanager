@@ -1,10 +1,13 @@
-import {bindEvent, browse, getElement, getElements, on, setEditorFileContent} from "./helpers/functions";
+import {bindEvent, getElement, getElements, on} from "./helpers/functions";
 import {closeSiblingTreeOf, getSelectedPath} from "./helpers/treeView";
-import refresh from "./actions/refersh";
+import refresh from "./actions/refresh";
 import state from "./state";
 import addFile from "./actions/addFile";
 import addFolder from "./actions/addFolder";
 import modal from "./helpers/modal";
+import getFileContent from "./actions/getFileContent";
+import browse from "./actions/browse";
+import edit from "./actions/edit";
 
 const App = function () {
 
@@ -28,7 +31,6 @@ const App = function () {
 
                 closeSiblingTreeOf(item);
                 browse(state.path = getSelectedPath());
-                console.log(state.path);
             }
         });
 
@@ -39,7 +41,7 @@ const App = function () {
                     .textContent
                     .trim();
 
-            const path = getSelectedPath() + '/' + fileName;
+            const path = getSelectedPath() + fileName + '/';
 
             // find the sidebar alternative file and make it open
             if (path !== '/') {
@@ -72,13 +74,23 @@ const App = function () {
         // Get editor file content when double clicking in a table file item
         on('dblclick', '.files-table .file-item[data-type="file"]', function (e) {
             modal('#editorModal').show();
-            setEditorFileContent(getElement('.file-name', e.target.closest('.file-item')).textContent.trim());
+            const clickedFileName = getElement('.file-name', e.target.closest('.file-item')).textContent.trim();
+            state.editableFile = state.path + clickedFileName;
+            console.log(state.editableFile);
+            getFileContent(state.editableFile);
         });
 
         // Get editor file content when clicking in a sidebar file item
         on('click', '.sidebar .file-item', function (e) {
             modal('#editorModal').show();
-            setEditorFileContent(e.target.closest('.file-item').dataset.name);
+            const clickedFileName = e.target.closest('.file-item').dataset.name;
+            state.editableFile = state.path + clickedFileName;
+            getFileContent(state.editableFile);
+        });
+
+        // Edit file action
+        bindEvent('click', '#updateFileBtn', function () {
+            edit(state.editableFile, fmEditor.get());
         });
     };
 };

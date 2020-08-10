@@ -20,6 +20,9 @@ function browse(path) {
                 DOMRender(sidebarFileItem(new File(item)), appendTo);
                 DOMRender(tableFileItem(new File(item)), '.files-table tbody');
             });
+
+            // Refresh files state
+            state.files = data.result;
         }
     }, function (err) {
         // in case of request fail close the last sidebar clicked dir item

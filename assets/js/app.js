@@ -33,6 +33,7 @@ const App = function () {
         registry.push(moveFileAction);
         registry.push(editFileAction);
         registry.push(changePermissionsAction);
+        registry.push(updateModalPermissions);
     };
 
     this.init = function () {
@@ -196,6 +197,55 @@ const App = function () {
                 chmod = getElement('#permissionsModal .numeric-chmod').textContent;
 
             permissions(state.path, file, chmod);
+        });
+    };
+
+    var updateModalPermissions = function () {
+        bindEvent('click', 'button[data-action="permissions"]', function () {
+            const
+                file = state.getFileByName(getElement('#permissionsModal .filename').textContent),
+                permissions = file.permissions,
+                chunks = permissions.slice(1).split(''),
+                perms = {
+                    owner: chunks.slice(0, 3),
+                    group: chunks.slice(3, 6),
+                    others: chunks.slice(6)
+                },
+                translate = {
+                    'r': 'read',
+                    'w': 'write',
+                    'x': 'execute'
+                },
+                rules = {
+                    'r': 4,
+                    'w': 2,
+                    'x': 1,
+                };
+
+            var chmod = [0, 0, 0];
+            for (var prop in perms) {
+                if (perms.hasOwnProperty(prop)) {
+                    perms[prop].forEach(function (perm) {
+                        if (perm !== '-') {
+                            getElement(`#permissionsModal .checkbox[data-action="${translate[perm]}"][data-group="${prop}"] input[type=checkbox]`).checked = true;
+
+                            switch (prop) {
+                                case 'owner':
+                                    chmod[0] += rules[perm];
+                                    break;
+                                case 'group':
+                                    chmod[1] += rules[perm];
+                                    break;
+                                case 'others':
+                                    chmod[2] += rules[perm];
+                                    break;
+                            }
+                        }
+                    });
+                }
+            }
+
+            getElement('#permissionsModal .numeric-chmod').textContent = `0${chmod.join('')}`;
         });
     };
 };

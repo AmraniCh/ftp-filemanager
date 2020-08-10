@@ -13,7 +13,7 @@
                     <h3 class="name uppercase">ftp app</h3>
                 </div>
             </header>
-            <form id="loginForm" class="login-form" method="post">
+            <form id="loginForm" class="login-form" action="login" method="post" enctype="application/x-www-form-urlencoded">
                 <div class="input-area">
                     <input type="text" name="host" placeholder="Host">
                 </div>
@@ -35,11 +35,9 @@
                     <span class="checkbox-text">use passive connection</span>
                 </label>
                 <span class="server-error">
-                    <?php
-                        if (isset($serverError)) {
-                            echo $serverError;
-                        }
-                    ?>
+                    <?php if (isset($serverError)): ?>
+                    <?= $serverError ?>
+                    <?php endif; ?>
                 </span>
                 <div class="form-actions">
                     <input type="submit" id="loginBtn" class="btn-primary" value="login">

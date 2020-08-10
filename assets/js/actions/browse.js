@@ -17,8 +17,8 @@ function browse(path) {
             getElement('.files-table tbody').textContent = '';
 
             data.result.forEach(function (item) {
-                DOMRender(sidebarFileItem(new File(item)), appendTo, false);
-                DOMRender(tableFileItem(new File(item)), '.files-table tbody', false);
+                DOMRender(sidebarFileItem(new File(item)), appendTo);
+                DOMRender(tableFileItem(new File(item)), '.files-table tbody');
             });
         }
     }, function (err) {

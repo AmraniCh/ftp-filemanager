@@ -14,11 +14,35 @@ import getDirectoryTree from "./actions/getDirectoryTree";
 
 const App = function () {
 
-    this.initEvents = function () {
-        // load event
-        bindEvent('DOMContentLoaded', document, browse(state.path));
+    var registry = [];
 
-        // Sidebar directory listing
+    this.registerEvents = function () {
+        registry.push(load);
+        registry.push(sidebarDirectoryListing);
+        registry.push(tableDirectoryListing);
+        registry.push(editorGetFileContent);
+        registry.push(moveFileModalGetDirectoryTree);
+        registry.push(moveFileModalItemsClick);
+        registry.push(refreshAction);
+        registry.push(addFileAction);
+        registry.push(addFolderAction);
+        registry.push(removeFilesAction);
+        registry.push(renameAction);
+        registry.push(moveFileAction);
+        registry.push(editFileAction);
+    };
+
+    this.init = function () {
+        registry.forEach(function (fn) {
+            fn();
+        });
+    };
+
+    var load = function() {
+        bindEvent('DOMContentLoaded', document, browse(state.path));
+    };
+
+    var sidebarDirectoryListing = function () {
         on('click', '.sidebar .dir-item', function (e) {
             if (!e.target.closest('.file-item')) { // ignore file items click
                 const
@@ -37,8 +61,9 @@ const App = function () {
                 browse(state.path = getSelectedPath());
             }
         });
+    };
 
-        // Table directory listing
+    var tableDirectoryListing = function () {
         on('dblclick', '.files-table .file-item[data-type="dir"]', function (e) {
             const
                 item = e.target.closest('.file-item[data-type="dir"]'),
@@ -58,22 +83,27 @@ const App = function () {
                 button.disabled = true;
             });
         });
+    };
 
-        // Refresh button
+    var refreshAction = function () {
         bindEvent('click', 'button[data-action="refresh"]', function () {
             refresh(state.path);
         });
+    };
 
-        // Add file action
+    var addFileAction = function () {
         bindEvent('click', '#addFileBtn', function () {
             addFile(getElement('#addFileModal #fileName').value, state.path);
         });
+    };
 
-        // Add Folder action
+    var addFolderAction = function () {
         bindEvent('click', '#addFolderBtn', function () {
             addFolder(getElement('#addFolderModal #folderName').value, state.path);
         });
+    };
 
+    var editorGetFileContent = function () {
         // Get editor file content when double clicking in a table file item
         on('dblclick', '.files-table .file-item[data-type="file"]', function (e) {
             modal('#editorModal').show();
@@ -94,13 +124,15 @@ const App = function () {
             state.editableFile = state.path + fileName;
             getFileContent(state.editableFile);
         });
+    };
 
-        // Edit file action
+    var editFileAction = function () {
         bindEvent('click', '#updateFileBtn', function () {
             edit(state.editableFile, fmEditor.get());
         });
+    };
 
-        // Remove files action
+    var removeFilesAction = function () {
         bindEvent('click', '#removeFileBtn', function () {
             const
                 selectedItems = getElements('.files-table .file-item.selected'),
@@ -113,8 +145,9 @@ const App = function () {
 
             remove(files);
         });
+    };
 
-        // Rename file action
+    var renameAction = function () {
         bindEvent('click', '#renameFileBtn', function () {
             const
                 file = getElement('#renameFileModal .name-for').textContent,
@@ -122,13 +155,15 @@ const App = function () {
 
             rename(state.path, file, newName);
         });
+    };
 
-        // Get directory tree
+    var moveFileModalGetDirectoryTree = function () {
         bindEvent('click', 'button[data-action="move"]', function () {
             getDirectoryTree();
         });
+    };
 
-        // Move file modal file items clicking
+    var moveFileModalItemsClick = function () {
         on('click', '.move-file-modal .dir-item', function (e) {
             const ele = e.target.closest('.dir-item');
             if (ele.dataset.open === 'false') {
@@ -139,8 +174,9 @@ const App = function () {
                 getElement('.sub-files', ele).style.display = 'none';
             }
         });
+    };
 
-        // Move file action
+    var moveFileAction = function () {
         bindEvent('click', '#moveFileBtn', function () {
             const
                 file = getElement('#moveFileModal .source'),

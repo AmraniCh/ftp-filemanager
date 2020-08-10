@@ -167,6 +167,15 @@ class FtpClientAdapter implements FtpAdapter
         }
     }
 
+    public function permissions($file, $permissions)
+    {
+        try {
+            return $this->client->setPermissions($file, $permissions);
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+        }
+    }
+
     /**
      * Normalize FtpClient exception messages.
      *

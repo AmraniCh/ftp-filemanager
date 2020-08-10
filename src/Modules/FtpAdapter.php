@@ -96,6 +96,13 @@ interface FtpAdapter
      */
     public function rename($file, $newName);
 
+    /**
+     * Gets full directories tree.
+     *
+     * @return array
+     *
+     * @throws FtpAdapterException
+     */
     public function getDirectoryTree();
 
     /**
@@ -109,4 +116,16 @@ interface FtpAdapter
      * @throws FtpAdapterException
      */
     public function move($file, $newPath);
+
+    /**
+     * Sets the giving permission on a remote file.
+     *
+     * @param string $file
+     * @param string $permissions
+     *
+     * @return bool
+     *
+     * @throws FtpAdapterException
+     */
+    public function permissions($file, $permissions);
 }

@@ -12,6 +12,7 @@ import remove from "./actions/remove";
 import rename from "./actions/rename";
 import getDirectoryTree from "./actions/getDirectoryTree";
 import move from "./actions/move";
+import permissions from "./actions/permissions";
 
 const App = function () {
 
@@ -31,6 +32,7 @@ const App = function () {
         registry.push(renameAction);
         registry.push(moveFileAction);
         registry.push(editFileAction);
+        registry.push(changePermissionsAction);
     };
 
     this.init = function () {
@@ -39,7 +41,7 @@ const App = function () {
         });
     };
 
-    var load = function() {
+    var load = function () {
         bindEvent('DOMContentLoaded', document, browse(state.path));
     };
 
@@ -184,6 +186,16 @@ const App = function () {
                 newPath = getElement("#moveFileModal .destination").textContent;
 
             move(state.path, file, newPath);
+        });
+    };
+
+    var changePermissionsAction = function () {
+        bindEvent('click', '#changePermBtn', function () {
+            const
+                file = getElement('#permissionsModal .filename').textContent,
+                chmod = getElement('#permissionsModal .numeric-chmod').textContent;
+
+            permissions(state.path, file, chmod);
         });
     };
 };

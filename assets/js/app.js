@@ -12,7 +12,7 @@ import remove from "./actions/remove";
 import rename from "./actions/rename";
 import getDirectoryTree from "./actions/getDirectoryTree";
 import move from "./actions/move";
-import permissions from "./actions/permissions";
+import File from "./entities/File";
 
 const App = function () {
 
@@ -20,11 +20,16 @@ const App = function () {
 
     this.registerEvents = function () {
         registry.push(load);
+        
+        /**
+         * Directory listing.
+         */
         registry.push(sidebarDirectoryListing);
         registry.push(tableDirectoryListing);
-        registry.push(editorGetFileContent);
-        registry.push(moveFileModalGetDirectoryTree);
-        registry.push(moveFileModalItemsClick);
+        
+        /**
+         * Actions
+         */
         registry.push(refreshAction);
         registry.push(addFileAction);
         registry.push(addFolderAction);
@@ -33,7 +38,15 @@ const App = function () {
         registry.push(moveFileAction);
         registry.push(editFileAction);
         registry.push(changePermissionsAction);
+
+        /**
+         * Others
+         */
+        registry.push(editorGetFileContent);
+        registry.push(moveFileModalGetDirectoryTree);
+        registry.push(moveFileModalItemsClick);
         registry.push(updateModalPermissions);
+        registry.push(updateModalInfo);
     };
 
     this.init = function () {
@@ -246,6 +259,27 @@ const App = function () {
             }
 
             getElement('#permissionsModal .numeric-chmod').textContent = `0${chmod.join('')}`;
+        });
+    };
+
+    var updateModalInfo = function () {
+        bindEvent('click', 'button[data-action="info"]', function () {
+            const
+                selectedFilename = getElement('.files-table .file-item.selected .file-name').textContent,
+                file = new File(state.getFileByName(selectedFilename));
+
+            for (var prop in file) {
+                if (file.hasOwnProperty(prop)) {
+                    const infoItem = getElement(`.info-modal .info-item.${prop}`);
+                    if (typeof infoItem !== 'undefined') {
+                        var info = file[prop];
+                        if (prop === 'size') {
+                            info = file.bytesToSize();
+                        }
+                        getElement('.info-text', infoItem).textContent = info;
+                    }
+                }
+            }
         });
     };
 };

@@ -78,7 +78,10 @@ class FtpClientAdapter implements FtpAdapter
                     'type'         => $file['type'],
                     'size'         => $file['size'],
                     'modifiedTime' => sprintf("%s %s %s", $file['day'], $file['month'], $file['time']),
-                    'permissions'  => $file['chmod']
+                    'permissions'  => $file['chmod'],
+                    'path'         => $file['path'],
+                    'owner'        => $file['owner'],
+                    'group'        => $file['group'],
                 ];
             }
 

@@ -22,5 +22,7 @@ return [
     Route::put('/api?action=updateFileContent', [FilemanagerController::class, 'updateFileContent']),
     Route::delete('/api?action=remove', [FilemanagerController::class, 'remove']),
     Route::put('/api?action=rename', [FilemanagerController::class, 'rename']),
+    Route::put('/api?action=move', [FilemanagerController::class, 'move']),
+    Route::get('/api?action=getDirectoryTree', [FilemanagerController::class, 'getDirectoryTree']),
 
 ];

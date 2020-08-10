@@ -81,4 +81,16 @@ class FilemanagerController extends FilemanagerControllerAbstract
             'result' => $this->ftpAdapter()->rename($path . $params['file'], $path . $params['newName'])
         ]);
     }
+
+    public function getDirectoryTree()
+    {
+        return new JsonResponse([
+            'result' => $this->ftpAdapter()->getDirectoryTree()
+        ]);
+    }
+
+    public function move()
+    {
+
+    }
 }

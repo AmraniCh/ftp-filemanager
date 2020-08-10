@@ -18,3 +18,11 @@
 
 // Global
 @import "global";
+
+.move-file-modal {
+    .dir-item {
+        .sub-files {
+            display: none;
+        }
+    }
+}

@@ -95,4 +95,18 @@ interface FtpAdapter
      * @throws FtpAdapterException
      */
     public function rename($file, $newName);
+
+    public function getDirectoryTree();
+
+    /**
+     * Move a file to the giving directory.
+     *
+     * @param string $file
+     * @param string $newPath
+     *
+     * @return bool
+     *
+     * @throws FtpAdapterException
+     */
+    public function move($file, $newPath);
 }

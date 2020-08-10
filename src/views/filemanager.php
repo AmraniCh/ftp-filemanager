@@ -18,10 +18,9 @@
                 <div class="files-section">
                     <div class="loader"></div>
                     <ul class="files-list">
-
                     </ul>
                 </div>
-                <div class="bottom text-center loading">
+                <div class="bottom text-center">
                     <button class="btn-primary" type="button">
                         logout
                     </button>
@@ -162,6 +161,7 @@
                             </tr>
                         </thead>
                         <tbody>
+
                         </tbody>
                     </table>
                 </div>
@@ -298,7 +298,7 @@
                         <label for="fileName">Name</label>
                         <input id="fileName" placeholder="File Name" type="text">
                     </div>
-                    <div class="alert error">
+                    <div class="alert error show">
                         <strong>error!</strong>
                         <span class="text">Cannot add file!</span>
                     </div>
@@ -433,7 +433,7 @@
                     </button>
                 </div>
             </div>
-            <div class="modal" id="renameFileModal">
+            <div class="modal rename-file-modal" id="renameFileModal">
                 <div class="modal-header">
                     <h3 class="modal-title float-lt">rename file</h3>
                     <button class="close float-rt btn-icon-reset" data-close="modal" type="button">
@@ -442,7 +442,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-field">
-                        <label for="newFileName">New Name for <span class="name-for badge"></span></label>
+                        <label for="newFileName">New Name for<span class="name-for badge"></span></label>
                         <input id="newFileName" placeholder="New Name" type="text">
                     </div>
                     <div class="alert error">
@@ -563,7 +563,7 @@
                     </button>
                 </div>
             </div>
-            <div class="modal" id="infoFileModal">
+            <div class="modal info-modal" id="infoFileModal">
                 <div class="modal-header">
                     <h3 class="modal-title float-lt">file information</h3>
                     <button class="close float-rt btn-icon-reset" data-close="modal" type="button">
@@ -579,9 +579,7 @@
                                           fill="#A7A9AC"/>
                                     </svg>
                             </span>
-                            <span class="info-text">
-                                index.html
-                            </span>
+                            <span class="info-text">index.html</span>
                         </li>
                         <li class="info-item">
                             <span class="info-icon">
@@ -593,9 +591,7 @@
                                               fill-rule="evenodd"/>
                                         </svg>
                             </span>
-                            <span class="info-text">
-                                /index.html
-                            </span>
+                            <span class="info-text">/index.html</span>
                         </li>
                         <li class="info-item">
                             <span class="info-icon">
@@ -606,9 +602,7 @@
                                           fill-rule="evenodd"/>
                                     </svg>
                             </span>
-                            <span class="info-text">
-                                55 KB
-                            </span>
+                            <span class="info-text">55 KB</span>
                         </li>
                         <li class="info-item">
                             <span class="info-icon">
@@ -617,9 +611,7 @@
                                           fill="#A7A9AC"/>
                                     </svg>
                             </span>
-                            <span class="info-text">
-                                14066355
-                            </span>
+                            <span class="info-text">14066355</span>
                         </li>
                         <li class="info-item">
                             <span class="info-icon">
@@ -628,9 +620,7 @@
                                           fill="#A7A9AC"/>
                                 </svg>
                             </span>
-                            <span class="info-text">
-                                14066355
-                            </span>
+                            <span class="info-text">14066355</span>
                         </li>
                         <li class="info-item">
                             <span class="info-icon">
@@ -639,9 +629,7 @@
                                           fill="#A7A9AC"/>
                                     </svg>
                             </span>
-                            <span class="info-text">
-                                -rw-r--r-- (0644)
-                            </span>
+                            <span class="info-text">-rw-r--r-- (0644)</span>
                         </li>
                     </ul>
                 </div>
@@ -733,19 +721,6 @@
                     </h4>
                     <div class="files-section">
                         <ul class="files-list">
-                            <li class="dir-item item" data-open="false">
-                                <svg class="icon-contract svg-icon" fill="none" height="13" viewBox="0 0 17 13" width="17">
-                                    <path d="M17 3.33337V12C17 12.5523 16.5523 13 16 13H1C0.447715 13 0 12.5523 0 12V2.33337V1C0 0.447715 0.447715 0 1 0H6.54006C6.83199 0 7.10934 0.127565 7.29932 0.349215L9 2.33337H16C16.5523 2.33337 17 2.78109 17 3.33337Z"
-                                          fill="#58595B"/>
-                                </svg>
-                                <svg class="icon-expend svg-icon" fill="none" height="13" viewBox="0 0 19 13" width="19">
-                                    <path d="M17 3.33337V13H0V2.33337V1C0 0.447715 0.447715 0 1 0H6.54006C6.83199 0 7.10934 0.127565 7.29932 0.349215L9 2.33337H16C16.5523 2.33337 17 2.78109 17 3.33337Z"
-                                          fill="#58595B"/>
-                                    <path d="M16.9999 13H-0.00012207L1.36661 4.34404C1.44335 3.85799 1.8623 3.5 2.35437 3.5H17.3296C17.9441 3.5 18.4133 4.049 18.3174 4.65597L16.9999 13Z"
-                                          fill="#C0C0C0"/>
-                                </svg>
-                                <span class="name">libs</span>
-                            </li>
                             <li class="dir-item item" data-open="true">
                                 <svg class="icon-contract svg-icon" fill="none" height="13" viewBox="0 0 17 13" width="17">
                                     <path d="M17 3.33337V12C17 12.5523 16.5523 13 16 13H1C0.447715 13 0 12.5523 0 12V2.33337V1C0 0.447715 0.447715 0 1 0H6.54006C6.83199 0 7.10934 0.127565 7.29932 0.349215L9 2.33337H16C16.5523 2.33337 17 2.78109 17 3.33337Z"
@@ -760,7 +735,8 @@
                                 <span class="name">css</span>
                                 <ul class="sub-files">
                                     <li class="dir-item item" data-open="false">
-                                        <svg class="icon-contract svg-icon" fill="none" height="13" viewBox="0 0 17 13" width="17">
+                                        <svg class="icon-contract svg-icon" fill="none" height="13" viewBox="0 0 17 13"
+                                             width="17">
                                             <path d="M17 3.33337V12C17 12.5523 16.5523 13 16 13H1C0.447715 13 0 12.5523 0 12V2.33337V1C0 0.447715 0.447715 0 1 0H6.54006C6.83199 0 7.10934 0.127565 7.29932 0.349215L9 2.33337H16C16.5523 2.33337 17 2.78109 17 3.33337Z"
                                                   fill="#58595B"/>
                                         </svg>
@@ -773,7 +749,8 @@
                                         <span class="name">sass</span>
                                     </li>
                                     <li class="dir-item item" data-open="true">
-                                        <svg class="icon-contract svg-icon" fill="none" height="13" viewBox="0 0 17 13" width="17">
+                                        <svg class="icon-contract svg-icon" fill="none" height="13" viewBox="0 0 17 13"
+                                             width="17">
                                             <path d="M17 3.33337V12C17 12.5523 16.5523 13 16 13H1C0.447715 13 0 12.5523 0 12V2.33337V1C0 0.447715 0.447715 0 1 0H6.54006C6.83199 0 7.10934 0.127565 7.29932 0.349215L9 2.33337H16C16.5523 2.33337 17 2.78109 17 3.33337Z"
                                                   fill="#58595B"/>
                                         </svg>
@@ -805,10 +782,10 @@
                                 </ul>
                             </li>
                         </ul>
-                        <div class="alert error">
-                            <strong>error!</strong>
-                            <span class="text"></span>
-                        </div>
+                    </div>
+                    <div class="alert error">
+                        <strong>error!</strong>
+                        <span class="text"></span>
                     </div>
                 </div>
                 <div class="modal-footer text-right">

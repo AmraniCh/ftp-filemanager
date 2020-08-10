@@ -9,6 +9,7 @@ use Lazzard\FtpClient\Connection\FtpConnection;
 use Lazzard\FtpClient\Connection\FtpSSLConnection;
 use Lazzard\FtpClient\Exception\FtpClientException;
 use Lazzard\FtpClient\FtpClient;
+use Lazzard\FtpClient\FtpWrapper;
 
 class FtpClientAdapter implements FtpAdapter
 {
@@ -67,12 +68,7 @@ class FtpClientAdapter implements FtpAdapter
     public function browse($dir)
     {
         try {
-
-            /*
-            print_r($dir);
-            exit();
-*/
-            // escape the spaces rawlist function doesn't do that
+            // escape dir spaces (rawlist bug)
             $list = $this->client->listDirectoryDetails(str_replace(' ', '\ ', $dir));
 
             $files = [];
@@ -153,10 +149,38 @@ class FtpClientAdapter implements FtpAdapter
         }
     }
 
+    public function getDirectoryTree()
+    {
+        try {
+            return $this->client->listDirectoryDetails('/', true, FtpClient::DIR_TYPE);
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+        }
+    }
+
+    public function move($file, $newPath)
+    {
+        try {
+            return $this->client->move($file, $newPath);
+        } catch (FtpClientException $ex) {
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+        }
+    }
+
     /**
+     * Normalize FtpClient exception messages.
+     *
+     * Example:
+     *
+     * from:
+     * [ConnectionException] - Failed to connect to remote server.
+     *
+     * to:
+     * Failed to connect to remote server.
+     *
      * @param FtpClientException $exception
      *
-     * @return string|string[]|null
+     * @return string
      */
     protected function normalizeExceptionMessage($exception)
     {

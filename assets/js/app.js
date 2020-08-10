@@ -10,6 +10,7 @@ import browse from "./actions/browse";
 import edit from "./actions/edit";
 import remove from "./actions/remove";
 import rename from "./actions/rename";
+import getDirectoryTree from "./actions/getDirectoryTree";
 
 const App = function () {
 
@@ -78,7 +79,6 @@ const App = function () {
             modal('#editorModal').show();
             const clickedFileName = getElement('.file-name', e.target.closest('.file-item')).textContent;
             state.editableFile = state.path + clickedFileName;
-            console.log(state.editableFile);
             getFileContent(state.editableFile);
         });
 
@@ -121,6 +121,32 @@ const App = function () {
                 newName = getElement('#newFileName').value;
 
             rename(state.path, file, newName);
+        });
+
+        // Get directory tree
+        bindEvent('click', 'button[data-action="move"]', function () {
+            getDirectoryTree();
+        });
+
+        // Move file modal file items clicking
+        on('click', '.move-file-modal .dir-item', function (e) {
+            const ele = e.target.closest('.dir-item');
+            if (ele.dataset.open === 'false') {
+                ele.dataset.open = 'true';
+                getElement('.sub-files', ele).style.display = 'block';
+            } else {
+                ele.dataset.open = 'false';
+                getElement('.sub-files', ele).style.display = 'none';
+            }
+        });
+
+        // Move file action
+        bindEvent('click', '#moveFileBtn', function () {
+            const
+                file = getElement('#moveFileModal .source'),
+                newPath = getElement("#moveFileModal .destination");
+
+            rename(state.path, file, newPath);
         });
     };
 };

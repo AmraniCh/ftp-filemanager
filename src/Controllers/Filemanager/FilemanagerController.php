@@ -23,7 +23,10 @@ class FilemanagerController extends FilemanagerControllerAbstract
          */
         $this->session()->regenerateID(true);
 
-        return $this->renderWithResponse('filemanager', ['homeUrl' => $this->generateUrl('home')]);
+        return $this->renderWithResponse('filemanager', [
+            'homeUrl' => $this->generateUrl('home'),
+            'logoutUrl' => $this->generateUrl('login'),
+        ]);
     }
 
     public function browse()

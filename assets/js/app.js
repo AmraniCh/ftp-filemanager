@@ -11,6 +11,7 @@ import edit from "./actions/edit";
 import remove from "./actions/remove";
 import rename from "./actions/rename";
 import getDirectoryTree from "./actions/getDirectoryTree";
+import move from "./actions/move";
 
 const App = function () {
 
@@ -179,10 +180,10 @@ const App = function () {
     var moveFileAction = function () {
         bindEvent('click', '#moveFileBtn', function () {
             const
-                file = getElement('#moveFileModal .source'),
-                newPath = getElement("#moveFileModal .destination");
+                file = getElement('#moveFileModal .source').textContent,
+                newPath = getElement("#moveFileModal .destination").textContent;
 
-            rename(state.path, file, newPath);
+            move(state.path, file, newPath);
         });
     };
 };

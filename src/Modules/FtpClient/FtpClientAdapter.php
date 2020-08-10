@@ -161,7 +161,7 @@ class FtpClientAdapter implements FtpAdapter
     public function move($file, $newPath)
     {
         try {
-            return $this->client->move($file, $newPath);
+            return $this->client->move(ltrim($file, '/'), $newPath);
         } catch (FtpClientException $ex) {
             throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
         }

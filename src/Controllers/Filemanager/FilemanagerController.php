@@ -91,6 +91,9 @@ class FilemanagerController extends FilemanagerControllerAbstract
 
     public function move()
     {
-
+        $params = $this->request->getJSONBodyParameters();
+        return new JsonResponse([
+            'result' => $this->ftpAdapter()->move($params['path'] . $params['file'], $params['newPath'])
+        ]);
     }
 }

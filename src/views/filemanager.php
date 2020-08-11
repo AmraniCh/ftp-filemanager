@@ -18,6 +18,20 @@
                 <div class="files-section">
                     <div class="loader"></div>
                     <ul class="files-list">
+                        <li class="dir-item item" data-name="/" data-open="false">
+                            <svg class="icon-contract svg-icon" fill="none" height="13" viewBox="0 0 17 13" width="17">
+                                <path d="M17 3.33337V12C17 12.5523 16.5523 13 16 13H1C0.447715 13 0 12.5523 0 12V2.33337V1C0 0.447715 0.447715 0 1 0H6.54006C6.83199 0 7.10934 0.127565 7.29932 0.349215L9 2.33337H16C16.5523 2.33337 17 2.78109 17 3.33337Z"
+                                      fill="#58595B"/>
+                            </svg>
+                            <svg class="icon-expend svg-icon" fill="none" height="13" viewBox="0 0 19 13" width="19">
+                                <path d="M17 3.33337V13H0V2.33337V1C0 0.447715 0.447715 0 1 0H6.54006C6.83199 0 7.10934 0.127565 7.29932 0.349215L9 2.33337H16C16.5523 2.33337 17 2.78109 17 3.33337Z"
+                                      fill="#58595B"/>
+                                <path d="M16.9999 13H-0.00012207L1.36661 4.34404C1.44335 3.85799 1.8623 3.5 2.35437 3.5H17.3296C17.9441 3.5 18.4133 4.049 18.3174 4.65597L16.9999 13Z"
+                                      fill="#C0C0C0"/>
+                            </svg>
+                            <span class="name">/</span>
+                            <ul class="sub-files"></ul>
+                        </li>
                     </ul>
                 </div>
                 <div class="bottom text-center">
@@ -78,7 +92,7 @@
                     <nav>
                         <ul class="list-inline loading">
                             <li class="toolbar-item">
-                                <button class="btn-svg no-focus" type="button">
+                                <button class="btn-svg no-focus" type="button" data-action="home">
                                     <svg fill="none" height="18" viewBox="0 0 20 18" width="20"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path d="M19.5861 8.85253L10.499 0.197127C10.4336 0.134638 10.3559 0.085062 10.2703 0.0512365C10.1847 0.017411 10.093 0 10.0004 0C9.90779 0 9.81608 0.017411 9.73053 0.0512365C9.64497 0.085062 9.56726 0.134638 9.50183 0.197127L0.414754 8.85253C0.150017 9.10487 0 9.44764 0 9.80513C0 10.5474 0.633161 11.151 1.41193 11.151H2.36939V17.3271C2.36939 17.6993 2.68487 18 3.07535 18H8.58849V13.2896H11.0594V18H16.9255C17.316 18 17.6314 17.6993 17.6314 17.3271V11.151H18.5889C18.9639 11.151 19.3235 11.0101 19.5883 10.7556C20.1376 10.2299 20.1376 9.37824 19.5861 8.85253Z"
@@ -90,7 +104,7 @@
                                 </button>
                             </li>
                             <li class="toolbar-item">
-                                <button class="btn-svg" type="button">
+                                <button class="btn-svg" type="button" data-action="back">
                                     <svg class="svg-icon" fill="none" height="20" viewBox="0 0 13 20" width="13"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path d="M10.5603 0.356966L0.515921 8.88871C0.354104 9.02623 0.224213 9.19682 0.135161 9.38878C0.0461077 9.58074 0 9.78952 0 10.0008C0 10.2121 0.0461077 10.4209 0.135161 10.6128C0.224213 10.8048 0.354104 10.9754 0.515921 11.1129L10.5603 19.6446C11.5191 20.4589 13 19.7838 13 18.5325V1.46662C13 0.215361 11.5191 -0.459708 10.5603 0.356966Z"
@@ -102,7 +116,7 @@
                                 </button>
                             </li>
                             <li class="toolbar-item">
-                                <button class="btn-svg btn-icon-reset no-focus" type="button">
+                                <button class="btn-svg btn-icon-reset no-focus" type="button" data-action="forward">
                                     <svg class="svg-icon" fill="none" height="20" viewBox="0 0 13 20" width="13"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2.43967 0.356966L12.4841 8.88871C12.6459 9.02623 12.7758 9.19682 12.8648 9.38878C12.9539 9.58074 13 9.78952 13 10.0008C13 10.2121 12.9539 10.4209 12.8648 10.6128C12.7758 10.8048 12.6459 10.9754 12.4841 11.1129L2.43967 19.6446C1.48092 20.4589 -5.3295e-07 19.7838 -5.3295e-07 18.5325V1.46662C-5.3295e-07 0.215361 1.48092 -0.459708 2.43967 0.356966Z"
@@ -300,9 +314,9 @@
                         <label for="fileName">Name</label>
                         <input id="fileName" placeholder="File Name" type="text">
                     </div>
-                    <div class="alert error show">
+                    <div class="alert error">
                         <strong>error!</strong>
-                        <span class="text">Cannot add file!</span>
+                        <span class="text"></span>
                     </div>
                 </div>
                 <div class="modal-footer text-right">
@@ -476,6 +490,7 @@
                         <thead>
                             <tr>
                                 <th>permissions</th>
+                                <th>permissions</th>
                                 <th>read</th>
                                 <th>write</th>
                                 <th>execute</th>
@@ -486,19 +501,19 @@
                                 <td>owner</td>
                                 <td>
                                     <label class="checkbox" data-action="read" data-group="owner">
-                                        <input class="files-select-all" type="checkbox">
+                                        <input type="checkbox">
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
                                 <td>
                                     <label class="checkbox" data-action="write" data-group="owner">
-                                        <input class="files-select-all" type="checkbox">
+                                        <input type="checkbox">
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
                                 <td>
                                     <label class="checkbox" data-action="execute" data-group="owner">
-                                        <input class="files-select-all" type="checkbox">
+                                        <input type="checkbox">
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
@@ -507,19 +522,19 @@
                                 <td>group</td>
                                 <td>
                                     <label class="checkbox" data-action="read" data-group="group">
-                                        <input class="files-select-all" type="checkbox">
+                                        <input type="checkbox">
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
                                 <td>
                                     <label class="checkbox" data-action="write" data-group="group">
-                                        <input class="files-select-all" type="checkbox">
+                                        <input type="checkbox">
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
                                 <td>
                                     <label class="checkbox" data-action="execute" data-group="group">
-                                        <input class="files-select-all" type="checkbox">
+                                        <input type="checkbox">
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
@@ -528,19 +543,19 @@
                                 <td>others</td>
                                 <td>
                                     <label class="checkbox" data-action="read" data-group="others">
-                                        <input class="files-select-all" type="checkbox">
+                                        <input type="checkbox">
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
                                 <td>
                                     <label class="checkbox" data-action="write" data-group="others">
-                                        <input class="files-select-all" type="checkbox">
+                                        <input type="checkbox">
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
                                 <td>
                                     <label class="checkbox" data-action="execute" data-group="others">
-                                        <input class="files-select-all" type="checkbox">
+                                        <input type="checkbox">
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
@@ -574,16 +589,16 @@
                 </div>
                 <div class="modal-body">
                     <ul class="info-list">
-                        <li class="info-item">
+                        <li class="info-item name">
                             <span class="info-icon">
                                 <svg fill="none" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 0C4.47709 0 0 4.47709 0 10C0 15.5229 4.47709 20 10 20C15.5229 20 20 15.5229 20 10C20 4.47709 15.5229 0 10 0V0ZM9.14476 4.49567H10.8098V6.26669H9.14476V4.49567ZM11.9004 15.2443H10.0688C9.35737 15.2443 9.05394 14.9415 9.05394 14.2149V9.49085C9.05394 9.2638 8.93285 9.15853 8.72093 9.15853H8.11545V7.52305H9.94771C10.6598 7.52305 10.9619 7.84092 10.9619 8.55236V13.2909C10.9619 13.5042 11.083 13.6239 11.2949 13.6239H11.9004V15.2443V15.2443Z"
                                           fill="#A7A9AC"/>
                                     </svg>
                             </span>
-                            <span class="info-text">index.html</span>
+                            <span class="info-text"></span>
                         </li>
-                        <li class="info-item">
+                        <li class="info-item path">
                             <span class="info-icon">
                                     <svg fill="none" height="20" viewBox="0 0 20 20" width="20"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -593,9 +608,9 @@
                                               fill-rule="evenodd"/>
                                         </svg>
                             </span>
-                            <span class="info-text">/index.html</span>
+                            <span class="info-text"></span>
                         </li>
-                        <li class="info-item">
+                        <li class="info-item size">
                             <span class="info-icon">
                                 <svg fill="none" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                                     <path clip-rule="evenodd"
@@ -604,34 +619,34 @@
                                           fill-rule="evenodd"/>
                                     </svg>
                             </span>
-                            <span class="info-text">55 KB</span>
+                            <span class="info-text"></span>
                         </li>
-                        <li class="info-item">
+                        <li class="info-item owner">
                             <span class="info-icon">
                                 <svg fill="none" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 11.25C13.1055 11.25 15.625 8.73047 15.625 5.625C15.625 2.51953 13.1055 0 10 0C6.89453 0 4.375 2.51953 4.375 5.625C4.375 8.73047 6.89453 11.25 10 11.25ZM15 12.5H12.8477C11.9805 12.8984 11.0156 13.125 10 13.125C8.98438 13.125 8.02344 12.8984 7.15234 12.5H5C2.23828 12.5 0 14.7383 0 17.5V18.125C0 19.1602 0.839844 20 1.875 20H18.125C19.1602 20 20 19.1602 20 18.125V17.5C20 14.7383 17.7617 12.5 15 12.5Z"
                                           fill="#A7A9AC"/>
                                     </svg>
                             </span>
-                            <span class="info-text">14066355</span>
+                            <span class="info-text"></span>
                         </li>
-                        <li class="info-item">
+                        <li class="info-item group">
                             <span class="info-icon">
                                 <svg fill="none" height="19" viewBox="0 0 23 19" width="23" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M3.45 8.14286C4.71859 8.14286 5.75 6.92567 5.75 5.42857C5.75 3.93147 4.71859 2.71429 3.45 2.71429C2.18141 2.71429 1.15 3.93147 1.15 5.42857C1.15 6.92567 2.18141 8.14286 3.45 8.14286ZM19.55 8.14286C20.8186 8.14286 21.85 6.92567 21.85 5.42857C21.85 3.93147 20.8186 2.71429 19.55 2.71429C18.2814 2.71429 17.25 3.93147 17.25 5.42857C17.25 6.92567 18.2814 8.14286 19.55 8.14286ZM20.7 9.5H18.4C17.7675 9.5 17.1961 9.80112 16.7792 10.2888C18.2275 11.2261 19.2553 12.9183 19.4781 14.9286H21.85C22.4861 14.9286 23 14.3221 23 13.5714V12.2143C23 10.7172 21.9686 9.5 20.7 9.5ZM11.5 9.5C13.7245 9.5 15.525 7.37522 15.525 4.75C15.525 2.12478 13.7245 0 11.5 0C9.27547 0 7.475 2.12478 7.475 4.75C7.475 7.37522 9.27547 9.5 11.5 9.5ZM14.26 10.8571H13.9617C13.2142 11.2812 12.3841 11.5357 11.5 11.5357C10.6159 11.5357 9.78937 11.2812 9.03828 10.8571H8.74C6.45437 10.8571 4.6 13.0455 4.6 15.7429V16.9643C4.6 18.0882 5.37266 19 6.325 19H16.675C17.6273 19 18.4 18.0882 18.4 16.9643V15.7429C18.4 13.0455 16.5456 10.8571 14.26 10.8571ZM6.22078 10.2888C5.80391 9.80112 5.2325 9.5 4.6 9.5H2.3C1.03141 9.5 0 10.7172 0 12.2143V13.5714C0 14.3221 0.513906 14.9286 1.15 14.9286H3.51828C3.74469 12.9183 4.7725 11.2261 6.22078 10.2888Z"
                                           fill="#A7A9AC"/>
                                 </svg>
                             </span>
-                            <span class="info-text">14066355</span>
+                            <span class="info-text"></span>
                         </li>
-                        <li class="info-item">
+                        <li class="info-item permissions">
                             <span class="info-icon">
                                 <svg fill="none" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 0C4.47715 0 0 4.47715 0 10C0 15.5229 4.47715 20 10 20C15.5229 20 20 15.5229 20 10C20 4.47715 15.5229 0 10 0ZM9.92798 4.57763C11.2784 4.58407 12.5128 5.44523 13.0371 6.64673C13.2165 7.06522 13.3118 7.49512 13.3118 7.96143V9.15042H14.95V15.4224H5.05005V9.15038H6.5564C6.54275 8.31028 6.52547 7.34922 6.82007 6.6467C7.3929 5.38155 8.57753 4.5712 9.92798 4.57763ZM9.85473 6.5747C9.10672 6.59043 8.6134 7.15925 8.54123 7.9614V9.15038H11.3269V7.94922C11.2926 7.18853 10.7168 6.59565 9.92795 6.5747C9.90355 6.57413 9.87914 6.57413 9.85473 6.5747V6.5747Z"
                                           fill="#A7A9AC"/>
                                     </svg>
                             </span>
-                            <span class="info-text">-rw-r--r-- (0644)</span>
+                            <span class="info-text"></span>
                         </li>
                     </ul>
                 </div>

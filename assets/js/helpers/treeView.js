@@ -2,6 +2,8 @@
  * Gets sidebar selected path tree.
  * @return {string}
  */
+import {getElement} from "./functions";
+
 function getSelectedPath() {
     const element = document.querySelector('.sidebar .dir-item[data-open="true"]');
 
@@ -11,7 +13,7 @@ function getSelectedPath() {
 
     var
         child = element.querySelector('.dir-item[data-open="true"]'),
-        path = decodeURI(element.dataset.name);
+        path = decodeURI(element.dataset.name).slice(1);
 
     while (child) {
         path += '/' + decodeURI(child.dataset.name);
@@ -63,7 +65,8 @@ function getAppendToSelector(path)
         return `.sidebar .dir-item[data-name="${encodeURI(name)}"] .sub-files`;
     }
 
-    return '.sidebar .files-list';
+    getElement('.sidebar .files-list .dir-item[data-name="/"]').dataset.open = 'true';
+    return '.sidebar .files-list .dir-item[data-name="/"] .sub-files';
 }
 
 export {

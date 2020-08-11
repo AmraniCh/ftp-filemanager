@@ -6,7 +6,7 @@ import addFile from "./actions/addFile";
 import addFolder from "./actions/addFolder";
 import modal from "./helpers/modal";
 import getFileContent from "./actions/getFileContent";
-import browse from "./actions/browse";
+import {browse, back} from "./actions/listing";
 import edit from "./actions/edit";
 import remove from "./actions/remove";
 import rename from "./actions/rename";
@@ -22,11 +22,11 @@ const App = function () {
         registry.push(load);
         
         /**
-         * Directory listing.
+         * Directory browse.
          */
         registry.push(sidebarDirectoryListing);
         registry.push(tableDirectoryListing);
-        
+
         /**
          * Actions
          */
@@ -47,6 +47,7 @@ const App = function () {
         registry.push(moveFileModalItemsClick);
         registry.push(updateModalPermissions);
         registry.push(updateModalInfo);
+        registry.push(toolbarActions);
     };
 
     this.init = function () {
@@ -69,12 +70,12 @@ const App = function () {
                 item.dataset.open = 'true';
 
                 // if the clicked element is already have been clicked then remove its content
-                if (state.path.split('/').includes(fileName)) {
+                if (state.path.split('/').includes(fileName) || fileName === '/') {
                     item.querySelector('.sub-files').textContent = '';
                 }
 
                 closeSiblingTreeOf(item);
-
+                console.log(getSelectedPath());
                 browse(state.path = getSelectedPath());
             }
         });
@@ -280,6 +281,13 @@ const App = function () {
                     }
                 }
             }
+        });
+    };
+
+    var toolbarActions = function () {
+        // back
+        bindEvent('click', '.toolbar button[data-action="back"]', function () {
+            back();
         });
     };
 };

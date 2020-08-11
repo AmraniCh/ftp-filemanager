@@ -36,4 +36,29 @@ function browse(path) {
     });
 }
 
-export default browse;
+/**
+ * Backs to the previous directory.
+ */
+function back() {
+    /**
+     * / => /
+     * /public_html/ => /
+     * /public_html/css => public_html
+     */
+    var backPath = state.path
+        .replace(/(^\/|\/$)/g, '') // clear the slashes from start&end
+        .split('/')
+        .slice(0, -1)
+        .join('/');
+
+    if (backPath === '') {
+        backPath = '/';
+    }
+
+    getElement(`.sidebar .dir-item[data-name="${backPath}"`).click();
+}
+
+export {
+    browse,
+    back
+};

@@ -1,13 +1,3 @@
-import {hideLoading, showLoading} from "./loading";
-import {getAppendToSelector} from "./treeView";
-import {fetchGet} from "./fetch";
-import DOMRender from "./DOMRender";
-import sidebarFileItem from "../templates/sidebarFileItem";
-import File from "../entities/File";
-import tableFileItem from "../templates/tableFileItem";
-import state from "../state";
-import modal from "./modal";
-
 function bindEvent(event, elements, fn) {
     // checks if 'elements' is a selector
     if (typeof elements === 'string') {

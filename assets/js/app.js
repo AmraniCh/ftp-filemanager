@@ -6,14 +6,14 @@ import addFile from "./actions/addFile";
 import addFolder from "./actions/addFolder";
 import modal from "./helpers/modal";
 import getFileContent from "./actions/getFileContent";
-import {browse, back, forward} from "./actions/listing";
+import {browse, back, forward, home} from "./actions/listing";
 import edit from "./actions/edit";
 import remove from "./actions/remove";
 import rename from "./actions/rename";
 import getDirectoryTree from "./actions/getDirectoryTree";
 import move from "./actions/move";
-import File from "./entities/File";
 import permissions from "./actions/permissions";
+import File from "./entities/File";
 
 const App = function () {
 
@@ -64,16 +64,10 @@ const App = function () {
     var sidebarDirectoryListing = function () {
         on('click', '.sidebar .dir-item', function (e) {
             if (!e.target.closest('.file-item')) { // ignore file items click
-                const
-                    item = e.target.closest('.dir-item'),
-                    fileName = decodeURI(item.dataset.name);
+                const item = e.target.closest('.dir-item');
 
                 item.dataset.open = 'true';
-
-                // if the clicked element is already have been clicked then remove its content
-                if (state.path.split('/').includes(fileName) || fileName === '/') {
-                    item.querySelector('.sub-files').textContent = '';
-                }
+                item.querySelector('.sub-files').textContent = '';
 
                 closeSiblingTreeOf(item);
                 browse(state.path = getSelectedPath());
@@ -285,15 +279,9 @@ const App = function () {
     };
 
     var toolbarActions = function () {
-        // back
-        bindEvent('click', '.toolbar button[data-action="back"]', function () {
-            back();
-        });
-
-        // Forward
-        bindEvent('click', '.toolbar button[data-action="forward"]', function () {
-            forward();
-        });
+        bindEvent('click', '.toolbar button[data-action="back"]', back);
+        bindEvent('click', '.toolbar button[data-action="forward"]', forward);
+        bindEvent('click', '.toolbar button[data-action="home"]', home);
     };
 };
 

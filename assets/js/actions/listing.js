@@ -55,15 +55,26 @@ function back() {
         backPath = '/';
     }
 
-    getElement(`.sidebar .dir-item[data-name="${backPath}"`).click();
+    getElement(`.sidebar .dir-item[data-name="${encodeURI(backPath)}"`).click();
 }
 
 function forward() {
     const selectedDir = getElement('.files-table .file-item.selected[data-type="dir"]');
-    if (selectedDir) {
+    if (typeof selectedDir === 'object') {
         // Simulate the double click
         selectedDir.dispatchEvent(new MouseEvent('dblclick', {
-            'bubbles': true, // Important! Enable event bubbling
+            bubbles: true, // Important! Enable event bubbling
+            cancelable: true,
+        }));
+    }
+}
+
+function home() {
+    const root = getElement('.sidebar .files-list .dir-item[data-name="/"]');
+    if (typeof root === 'object') {
+        root.dispatchEvent(new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
         }));
     }
 }
@@ -72,4 +83,5 @@ export {
     browse,
     back,
     forward,
+    home,
 };

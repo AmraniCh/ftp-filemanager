@@ -58,7 +58,18 @@ function back() {
     getElement(`.sidebar .dir-item[data-name="${backPath}"`).click();
 }
 
+function forward() {
+    const selectedDir = getElement('.files-table .file-item.selected[data-type="dir"]');
+    if (selectedDir) {
+        // Simulate the double click
+        selectedDir.dispatchEvent(new MouseEvent('dblclick', {
+            'bubbles': true, // Important! Enable event bubbling
+        }));
+    }
+}
+
 export {
     browse,
-    back
+    back,
+    forward,
 };

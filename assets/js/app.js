@@ -6,13 +6,14 @@ import addFile from "./actions/addFile";
 import addFolder from "./actions/addFolder";
 import modal from "./helpers/modal";
 import getFileContent from "./actions/getFileContent";
-import {browse, back} from "./actions/listing";
+import {browse, back, forward} from "./actions/listing";
 import edit from "./actions/edit";
 import remove from "./actions/remove";
 import rename from "./actions/rename";
 import getDirectoryTree from "./actions/getDirectoryTree";
 import move from "./actions/move";
 import File from "./entities/File";
+import permissions from "./actions/permissions";
 
 const App = function () {
 
@@ -22,7 +23,7 @@ const App = function () {
         registry.push(load);
         
         /**
-         * Directory browse.
+         * Directory listing actions.
          */
         registry.push(sidebarDirectoryListing);
         registry.push(tableDirectoryListing);
@@ -75,7 +76,6 @@ const App = function () {
                 }
 
                 closeSiblingTreeOf(item);
-                console.log(getSelectedPath());
                 browse(state.path = getSelectedPath());
             }
         });
@@ -288,6 +288,11 @@ const App = function () {
         // back
         bindEvent('click', '.toolbar button[data-action="back"]', function () {
             back();
+        });
+
+        // Forward
+        bindEvent('click', '.toolbar button[data-action="forward"]', function () {
+            forward();
         });
     };
 };

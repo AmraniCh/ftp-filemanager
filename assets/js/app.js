@@ -274,8 +274,13 @@ const App = function () {
 
     var downloadAction = function () {
         bindEvent('click', 'button[data-action="download"]', function () {
-            const file = getElement('.files-table .file-item.selected .file-name').textContent;
-            download(state.path + file);
+            const selectedFiles = Array.from(getElements('.files-table .file-item.selected .file-name'));
+
+            var files = selectedFiles.map(function (item) {
+               return item.textContent;
+            });
+
+            download(state.path, files);
         });
     };
 };

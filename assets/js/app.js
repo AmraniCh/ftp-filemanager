@@ -15,6 +15,8 @@ import move from "./actions/move";
 import permissions from "./actions/permissions";
 import File from "./entities/File";
 import download from "./actions/download";
+import DOMRender from "./helpers/DOMRender";
+import uploadModalFileItem from "./templates/includes/uploadModalFileItem";
 
 const App = function () {
 
@@ -28,9 +30,10 @@ const App = function () {
          */
         registry.push(sidebarDirectoryListing);
         registry.push(tableDirectoryListing);
+        registry.push(toolbarActions);
 
         /**
-         * Actions
+         * Actions.
          */
         registry.push(refreshAction);
         registry.push(addFileAction);
@@ -43,13 +46,13 @@ const App = function () {
         registry.push(downloadAction);
 
         /**
-         * Others
+         * Modals components events.
          */
-        registry.push(editorGetFileContent);
-        registry.push(moveFileModalGetDirectoryTree);
-        registry.push(updateModalPermissions);
-        registry.push(updateModalInfo);
-        registry.push(toolbarActions);
+        registry.push(updateEditorModal);
+        registry.push(updateMoveModal);
+        registry.push(updatePermissionsModal);
+        registry.push(updateInfoModal);
+        registry.push(updateUploadModal);
     };
 
     this.init = function () {
@@ -116,7 +119,7 @@ const App = function () {
         });
     };
 
-    var editorGetFileContent = function () {
+    var updateEditorModal = function () {
         // Get editor file content when double clicking in a table file item
         on('dblclick', '.files-table .file-item[data-type="file"]', function (e) {
             modal('#editorModal').show();
@@ -170,7 +173,7 @@ const App = function () {
         });
     };
 
-    var moveFileModalGetDirectoryTree = function () {
+    var updateMoveModal = function () {
         bindEvent('click', 'button[data-action="move"]', function () {
             getDirectoryTree();
         });
@@ -196,7 +199,7 @@ const App = function () {
         });
     };
 
-    var updateModalPermissions = function () {
+    var updatePermissionsModal = function () {
         bindEvent('click', 'button[data-action="permissions"]', function () {
             const
                 file = state.getFileByName(getElement('#permissionsModal .filename').textContent),
@@ -245,7 +248,7 @@ const App = function () {
         });
     };
 
-    var updateModalInfo = function () {
+    var updateInfoModal = function () {
         bindEvent('click', 'button[data-action="info"]', function () {
             const
                 selectedFilename = getElement('.files-table .file-item.selected .file-name').textContent,
@@ -281,6 +284,23 @@ const App = function () {
             });
 
             download(state.path, files);
+        });
+    };
+
+    var updateUploadModal = function () {
+        // Update the uploading path
+        bindEvent('click', 'button[data-action="upload"]', function () {
+            const uploadingFolder = getElement('#uploadModal .uploading-folder');
+            uploadingFolder.textContent = state.path;
+        });
+
+        // Append files
+        bindEvent('change', '#uploadFilesBtn', function () {
+           const files = getElement('#uploadFilesBtn').files;
+
+            Array.from(files).forEach(function (file) {
+                DOMRender(uploadModalFileItem(new File(file)), '.files-to-upload');
+            });
         });
     };
 };

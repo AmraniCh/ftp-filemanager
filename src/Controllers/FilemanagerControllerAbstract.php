@@ -47,8 +47,11 @@ abstract class FilemanagerControllerAbstract extends Controller
      */
     public function onException($exception)
     {
-        (new JsonResponse(['error' => $exception->getMessage()], 500))
-            ->removeXPoweredByHeader()
-            ->send();
+        // Handles only FtpAdapterException exceptions
+        if ($exception instanceof FtpAdapterException) {
+            (new JsonResponse(['error' => $exception->getMessage()], 500))
+                ->removeXPoweredByHeader()
+                ->send();
+        }
     }
 }

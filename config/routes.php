@@ -25,5 +25,6 @@ return [
     Route::get('/api?action=getDirectoryTree', [FilemanagerController::class, 'getDirectoryTree']),
     Route::put('/api?action=move', [FilemanagerController::class, 'move']),
     Route::put('/api?action=permissions', [FilemanagerController::class, 'permissions']),
+    Route::get('/api?action=download&file=:encoded', [FilemanagerController::class, 'download']),
 
 ];

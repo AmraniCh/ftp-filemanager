@@ -14,6 +14,7 @@ import getDirectoryTree from "./actions/getDirectoryTree";
 import move from "./actions/move";
 import permissions from "./actions/permissions";
 import File from "./entities/File";
+import download from "./actions/download";
 
 const App = function () {
 
@@ -39,13 +40,13 @@ const App = function () {
         registry.push(moveFileAction);
         registry.push(editFileAction);
         registry.push(changePermissionsAction);
+        registry.push(downloadAction);
 
         /**
          * Others
          */
         registry.push(editorGetFileContent);
         registry.push(moveFileModalGetDirectoryTree);
-        registry.push(moveFileModalItemsClick);
         registry.push(updateModalPermissions);
         registry.push(updateModalInfo);
         registry.push(toolbarActions);
@@ -175,19 +176,6 @@ const App = function () {
         });
     };
 
-    var moveFileModalItemsClick = function () {
-        on('click', '.move-file-modal .dir-item', function (e) {
-            const ele = e.target.closest('.dir-item');
-            if (ele.dataset.open === 'false') {
-                ele.dataset.open = 'true';
-                getElement('.sub-files', ele).style.display = 'block';
-            } else {
-                ele.dataset.open = 'false';
-                getElement('.sub-files', ele).style.display = 'none';
-            }
-        });
-    };
-
     var moveFileAction = function () {
         bindEvent('click', '#moveFileBtn', function () {
             const
@@ -282,6 +270,13 @@ const App = function () {
         bindEvent('click', '.toolbar button[data-action="back"]', back);
         bindEvent('click', '.toolbar button[data-action="forward"]', forward);
         bindEvent('click', '.toolbar button[data-action="home"]', home);
+    };
+
+    var downloadAction = function () {
+        bindEvent('click', 'button[data-action="download"]', function () {
+            const file = getElement('.files-table .file-item.selected .file-name').textContent;
+            download(state.path + file);
+        });
     };
 };
 

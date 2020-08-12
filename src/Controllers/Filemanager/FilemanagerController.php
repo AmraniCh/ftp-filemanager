@@ -3,7 +3,6 @@
 namespace FTPApp\Controllers\Filemanager;
 
 use FTPApp\Controllers\FilemanagerControllerAbstract;
-use FTPApp\Http\HttpResponse;
 use FTPApp\Http\JsonResponse;
 
 class FilemanagerController extends FilemanagerControllerAbstract
@@ -111,9 +110,6 @@ class FilemanagerController extends FilemanagerControllerAbstract
 
     public function download()
     {
-        $fileContent = $this->ftpAdapter()->getFileContent($this->getParameters()['file']);
-        return (new HttpResponse($fileContent))
-            ->addHeader('Content-Type', 'application/octet-stream')
-            ->addHeader('Content-Disposition', 'attachment; filename='.basename($this->getParameters()['file']));
+        return $this->ftpAdapter()->download($this->getParameters()['file']);
     }
 }

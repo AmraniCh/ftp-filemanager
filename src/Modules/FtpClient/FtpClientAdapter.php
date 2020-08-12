@@ -2,6 +2,7 @@
 
 namespace FTPApp\Modules\FtpClient;
 
+use FTPApp\Http\HttpResponse;
 use FTPApp\Modules\FtpAdapter;
 use Lazzard\FtpClient\Config\FtpConfig;
 use Lazzard\FtpClient\Connection\ConnectionInterface;
@@ -9,7 +10,6 @@ use Lazzard\FtpClient\Connection\FtpConnection;
 use Lazzard\FtpClient\Connection\FtpSSLConnection;
 use Lazzard\FtpClient\Exception\FtpClientException;
 use Lazzard\FtpClient\FtpClient;
-use Lazzard\FtpClient\FtpWrapper;
 
 class FtpClientAdapter implements FtpAdapter
 {
@@ -69,7 +69,7 @@ class FtpClientAdapter implements FtpAdapter
     {
         try {
             // escape dir spaces (rawlist bug)
-            $list = $this->client->listDirectoryDetails(str_replace(' ', '\ ', $dir));
+            $list = $this->client->listDirectoryDetails($dir);
 
             $files = [];
             foreach ($list as $file) {
@@ -179,6 +179,18 @@ class FtpClientAdapter implements FtpAdapter
         }
     }
 
+    public function download($file)
+    {
+        try {
+            $fileContent = $this->getFileContent($file);
+            return (new HttpResponse($fileContent))
+                ->addHeader('Content-Type', 'application/octet-stream')
+                ->addHeader('Content-Disposition', 'attachment; filename=' . basename($file));
+        } catch (\Exception $ex) {
+            throw new FtpClientAdapterException("Failed to download file $file.");
+        }
+    }
+
     /**
      * Normalize FtpClient exception messages.
      *
@@ -194,7 +206,8 @@ class FtpClientAdapter implements FtpAdapter
      *
      * @return string
      */
-    protected function normalizeExceptionMessage($exception)
+    protected
+    function normalizeExceptionMessage($exception)
     {
         return preg_replace('/([\[\w\]]+)\s-\s/i', '', $exception->getMessage());
     }

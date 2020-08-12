@@ -2,6 +2,8 @@
 
 namespace FTPApp\Modules;
 
+use FTPApp\Http\HttpResponse;
+
 interface FtpAdapter
 {
     /**
@@ -128,4 +130,15 @@ interface FtpAdapter
      * @throws FtpAdapterException
      */
     public function permissions($file, $permissions);
+
+    /**
+     * Starts downloading a remote file.
+     *
+     * @param string $file
+     *
+     * @return HttpResponse
+     *
+     * @throws FtpAdapterException
+     */
+    public function download($file);
 }

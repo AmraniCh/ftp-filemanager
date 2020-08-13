@@ -26,5 +26,6 @@ return [
     Route::put('/api?action=move', [FilemanagerController::class, 'move']),
     Route::put('/api?action=permissions', [FilemanagerController::class, 'permissions']),
     Route::get('/api?action=download&file=:encoded', [FilemanagerController::class, 'download']),
+    Route::post('/api?action=upload', [FilemanagerController::class, 'upload']),
 
 ];

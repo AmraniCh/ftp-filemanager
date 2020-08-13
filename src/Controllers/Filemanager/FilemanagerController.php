@@ -112,4 +112,15 @@ class FilemanagerController extends FilemanagerControllerAbstract
     {
         return $this->ftpAdapter()->download($this->getParameters()['file']);
     }
+
+    public function upload()
+    {
+        $file = $this->request->getFiles()['file'];
+        return new JsonResponse([
+            'result' => $this->ftpAdapter()->upload(
+                $file['tmp_name'],
+                $this->getParameters()['path'] . $file['name']
+            )
+        ]);
+    }
 }

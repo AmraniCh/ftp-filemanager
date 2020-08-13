@@ -3,6 +3,7 @@ var state = {
     path: '/',
     editableFile: null,
     files: [],
+    uploadedFiles: [],
 
     getFileByName: function (name) {
         for (var prop in this.files) {

@@ -141,4 +141,16 @@ interface FtpAdapter
      * @throws FtpAdapterException
      */
     public function download($file);
+
+    /**
+     * Uploading the giving file to the server.
+     *
+     * @param string $filePath
+     *
+     * @param string $remotePath
+     *
+     * @return bool
+     *
+     */
+    public function upload($filePath, $remotePath);
 }

@@ -191,6 +191,15 @@ class FtpClientAdapter implements FtpAdapter
         }
     }
 
+    public function upload($filePath, $remotePath)
+    {
+        try {
+           return $this->client->upload($filePath, $remotePath);
+        } catch (\Exception $ex) {
+            throw new FtpClientAdapterException("Failed to download file $filePath.");
+        }
+    }
+
     /**
      * Normalize FtpClient exception messages.
      *

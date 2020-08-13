@@ -16,7 +16,8 @@ import permissions from "./actions/permissions";
 import File from "./entities/File";
 import download from "./actions/download";
 import DOMRender from "./helpers/DOMRender";
-import uploadModalFileItem from "./templates/includes/uploadModalFileItem";
+import uploadModalFileItem from "./templates/uploadModalFileItem";
+import upload from "./actions/upload";
 
 const App = function () {
 
@@ -44,9 +45,10 @@ const App = function () {
         registry.push(editFileAction);
         registry.push(changePermissionsAction);
         registry.push(downloadAction);
+        registry.push(uploadAction);
 
         /**
-         * Modals components events.
+         * Modal components events.
          */
         registry.push(updateEditorModal);
         registry.push(updateMoveModal);
@@ -288,18 +290,57 @@ const App = function () {
     };
 
     var updateUploadModal = function () {
-        // Update the uploading path
+        // Update the uploading path and remove existing state files
         bindEvent('click', 'button[data-action="upload"]', function () {
             const uploadingFolder = getElement('#uploadModal .uploading-folder');
             uploadingFolder.textContent = state.path;
+            state.uploadedFiles = [];
+            getElement('.files-to-upload').textContent = '';
         });
 
         // Append files
         bindEvent('change', '#uploadFilesBtn', function () {
-           const files = getElement('#uploadFilesBtn').files;
+           const files = Array.from(getElement('#uploadFilesBtn').files);
 
-            Array.from(files).forEach(function (file) {
+            files.forEach(function (file) {
                 DOMRender(uploadModalFileItem(new File(file)), '.files-to-upload');
+            });
+
+            // Storing the files
+            files.forEach(function (file) {
+                state.uploadedFiles.push(file);
+            });
+        });
+
+        // Remove the files
+        on('click', '.remove-upload-file', function (e) {
+            const removedFile = getElement('.name', e.target.closest('.file-item')).textContent;
+            state.uploadedFiles.forEach(function (file, i) {
+               if (file.name === removedFile)  {
+                   delete state.uploadedFiles[i];
+               }
+            });
+        });
+    };
+
+    var uploadAction = function () {
+        bindEvent('click', '#uploadBtn', function () {
+            var formData = new FormData();
+
+            state.uploadedFiles.forEach(function (file) {
+                formData.append('file', file);
+                formData.append('path', state.path);
+
+                upload(state.path, formData, function (progress) {
+                    const item = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`),
+                        bar = getElement('.progress-bar', item),
+                        percentage = getElement('.percentage', item),
+                        status = getElement('.upload-state', item);
+
+                    percentage.textContent = progress + '%';
+                    bar.style.width = progress + '%';
+                    status.textContent = 'Uploading to the server ...';
+                });
             });
         });
     };

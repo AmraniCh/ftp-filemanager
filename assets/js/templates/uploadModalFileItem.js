@@ -1,6 +1,6 @@
 function uploadModalFileItem(fileItem) {
     return `
-        <li class="file-item">
+        <li class="file-item" data-name="${encodeURI(fileItem.name)}">
             <h3 class="name float-lt">${fileItem.name}</h3>
             <span class="size">${fileItem.bytesToSize()}</span>
             <button class="remove-upload-file btn-icon-reset" type="button">

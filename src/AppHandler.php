@@ -6,6 +6,7 @@ use FTPApp\Controllers\Controller;
 use FTPApp\Controllers\Error\ErrorController;
 use FTPApp\DIC\DIC;
 use FTPApp\Http\HttpRequest;
+use FTPApp\Routing\Exception\RouteLogicException;
 use FTPApp\Routing\RouteDispatcher;
 
 class AppHandler
@@ -69,7 +70,7 @@ class AppHandler
             ]);
         });
 
-        // Dispatches the routes and define the founded handler as a callback
+        // Define the founded handler as a dispatcher callback
         return $this->dispatcher->dispatch(function ($routeInfo) {
             $handler = $routeInfo[2];
 
@@ -82,13 +83,15 @@ class AppHandler
             $class  = $handler[0];
             $method = $handler[1];
 
-            $vars = '';
-            if (isset($handler[2])) {
-                $vars = implode(',', $handler[2]);
+            $controller = new $class($this->request);
+            if (!method_exists($controller, $method)) {
+                throw new RouteLogicException("Invoking a non existing controller method [$method].");
             }
 
-            $controller = new $class($this->request);
-            return $controller->$method($vars);
+            return call_user_func_array(
+                [$controller, $method],
+                isset($handler[2]) ? $handler[2] : []
+            );
         });
     }
 }

@@ -7,29 +7,26 @@ const doFetch = function (uri, options, successHandler, errorHandler = null, com
             if (contentType && contentType.indexOf('application/json') !== -1) {
                 return response.json().then((json) => {
                     if (response.ok) {
-                        successHandler(json);
+                        callHandler(successHandler, json);
                     } else {
-                        if (typeof completeHandler === 'function') {
-                            completeHandler(json);
-                        }
-
+                        callHandler(completeHandler, json);
                         return Promise.reject(json);
                     }
-
-                    if (typeof completeHandler === 'function') {
-                        completeHandler(json);
-                    }
-
+                    callHandler(completeHandler, json);
                     return json;
                 });
             }
         })
         .catch((json) => {
             fetchConfig.errorHandler(json);
-            if (typeof errorHandler === 'function') {
-                errorHandler(json.error);
-            }
+            callHandler(errorHandler, json.error);
         });
+
+    var callHandler = function (handler) {
+        if (typeof handler === 'function') {
+            handler.apply(this, Array.prototype.slice.call(arguments, 1));
+        }
+    };
 };
 
 const fetchGet = function (uri, success, error, complete) {

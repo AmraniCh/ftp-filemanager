@@ -37,7 +37,8 @@ class FtpClientAdapter implements FtpAdapter
                 $config['host'],
                 $config['username'],
                 $config['password'],
-                $config['port']
+                $config['port'],
+                $config['timeout']
             );
 
             $connection->open();
@@ -47,19 +48,12 @@ class FtpClientAdapter implements FtpAdapter
             $this->client     = new FtpClient($connection);
 
             if (isset($config['usePassive']) && $config['usePassive']) {
-                $this->setPassive(true);
+                $this->config->setPassive($config['usePassive']);
+                $this->config->setAutoSeek($config['autoSeek']);
             }
         } catch (FtpClientException $ex) {
             throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setPassive($bool)
-    {
-        $this->config->setPassive($bool);
     }
 
     /**

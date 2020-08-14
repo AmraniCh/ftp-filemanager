@@ -9,4 +9,13 @@ return [
      */
     'debug' => true,
 
+
+    /**
+     * Ftp configs.
+     */
+    'ftp' => [
+        'timeout' => 90,
+        'autoSeek' => true,
+    ],
+
 ];

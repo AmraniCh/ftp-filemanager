@@ -26,7 +26,7 @@ abstract class FilemanagerControllerAbstract extends Controller
         if ($this->session()->cookieExists()) {
             $this->session()->start();
 
-            $config   = $this->sessionStorage()->getVariable('config');
+            $config   = array_merge($this->sessionStorage()->getVariable('config'), self::getConfig()['ftp']);
             $loggedIn = $this->sessionStorage()->getVariable('loggedIn');
 
             if (is_array($config) && is_bool($loggedIn) && $loggedIn) {

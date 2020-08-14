@@ -18,15 +18,6 @@ interface FtpAdapter
     public function openConnection($config);
 
     /**
-     * Sets the passive mode on/off.
-     *
-     * @param bool $bool
-     *
-     * @return mixed
-     */
-    public function setPassive($bool);
-
-    /**
      * Gets a list of files in the giving directory.
      *
      * @param string $dir

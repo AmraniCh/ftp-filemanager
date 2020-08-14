@@ -12,12 +12,14 @@ function upload(path, data, onprogress) {
             if (res.result) {
                 modal('#uploadModal').close();
                 refresh(state.path);
+            } else if (res.error) {
+                modal('#uploadModal').showError(res.error);
             }
         },
         progress: function (info) {
             const percentage = (info.loaded / info.total) * 100;
-            onprogress(percentage.toFixed());
-        },
+            onprogress(parseInt(percentage.toFixed()));
+        }
     });
 }
 

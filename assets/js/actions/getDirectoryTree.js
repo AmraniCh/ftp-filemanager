@@ -1,6 +1,6 @@
 import {fetchGet} from "../helpers/fetch";
 import DOMRender from "../helpers/DOMRender";
-import moveModalFileDirItem from "../templates/moveModalFileDirItem";
+import moveModalDirItem from "../templates/moveModalDirItem";
 import {getElement} from "../helpers/functions";
 
 function getDirectoryTree() {
@@ -15,9 +15,9 @@ function getDirectoryTree() {
                 if (dir.path.indexOf('/') !== -1) { // Is a 'deep' path
                     const path = dir.path.slice(0, dir.path.lastIndexOf('/'));
                     // Append the content to the right dir item using the path
-                    DOMRender(moveModalFileDirItem(dir), `.move-file-modal .files-list .dir-item[data-path="${encodeURI(path)}"] .sub-files`);
+                    DOMRender(moveModalDirItem(dir), `.move-file-modal .files-list .dir-item[data-path="${encodeURI(path)}"] .sub-files`);
                 } else {
-                    DOMRender(moveModalFileDirItem(dir), '.move-file-modal .files-list');
+                    DOMRender(moveModalDirItem(dir), '.move-file-modal .files-list');
                 }
             });
         }

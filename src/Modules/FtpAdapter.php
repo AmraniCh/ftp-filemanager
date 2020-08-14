@@ -151,6 +151,7 @@ interface FtpAdapter
      *
      * @return bool
      *
+     * @throws FtpAdapterException
      */
     public function upload($filePath, $remotePath);
 }

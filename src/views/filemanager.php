@@ -7,7 +7,6 @@
         <title>FTP File Manager</title>
     </head>
     <body>
-
         <div class="fm-wrapper">
             <aside class="sidebar float-lt">
                 <div class="brand text-center loading">
@@ -18,7 +17,7 @@
                 <div class="files-section">
                     <div class="loader"></div>
                     <ul class="files-list">
-                        <li class="dir-item item" data-name="/" data-open="false">
+                        <li class="dir-item item" data-name="/" data-open="true">
                             <svg class="icon-contract svg-icon" fill="none" height="13" viewBox="0 0 17 13" width="17">
                                 <path d="M17 3.33337V12C17 12.5523 16.5523 13 16 13H1C0.447715 13 0 12.5523 0 12V2.33337V1C0 0.447715 0.447715 0 1 0H6.54006C6.83199 0 7.10934 0.127565 7.29932 0.349215L9 2.33337H16C16.5523 2.33337 17 2.78109 17 3.33337Z"
                                       fill="#58595B"/>
@@ -30,16 +29,15 @@
                                       fill="#C0C0C0"/>
                             </svg>
                             <span class="name">/</span>
-                            <ul class="sub-files"></ul>
+                            <ul class="sub-files">
+                            </ul>
                         </li>
                     </ul>
                 </div>
                 <div class="bottom text-center">
-                    <a href="<?= $logoutUrl ?>">
-                        <button class="btn-primary" type="button">
-                            logout
-                        </button>
-                    </a>
+                    <button class="btn-primary" type="button">
+                        logout
+                    </button>
                 </div>
             </aside>
             <main class="main-panel float-lt">
@@ -67,7 +65,7 @@
                         <nav class="slidebar text-center">
                             <ul>
                                 <li>
-                                    <a href="<?= $logoutUrl ?>">
+                                    <a href="#">
                                         <svg class="svg-icon" fill="none" height="35" viewBox="0 0 35 35" width="35"
                                              xmlns="http://www.w3.org/2000/svg">
                                             <path d="M0 6.98925V28.0108C0 29.9462 0.732341 31.6667 1.90409 33.0108C3.07583 34.3011 4.58933 35 6.34695 35H15.9162V30.6452H6.34695C5.02874 30.6452 4.00346 29.4624 4.00346 28.0108V6.98925C4.00346 5.53763 5.02874 4.4086 6.34695 4.4086H15.9162V0H6.34695C4.58933 0 3.07583 0.752688 1.90409 2.04301C0.732341 3.3871 0 5.05376 0 6.98925ZM10.4969 13.3333V21.7204C10.4969 22.6882 11.278 23.4946 12.1569 23.4946H20.9938V30.1075C20.9938 30.6989 21.2867 31.1828 21.7749 31.4516C21.9702 31.5054 22.1655 31.5054 22.2632 31.5054C22.6049 31.5054 22.8979 31.3978 23.142 31.129L34.6153 18.4946C35.1524 18.0108 35.1035 17.043 34.6153 16.5054L23.142 3.92473C22.4584 3.11828 20.9938 3.60215 20.9938 4.89247V11.5591H12.1569C11.278 11.5591 10.4969 12.3656 10.4969 13.3333Z"
@@ -177,7 +175,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                         </tbody>
                     </table>
                 </div>
@@ -362,55 +359,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="input-field">
-                        <label>
-                            uploading files to :
-                            <span class="uploading-folder badge">/</span>
-                        </label>
-                        <label class="btn-upload text-center" for="uploadFilesBtn">
-                            Select your files
-                            <input id="uploadFilesBtn" multiple type="file">
-                        </label>
-                    </div>
+                    <form id="uploadFilesForm">
+                        <div class="input-field">
+                            <label>
+                                uploading files to :
+                                <span class="uploading-folder badge">/</span>
+                            </label>
+                            <label class="btn-upload text-center" for="uploadFilesBtn">
+                                Select your files
+                                <input id="uploadFilesBtn" name="files" multiple type="file">
+                            </label>
+                        </div>
+                    </form>
                     <ul class="files-to-upload">
-                        <li class="file-item">
-                            <h3 class="name float-lt">mamak.zip</h3>
-                            <span class="size">55 KB</span>
-                            <button class="remove-upload-file btn-icon-reset" type="button">
-                                ×
-                            </button>
-                            <div class="start-upload">
-                                <em class="upload-state">
-                                    Uploading ...
-                                    <span class="percentage">
-                                            15%
-                                    </span>
-                                </em>
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 25%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="file-item">
-                            <h3 class="name float-lt">file1.zip</h3>
-                            <span class="size">2.5 MB</span>
-                            <button class="remove-upload-file btn-icon-reset" type="button">
-                                ×
-                            </button>
-                            <div class="start-upload">
-                                <em class="upload-state">
-                                    Uploading ...
-                                    <span class="percentage">
-                                            75%
-                                        </span>
-                                </em>
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 75%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
                     </ul>
                     <div class="alert error">
                         <strong>error!</strong>
@@ -490,7 +451,6 @@
                         <thead>
                             <tr>
                                 <th>permissions</th>
-                                <th>permissions</th>
                                 <th>read</th>
                                 <th>write</th>
                                 <th>execute</th>
@@ -501,7 +461,7 @@
                                 <td>owner</td>
                                 <td>
                                     <label class="checkbox" data-action="read" data-group="owner">
-                                        <input type="checkbox">
+                                        <input type="checkbox" checked>
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
@@ -522,7 +482,7 @@
                                 <td>group</td>
                                 <td>
                                     <label class="checkbox" data-action="read" data-group="group">
-                                        <input type="checkbox">
+                                        <input type="checkbox" checked>
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
@@ -543,7 +503,7 @@
                                 <td>others</td>
                                 <td>
                                     <label class="checkbox" data-action="read" data-group="others">
-                                        <input type="checkbox">
+                                        <input type="checkbox" checked>
                                         <span class="checkbox-text"></span>
                                     </label>
                                 </td>
@@ -596,7 +556,7 @@
                                           fill="#A7A9AC"/>
                                     </svg>
                             </span>
-                            <span class="info-text"></span>
+                            <span class="info-text">index.html</span>
                         </li>
                         <li class="info-item path">
                             <span class="info-icon">
@@ -608,7 +568,7 @@
                                               fill-rule="evenodd"/>
                                         </svg>
                             </span>
-                            <span class="info-text"></span>
+                            <span class="info-text">/index.html</span>
                         </li>
                         <li class="info-item size">
                             <span class="info-icon">
@@ -619,7 +579,7 @@
                                           fill-rule="evenodd"/>
                                     </svg>
                             </span>
-                            <span class="info-text"></span>
+                            <span class="info-text">55 KB</span>
                         </li>
                         <li class="info-item owner">
                             <span class="info-icon">
@@ -628,7 +588,7 @@
                                           fill="#A7A9AC"/>
                                     </svg>
                             </span>
-                            <span class="info-text"></span>
+                            <span class="info-text">14066355</span>
                         </li>
                         <li class="info-item group">
                             <span class="info-icon">
@@ -637,7 +597,7 @@
                                           fill="#A7A9AC"/>
                                 </svg>
                             </span>
-                            <span class="info-text"></span>
+                            <span class="info-text">14066355</span>
                         </li>
                         <li class="info-item permissions">
                             <span class="info-icon">
@@ -646,7 +606,7 @@
                                           fill="#A7A9AC"/>
                                     </svg>
                             </span>
-                            <span class="info-text"></span>
+                            <span class="info-text">-rw-r--r-- (0644)</span>
                         </li>
                     </ul>
                 </div>
@@ -734,7 +694,7 @@
                 <div class="modal-body">
                     <h4 class="moving-to">
                         moving <span class="source badge"></span>
-                        to <span class="destination badge">/</span>
+                        to <span class="destination badge">css/plugins/codemirror</span>
                     </h4>
                     <div class="files-section">
                         <ul class="files-list">
@@ -755,7 +715,6 @@
                 </div>
             </div>
         </div>
-
         <script src="./vendor/filemanager-template.min.js"></script>
         <script src="./vendor/promises-polyfill.min.js"></script>
         <script src="./vendor/fetch-umd-polyfill.min.js"></script>

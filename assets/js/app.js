@@ -339,7 +339,10 @@ const App = function () {
 
                     percentage.textContent = progress + '%';
                     bar.style.width = progress + '%';
-                    status.textContent = 'Uploading to the server ...';
+
+                    if (progress === 100) {
+                        status.textContent = 'Uploading to the server ...';
+                    }
                 });
             });
         });

@@ -1,6 +1,6 @@
 import dirIcon from '../templates/includes/sidebarDirIcon';
 
-function moveModalFileDirItem(dir) {
+function moveModalDirItem(dir) {
     return `
         <li class="dir-item item" data-path="${encodeURI(dir.path)}" data-open="false">
             ${dirIcon()}
@@ -10,4 +10,4 @@ function moveModalFileDirItem(dir) {
     `;
 }
 
-export default moveModalFileDirItem;
+export default moveModalDirItem;

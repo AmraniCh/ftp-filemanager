@@ -15,6 +15,9 @@ abstract class Controller
     /** @var DIC */
     protected static $container;
 
+    /** @var array */
+    protected static $config;
+
     /** @var HttpRequest */
     protected $request;
 
@@ -42,6 +45,22 @@ abstract class Controller
     public static function getContainer()
     {
         return self::$container;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getConfig()
+    {
+        return self::$config;
+    }
+
+    /**
+     * @param array $config
+     */
+    public static function setConfig($config)
+    {
+        self::$config = $config;
     }
 
     /**

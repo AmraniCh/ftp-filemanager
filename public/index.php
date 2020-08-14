@@ -9,12 +9,13 @@ use FTPApp\Routing\RouteDispatcher;
 
 require __DIR__ . '/../config/bootstrap.php';
 
-$request = new Request();
-$dispatcher = new RouteDispatcher(new RouteCollection(include(dirname(__DIR__) . '/config/routes.php')),
+$request    = new Request();
+$dispatcher = new RouteDispatcher(
+    new RouteCollection(include(dirname(__DIR__) . '/config/routes.php')),
     $request->getUri(),
     $request->getMethod()
 );
-$container = new DIC(include(dirname(__DIR__) . '/config/services.php'));
+$container  = new DIC(include(dirname(__DIR__) . '/config/services.php'));
 
 $app = new AppHandler($request, $dispatcher, $container);
 $app->init();

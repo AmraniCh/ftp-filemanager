@@ -45,6 +45,8 @@ class AppHandler
     {
         // Set the base controller container
         Controller::setContainer($this->container);
+        // Make the configuration info available in the base controller
+        Controller::setConfig(include(dirname(__DIR__).'/config/app.php'));
     }
 
     /**

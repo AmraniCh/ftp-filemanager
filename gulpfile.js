@@ -25,11 +25,10 @@ var onError = function (err) {
 
 gulp.task('bundle', function () {
     return browserify({
-            entries: ['./assets/js/app.js']
+            entries: ['./assets/js/main.js']
         })
         .transform(babelify, { 'presets': ['env'] })
         .bundle()
-        .pipe(plumber({errorHandler: onError}))
         .pipe(plumber({errorHandler: onError}))
         .pipe(source('app.js'))
         .pipe(rename({ suffix: '.min' }))

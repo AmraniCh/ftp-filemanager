@@ -33,25 +33,5 @@ abstract class FilemanagerControllerAbstract extends Controller
                 $this->ftpAdapter()->openConnection($config);
             }
         }
-
-        // Sets a custom exception handler
-        set_exception_handler([$this, 'onException']);
-    }
-
-    /**
-     * Custom exception handler sends an HTTP JSON response with the exception message.
-     *
-     * @param FtpAdapterException $exception
-     *
-     * @return void
-     */
-    public function onException($exception)
-    {
-        // Handles only FtpAdapterException exceptions
-        if ($exception instanceof FtpAdapterException) {
-            (new JsonResponse(['error' => $exception->getMessage()], 500))
-                ->removeXPoweredByHeader()
-                ->send();
-        }
     }
 }

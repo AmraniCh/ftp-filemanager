@@ -4,6 +4,7 @@ namespace FTPApp\Controllers\Filemanager;
 
 use FTPApp\Controllers\FilemanagerControllerAbstract;
 use FTPApp\Http\JsonResponse;
+use FTPApp\Modules\FtpAdapterException;
 
 class FilemanagerController extends FilemanagerControllerAbstract
 {
@@ -24,103 +25,151 @@ class FilemanagerController extends FilemanagerControllerAbstract
         $this->session()->regenerateID(true);
 
         return $this->renderWithResponse('filemanager', [
-            'homeUrl' => $this->generateUrl('home'),
+            'homeUrl'   => $this->generateUrl('home'),
             'logoutUrl' => $this->generateUrl('login'),
         ]);
     }
 
     public function browse()
     {
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->browse($this->getParameters()['path']),
-        ]);
+        try {
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->browse($this->getParameters()['path']),
+            ]);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function addFile()
     {
-        $params = $this->request->getJSONBodyParameters();
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->addFile($params['path'] . $params['name'])
-        ], 201);
+        try {
+            $params = $this->request->getJSONBodyParameters();
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->addFile($params['path'] . $params['name']),
+            ], 201);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function addFolder()
     {
-        $params = $this->request->getJSONBodyParameters();
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->addFolder($params['path'] . $params['name'])
-        ], 201);
+        try {
+            $params = $this->request->getJSONBodyParameters();
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->addFolder($params['path'] . $params['name']),
+            ], 201);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function getFileContent()
     {
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->getFileContent($this->request->getParameters()['file'])
-        ]);
+        try {
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->getFileContent($this->request->getParameters()['file']),
+            ]);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function updateFileContent()
     {
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->updateFileContent(
-                $this->request->getJSONBodyParameters()['file'],
-                $this->request->getJSONBodyParameters()['content']
-            )
-        ]);
+        try {
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->updateFileContent(
+                    $this->request->getJSONBodyParameters()['file'],
+                    $this->request->getJSONBodyParameters()['content']
+                ),
+            ]);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function remove()
     {
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->remove($this->request->getJSONBodyParameters()['files'])
-        ]);
+        try {
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->remove($this->request->getJSONBodyParameters()['files']),
+            ]);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function rename()
     {
-        $params = $this->request->getJSONBodyParameters();
-        $path = $params['path'];
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->rename($path . $params['file'], $path . $params['newName'])
-        ]);
+        try {
+            $params = $this->request->getJSONBodyParameters();
+            $path   = $params['path'];
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->rename($path . $params['file'], $path . $params['newName']),
+            ]);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function getDirectoryTree()
     {
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->getDirectoryTree()
-        ]);
+        try {
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->getDirectoryTree(),
+            ]);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function move()
     {
-        $params = $this->request->getJSONBodyParameters();
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->move($params['path'] . $params['file'], $params['newPath'])
-        ]);
+        try {
+            $params = $this->request->getJSONBodyParameters();
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->move($params['path'] . $params['file'], $params['newPath']),
+            ]);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function permissions()
     {
-        $params = $this->request->getJSONBodyParameters();
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->permissions($params['path'] . $params['file'], $params['permissions'])
-        ]);
+        try {
+            $params = $this->request->getJSONBodyParameters();
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->permissions($params['path'] . $params['file'], $params['permissions']),
+            ]);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function download()
     {
-        return $this->ftpAdapter()->download($this->getParameters()['file']);
+        try {
+            return $this->ftpAdapter()->download($this->getParameters()['file']);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 
     public function upload()
     {
-        $file = $this->request->getFiles()['file'];
-        return new JsonResponse([
-            'result' => $this->ftpAdapter()->upload(
-                $file['tmp_name'],
-                $this->getParameters()['path'] . $file['name']
-            )
-        ]);
+        try {
+            $file = $this->request->getFiles()['file'];
+            return new JsonResponse([
+                'result' => $this->ftpAdapter()->upload(
+                    $file['tmp_name'],
+                    $this->getParameters()['path'] . $file['name']
+                ),
+            ]);
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
     }
 }

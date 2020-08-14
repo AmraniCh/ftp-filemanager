@@ -2,7 +2,7 @@ var uploadRequest = function (data) {
     const allowedMethods = ['POST', 'PUT'];
 
     if (allowedMethods.indexOf(data.method) === -1) {
-        throw `${data.method} not allowed for upload transfer.`;
+        throw `${data.method} not allowed for an upload transfer.`;
     }
 
     var xhr = new XMLHttpRequest();

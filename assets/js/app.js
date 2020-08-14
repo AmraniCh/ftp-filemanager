@@ -337,13 +337,14 @@ const App = function () {
             });
 
             var formData = new FormData();
+            var up = new upload();
             state.uploadedFiles.forEach(function (file) {
                 const fileItem = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`);
 
                 formData.append('file', file);
                 formData.append('path', state.path);
 
-                upload(state.path, formData, function (progress) {
+                up.push(state.path, formData, function (progress) {
                     getElement('.percentage', fileItem).textContent = progress + '%';
                     getElement('.progress-bar', fileItem).style.width = progress + '%';
                     if (progress === 100) {
@@ -352,6 +353,11 @@ const App = function () {
                 }, function (err) {
                     getElement('.file-error .text', fileItem).textContent = err;
                 });
+            });
+
+            up.resolveStack(function () {
+                modal('#uploadModal').close();
+                refresh(state.path);
             });
         });
     };

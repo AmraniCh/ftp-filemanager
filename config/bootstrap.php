@@ -1,6 +1,5 @@
 <?php
 
-use http\Exception\RuntimeException;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 

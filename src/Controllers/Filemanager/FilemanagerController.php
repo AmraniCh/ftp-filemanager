@@ -19,22 +19,25 @@ class FilemanagerController extends Controller
     public function before()
     {
         try {
-            if ($this->session()->cookieExists()) {
-                // Resume the existing session and not start a new one
-                $this->session()->start();
+            $this->session()->start();
 
-                $config   = array_merge($this->sessionStorage()->getVariable('config'), self::getConfig()['ftp']);
-                $loggedIn = $this->sessionStorage()->getVariable('loggedIn');
+            $loggedIn = $this->sessionStorage()->getVariable('loggedIn');
+
+            if (is_bool($loggedIn) && $loggedIn) {
+
+                $config = array_merge($this->sessionStorage()->getVariable('config'), self::getConfig()['ftp']);
 
                 if (is_array($config) && is_bool($loggedIn) && $loggedIn) {
                     $this->ftpAdapter()->openConnection($config);
                 }
             } else {
+
                 /**
-                 * If the session cookie doesn't exists and the request sent
-                 * using ajax then send a json response to redirect to the
-                 * login page in client side, since it an ajax request
-                 * the location header has no effect in this case.
+                 * If the user is not logged and the request was sent using
+                 * ajax then a json response will be send to redirect the user
+                 * to the login page, this redirection will be handled in the client
+                 * side, since it an ajax request the location header has no effect in
+                 * this case.
                  */
                 if ($this->request->isAjaxRequest()) {
                     return new JsonResponse(['location' => '/login'], 401);
@@ -51,13 +54,13 @@ class FilemanagerController extends Controller
          * Check if the session cookie exists, if doesn't
          * make a redirection to login page.
          */
-        if (!$this->session()->cookieExists()) {
+        $loggedIn = $this->sessionStorage()->getVariable('loggedIn');
+        if (is_bool($loggedIn) && !$loggedIn) {
             return $this->redirectToRoute('login');
         }
 
         /**
-         * If a session already exists regenerate the session ID
-         * and delete the old session associated file.
+         * Regenerate the session ID.
          */
         $this->session()->regenerateID(true);
 

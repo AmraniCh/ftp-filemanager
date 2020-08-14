@@ -13,6 +13,10 @@ class LoginController extends Controller
         $this->session()->deleteCookie();
         // Destroy session data
         $this->session()->destroy();
+        // Unset the session vars
+        $this->sessionStorage()->unsetVars(); 
+        // Start a new session
+        $this->session()->start();
 
         return $this->renderWithResponse('login', ['homeUrl' => $this->generateUrl('home')]);
     }

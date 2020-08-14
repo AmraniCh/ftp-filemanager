@@ -37,8 +37,13 @@ if (!$config['debug']) {
             $e->getLine()
         );
 
-        // Logging the error info to the predefined logs file
+        // Error logging
         error_log($message, 3, dirname(__DIR__).'/storage/logs/errors.log');
+
+        // Send a friendly message to the user.
+        (new \FTPApp\Http\HttpResponse("Oops! Something goes wrong.", 500))
+            ->removeXPoweredByHeader()
+            ->send();
     });
 }
 

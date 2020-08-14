@@ -3,7 +3,7 @@ import modal from "../helpers/modal";
 import refresh from "./refresh";
 import state from "../state";
 
-function upload(path, data, onprogress) {
+function upload(path, data, onprogress, onerror) {
     uploadRequest({
         method: 'POST',
         url: 'api?action=upload',
@@ -13,7 +13,8 @@ function upload(path, data, onprogress) {
                 modal('#uploadModal').close();
                 refresh(state.path);
             } else if (res.error) {
-                modal('#uploadModal').showError(res.error);
+                //modal('#uploadModal').showError(res.error);
+                onerror(res.error);
             }
         },
         progress: function (info) {

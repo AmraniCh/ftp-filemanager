@@ -300,7 +300,7 @@ const App = function () {
 
         // Append files
         bindEvent('change', '#uploadFilesBtn', function () {
-           const files = Array.from(getElement('#uploadFilesBtn').files);
+            const files = Array.from(getElement('#uploadFilesBtn').files);
 
             files.forEach(function (file) {
                 DOMRender(uploadModalFileItem(new File(file)), '.files-to-upload');
@@ -310,6 +310,9 @@ const App = function () {
             files.forEach(function (file) {
                 state.uploadedFiles.push(file);
             });
+
+            // Reset the form
+            getElement('#uploadFilesForm').reset();
         });
 
         // Remove the files
@@ -325,24 +328,29 @@ const App = function () {
 
     var uploadAction = function () {
         bindEvent('click', '#uploadBtn', function () {
-            var formData = new FormData();
+            // reset all progress info
+            getElements('#uploadModal .file-item').forEach(function(item) {
+                getElement('.progress-bar', item).style.width = '0';
+                getElement('.percentage', item).textContent = '0%';
+                getElement('.upload-state', item).textContent = 'Uploading ...';
+                getElement('.file-error .text', item).textContent = '';
+            });
 
+            var formData = new FormData();
             state.uploadedFiles.forEach(function (file) {
+                const fileItem = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`);
+
                 formData.append('file', file);
                 formData.append('path', state.path);
 
                 upload(state.path, formData, function (progress) {
-                    const item = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`),
-                        bar = getElement('.progress-bar', item),
-                        percentage = getElement('.percentage', item),
-                        status = getElement('.upload-state', item);
-
-                    percentage.textContent = progress + '%';
-                    bar.style.width = progress + '%';
-
+                    getElement('.percentage', fileItem).textContent = progress + '%';
+                    getElement('.progress-bar', fileItem).style.width = progress + '%';
                     if (progress === 100) {
-                        status.textContent = 'Uploading to the server ...';
+                        getElement('.upload-state', fileItem).textContent = 'Uploading to the server ...';
                     }
+                }, function (err) {
+                    getElement('.file-error .text', fileItem).textContent = err;
                 });
             });
         });

@@ -7,16 +7,15 @@ function uploadModalFileItem(fileItem) {
                 ×
             </button>
             <div class="start-upload">
-                <em class="upload-state">
-                    Uploading ...
-                    <span class="percentage">
-                            0%
-                    </span>
-                </em>
+                <em class="upload-state">Uploading ...</em>
+                <span class="percentage">0%</span>
                 <div class="progress">
                     <div class="progress-bar" style="width: 0;">
                     </div>
                 </div>
+            </div>
+            <div class="file-error">
+                <span class="text"></span>
             </div>
         </li>
     `;

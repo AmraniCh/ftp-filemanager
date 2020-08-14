@@ -107,6 +107,11 @@ class HttpRequest
         return false;
     }
 
+    public function getJSONBodyParameters()
+    {
+        return json_decode(file_get_contents('php://input'), true);
+    }
+
     /**
      * @return array
      */
@@ -146,8 +151,8 @@ class HttpRequest
      */
     public function isAjaxRequest()
     {
-        if (in_array('X_REQUESTED_WITH', $this->headers, false)) {
-            return $this->headers['X_REQUESTED_WITH'] === 'XMLHttpRequest';
+        if (array_key_exists('X-Requested-With', $this->headers)) {
+            return $this->headers['X-Requested-With'] === 'XMLHttpRequest';
         }
 
         return false;

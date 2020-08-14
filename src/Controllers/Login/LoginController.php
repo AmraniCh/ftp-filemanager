@@ -23,7 +23,7 @@ class LoginController extends Controller
             $config = $this->request->getBodyParameters();
 
             // Try to open the a successful ftp connection
-            $this->ftpAdapter()->openConnection($config);
+            $this->ftpAdapter()->openConnection(array_merge($config, self::getConfig()['ftp']));
 
             // Store the client connection configuration in the session
             $this->session()->start();

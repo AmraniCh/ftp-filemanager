@@ -9,6 +9,7 @@ var uploadRequest = function (data) {
     xhr.open(data.method, data.url, true);
 
     xhr.setRequestHeader('Accept', 'application/json');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
     // Success&complete
     xhr.addEventListener('load', function () {
@@ -17,6 +18,9 @@ var uploadRequest = function (data) {
         }
         if (typeof data.success === 'function') {
             if (this.readyState === 4) {
+                if (JSONResponse().location) {
+                    window.location = JSONResponse().location;
+                }
                 data.success(JSONResponse());
             }
         }

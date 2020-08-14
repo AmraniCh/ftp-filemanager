@@ -2,12 +2,49 @@
 
 namespace FTPApp\Controllers\Filemanager;
 
-use FTPApp\Controllers\FilemanagerControllerAbstract;
+use FTPApp\Controllers\Controller;
 use FTPApp\Http\JsonResponse;
 use FTPApp\Modules\FtpAdapterException;
 
-class FilemanagerController extends FilemanagerControllerAbstract
+class FilemanagerController extends Controller
 {
+    /**
+     * {@inheritDoc}
+     *
+     * Retrieves the connection configuration from the session and initialize
+     * the ftp adapter connection for every request.
+     *
+     * @return JsonResponse|void
+     */
+    public function before()
+    {
+        try {
+            if ($this->session()->cookieExists()) {
+                // Resume the existing session and not start a new one
+                $this->session()->start();
+
+                $config   = array_merge($this->sessionStorage()->getVariable('config'), self::getConfig()['ftp']);
+                $loggedIn = $this->sessionStorage()->getVariable('loggedIn');
+
+                if (is_array($config) && is_bool($loggedIn) && $loggedIn) {
+                    $this->ftpAdapter()->openConnection($config);
+                }
+            } else {
+                /**
+                 * If the session cookie doesn't exists and the request sent
+                 * using ajax then send a json response to redirect to the
+                 * login page in client side, since it an ajax request
+                 * the location header has no effect in this case.
+                 */
+                if ($this->request->isAjaxRequest()) {
+                    return new JsonResponse(['location' => '/login'], 401);
+                }
+            }
+        } catch (FtpAdapterException $ex) {
+            return new JsonResponse(['error' => $ex->getMessage()], 500);
+        }
+    }
+
     public function index()
     {
         /**

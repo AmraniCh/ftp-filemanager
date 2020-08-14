@@ -13,7 +13,7 @@ const doFetch = function (uri, options, successHandler, errorHandler = null, com
                             completeHandler(json);
                         }
 
-                        return Promise.reject(json.error);
+                        return Promise.reject(json);
                     }
 
                     if (typeof completeHandler === 'function') {
@@ -24,11 +24,11 @@ const doFetch = function (uri, options, successHandler, errorHandler = null, com
                 });
             }
         })
-        .catch((err) => {
+        .catch((json) => {
             if (typeof errorHandler === 'function') {
-                errorHandler(err);
+                errorHandler(json.error);
             }
-            fetchConfig.errorHandler(err);
+            fetchConfig.errorHandler(json);
         });
 };
 

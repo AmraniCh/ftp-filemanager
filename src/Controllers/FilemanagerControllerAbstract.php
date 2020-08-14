@@ -3,8 +3,6 @@
 namespace FTPApp\Controllers;
 
 use FTPApp\Http\HttpRequest;
-use FTPApp\Http\JsonResponse;
-use FTPApp\Modules\FtpAdapterException;
 
 abstract class FilemanagerControllerAbstract extends Controller
 {

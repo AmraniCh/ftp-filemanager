@@ -25,10 +25,10 @@ const doFetch = function (uri, options, successHandler, errorHandler = null, com
             }
         })
         .catch((json) => {
+            fetchConfig.errorHandler(json);
             if (typeof errorHandler === 'function') {
                 errorHandler(json.error);
             }
-            fetchConfig.errorHandler(json);
         });
 };
 

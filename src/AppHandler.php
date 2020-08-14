@@ -90,7 +90,6 @@ class AppHandler
                 throw new RouteLogicException("Invoking a non existing controller method [$method].");
             }
 
-            // Before
             $before = call_user_func([$controller, 'before']);
             if (!is_null($before)) {
                 return $before;

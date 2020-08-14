@@ -220,4 +220,14 @@ abstract class Controller
 
         return self::get('FtpAdapter');
     }
+
+    /**
+     * Executes some code before calling the controller method for the request.
+     *
+     * @return mixed
+     */
+    public function before()
+    {
+
+    }
 }

@@ -1,4 +1,6 @@
-import fetchConfig from "../config/fetchConfig";
+import config from "../config/app";
+
+const fetchConfig = config.fetch;
 
 const doFetch = function (uri, options, successHandler, errorHandler = null, completeHandler = null) {
     fetch(uri, options)

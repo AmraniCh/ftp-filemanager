@@ -18,6 +18,7 @@ import download from "./actions/download";
 import DOMRender from "./helpers/DOMRender";
 import uploadModalFileItem from "./templates/uploadModalFileItem";
 import upload from "./actions/upload";
+import config from "./config/app";
 
 const App = function () {
 
@@ -304,11 +305,15 @@ const App = function () {
 
             files.forEach(function (file) {
                 DOMRender(uploadModalFileItem(new File(file)), '.files-to-upload');
-            });
-
-            // Storing the files
-            files.forEach(function (file) {
-                state.uploadedFiles.push(file);
+                // Check for the max file size
+                if ((new File(file)).size <= config.maximumUploadSize * Math.pow(1024, 2)) {
+                    // Storing the files
+                    state.uploadedFiles.push(file);
+                } else {
+                    const fileItem = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`);
+                    getElement('.file-error .text', fileItem).textContent =
+                        `Maximum upload size ${config.maximumUploadSize} MG exceeded, this file will be skipped.`;
+                }
             });
 
             // Reset the form

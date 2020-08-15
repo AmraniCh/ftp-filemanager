@@ -119,9 +119,10 @@ class FtpClientAdapter implements FtpAdapter
     public function updateFileContent($file, $content)
     {
         try {
+            $this->client->removeFile($file);
             return $this->client->createFile($file, $content);
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException("Unable to edit file [$file].");
         }
     }
 

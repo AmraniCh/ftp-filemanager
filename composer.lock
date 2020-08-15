@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "05b6eb35e72d3d801744515324719720",
+    "content-hash": "42c2042667284d51eb675dba87bbcd2f",
     "packages": [
         {
             "name": "filp/whoops",
@@ -69,16 +69,16 @@
         },
         {
             "name": "lazzard/php-ftp-client",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lazzard/php-ftp-client.git",
-                "reference": "bd25b9db8f8ced28ac4c71f0fa6f9c902059a0a4"
+                "reference": "e0220b0b23b78e7fcd578cd6fd0ecbc57dea509f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lazzard/php-ftp-client/zipball/bd25b9db8f8ced28ac4c71f0fa6f9c902059a0a4",
-                "reference": "bd25b9db8f8ced28ac4c71f0fa6f9c902059a0a4",
+                "url": "https://api.github.com/repos/lazzard/php-ftp-client/zipball/e0220b0b23b78e7fcd578cd6fd0ecbc57dea509f",
+                "reference": "e0220b0b23b78e7fcd578cd6fd0ecbc57dea509f",
                 "shasum": ""
             },
             "require": {
@@ -110,7 +110,7 @@
                 "ftp-client",
                 "ftp-library"
             ],
-            "time": "2020-06-15T05:58:34+00:00"
+            "time": "2020-08-15T01:39:50+00:00"
         },
         {
             "name": "psr/log",
@@ -162,11 +162,9 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "dev",
-    "stability-flags": {
-        "lazzard/php-ftp-client": 20
-    },
-    "prefer-stable": true,
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],

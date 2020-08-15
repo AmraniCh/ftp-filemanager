@@ -15,15 +15,13 @@
             "email": "elamrani.sv.laza@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "FTPApp\\": ["src/", "lib/"]
         }
     },
     "require": {
-        "lazzard/php-ftp-client": "dev-master",
+        "lazzard/php-ftp-client": "^1.0",
         "filp/whoops": "^2.7"
     }
 }

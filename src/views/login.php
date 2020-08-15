@@ -31,8 +31,8 @@
                     <span class="checkbox-text">use SSL connection (If available)</span>
                 </label>
                 <label class="checkbox" for="usePassive">
-                    <input type="checkbox" id="usePassive" name="usePassive">
-                    <span class="checkbox-text">use passive connection</span>
+                    <input type="checkbox" id="usePassive" name="usePassive" checked>
+                    <span class="checkbox-text">use passive connection (recommended)</span>
                 </label>
                 <span class="server-error">
                     <?php if (isset($serverError)): ?>

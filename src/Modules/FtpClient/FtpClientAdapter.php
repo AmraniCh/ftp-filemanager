@@ -28,18 +28,23 @@ class FtpClientAdapter implements FtpAdapter
     public function openConnection($config)
     {
         try {
-            $connectionInitializer = FtpConnection::class;
-            if (isset($config['useSsl']) && $config['useSsl']) {
-                $connectionInitializer = FtpSSLConnection::class;
-            }
-
-            $connection = new $connectionInitializer(
+            $params = [
                 $config['host'],
                 $config['username'],
                 $config['password'],
                 $config['port'],
-                $config['timeout']
-            );
+                $config['timeout'],
+            ];
+
+            if (isset($config['useSsl']) && $config['useSsl']) {
+                try {
+                    $connection = new FtpSSLConnection(...$params);
+                } catch (FtpClientException $ex) {
+                    $connection = new FtpConnection(...$params);
+                }
+            } else {
+                $connection = new FtpConnection(...$params);
+            }
 
             $connection->open();
 
@@ -62,7 +67,6 @@ class FtpClientAdapter implements FtpAdapter
     public function browse($dir)
     {
         try {
-            // escape dir spaces (rawlist bug)
             $list = $this->client->listDirectoryDetails($dir);
 
             $files = [];

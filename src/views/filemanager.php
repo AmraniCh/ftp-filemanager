@@ -696,7 +696,7 @@
                 <div class="modal-body">
                     <h4 class="moving-to">
                         moving <span class="source badge"></span>
-                        to <span class="destination badge">css/plugins/codemirror</span>
+                        to <span class="destination badge">/</span>
                     </h4>
                     <div class="files-section">
                         <ul class="files-list">

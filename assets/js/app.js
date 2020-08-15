@@ -17,7 +17,7 @@ import File from "./entities/File";
 import download from "./actions/download";
 import DOMRender from "./helpers/DOMRender";
 import uploadModalFileItem from "./templates/uploadModalFileItem";
-import upload from "./actions/upload";
+import Upload from "./actions/upload";
 import config from "./config/app";
 
 const App = function () {
@@ -26,7 +26,7 @@ const App = function () {
 
     this.registerEvents = function () {
         registry.push(load);
-        
+
         /**
          * Directory listing actions.
          */
@@ -131,15 +131,30 @@ const App = function () {
             getFileContent(state.editableFile);
         });
 
+        // Update editor content when clicking in the footer edit button
+        bindEvent('click', 'button[data-action="edit"]', function (e) {
+            const selectedFile = getElement('.files-table .file-item.selected[data-type="file"] .file-name');
+            if (typeof selectedFile === 'object') {
+                state.editableFile = state.path + selectedFile.textContent;
+                getFileContent(state.editableFile);
+            }
+        });
+
         // Get editor file content when clicking in a sidebar file item
         on('click', '.sidebar .file-item', function (e) {
             const
                 file = e.target.closest('.file-item'),
-                fileName = file.dataset.name;
+                fileName = decodeURI(file.dataset.name);
 
+            // Clear table content
+            getElement('.files-table tbody').textContent = '';
+            // Close siblings opened directories
             closeSiblingTreeOf(file);
+            // Update path
             state.path = getSelectedPath();
+            // Show editor modal
             modal('#editorModal').show();
+            // Get file content
             state.editableFile = state.path + fileName;
             getFileContent(state.editableFile);
         });
@@ -147,6 +162,7 @@ const App = function () {
 
     var editFileAction = function () {
         bindEvent('click', '#updateFileBtn', function () {
+            console.log(state);
             edit(state.editableFile, fmEditor.get());
         });
     };
@@ -283,7 +299,7 @@ const App = function () {
             const selectedFiles = Array.from(getElements('.files-table .file-item.selected .file-name'));
 
             var files = selectedFiles.map(function (item) {
-               return item.textContent;
+                return item.textContent;
             });
 
             download(state.path, files);
@@ -324,9 +340,9 @@ const App = function () {
         on('click', '.remove-upload-file', function (e) {
             const removedFile = getElement('.name', e.target.closest('.file-item')).textContent;
             state.uploadedFiles.forEach(function (file, i) {
-               if (file.name === removedFile)  {
-                   delete state.uploadedFiles[i];
-               }
+                if (file.name === removedFile) {
+                    delete state.uploadedFiles[i];
+                }
             });
         });
     };
@@ -334,7 +350,7 @@ const App = function () {
     var uploadAction = function () {
         bindEvent('click', '#uploadBtn', function () {
             // reset all progress info
-            getElements('#uploadModal .file-item').forEach(function(item) {
+            getElements('#uploadModal .file-item').forEach(function (item) {
                 getElement('.progress-bar', item).style.width = '0';
                 getElement('.percentage', item).textContent = '0%';
                 getElement('.upload-state', item).textContent = 'Uploading ...';
@@ -342,14 +358,14 @@ const App = function () {
             });
 
             var formData = new FormData();
-            var up = new upload();
+            var upload = new Upload();
             state.uploadedFiles.forEach(function (file) {
                 const fileItem = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`);
 
                 formData.append('file', file);
                 formData.append('path', state.path);
 
-                up.push(state.path, formData, function (progress) {
+                upload.push(state.path, formData, function (progress) {
                     getElement('.percentage', fileItem).textContent = progress + '%';
                     getElement('.progress-bar', fileItem).style.width = progress + '%';
                     if (progress === 100) {
@@ -360,7 +376,7 @@ const App = function () {
                 });
             });
 
-            up.resolveStack(function () {
+            upload.resolveStack(function () {
                 modal('#uploadModal').close();
                 refresh(state.path);
             });

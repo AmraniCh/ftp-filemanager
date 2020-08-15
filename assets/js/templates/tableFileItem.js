@@ -20,7 +20,7 @@ export default function (fileItem) {
                 ${fileItem.isFile() ? fileIcon() : dirIcon()}
                 <span class="file-name">${fileItem.name}</span>
             </td>
-            <td>${fileItem.bytesToSize()}</td>
+            <td>${fileItem.isFile() ? fileItem.bytesToSize() : ''}</td>
             <td>${fileItem.modifiedTime}</td>
             <td>${fileItem.permissions}</td>
         </tr>`;

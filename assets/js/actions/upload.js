@@ -1,6 +1,6 @@
 import uploadRequest from "../helpers/uploadRequest";
 
-var upload = function () {
+var Upload = function () {
     /**
      * Store an array of promises results.
      *
@@ -13,8 +13,8 @@ var upload = function () {
      *
      * @param {string} path
      * @param {string} data
-     * @param {string} onprogress
-     * @param {string} onerror
+     * @param {function} onprogress
+     * @param {function} onerror
      */
     this.push = function (path, data, onprogress, onerror) {
         this.stack.push(uploadRequest({
@@ -45,4 +45,4 @@ var upload = function () {
     };
 };
 
-export default upload;
+export default Upload;

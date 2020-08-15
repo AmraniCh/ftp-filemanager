@@ -57,7 +57,7 @@ class FtpClientAdapter implements FtpAdapter
                 $this->config->setAutoSeek($config['autoSeek']);
             }
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -70,8 +70,9 @@ class FtpClientAdapter implements FtpAdapter
             $list = $this->client->listDirectoryDetails($dir);
 
             $files = [];
+            $dirs = [];
             foreach ($list as $file) {
-                $files[] = [
+                $info = [
                     'name'         => $file['name'],
                     'type'         => $file['type'],
                     'size'         => $file['size'],
@@ -81,11 +82,17 @@ class FtpClientAdapter implements FtpAdapter
                     'owner'        => $file['owner'],
                     'group'        => $file['group'],
                 ];
+
+                if ($file['type'] === 'dir') {
+                    $dirs[] = $info;
+                } else {
+                    $files[] = $info;
+                }
             }
 
-            return $files;
+            return array_merge($dirs, $files);
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -94,7 +101,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             return $this->client->createFile(urldecode(ltrim($file, '/')));
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -103,7 +110,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             return $this->client->createDirectory(urldecode(ltrim($dir, '/')));
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -112,7 +119,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             return $this->client->getFileContent($file);
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -138,7 +145,7 @@ class FtpClientAdapter implements FtpAdapter
             }
             return true;
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -147,7 +154,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             return $this->client->rename($file, $newName);
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -156,7 +163,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             return $this->client->listDirectoryDetails('/', true, FtpClient::DIR_TYPE);
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -165,7 +172,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             return $this->client->move(ltrim($file, '/'), $newPath);
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -174,7 +181,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             return $this->client->setPermissions($file, $permissions);
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -195,7 +202,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             return $this->client->upload($filePath, $remotePath);
         } catch (FtpClientException $ex) {
-            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex));
+            throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
     }
 
@@ -210,13 +217,12 @@ class FtpClientAdapter implements FtpAdapter
      * to:
      * Failed to connect to remote server.
      *
-     * @param FtpClientException $exception
+     * @param string $message
      *
      * @return string
      */
-    protected
-    function normalizeExceptionMessage($exception)
+    protected function normalizeExceptionMessage($message)
     {
-        return preg_replace('/([\[\w\]]+)\s-\s/i', '', $exception->getMessage());
+        return preg_replace('/([\[\w\]]+)\s-\s/i', '', $message);
     }
 }

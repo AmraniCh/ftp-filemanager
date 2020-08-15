@@ -50,18 +50,13 @@ class FilemanagerController extends Controller
 
     public function index()
     {
-        /**
-         * Check if the session cookie exists, if doesn't
-         * make a redirection to login page.
-         */
+        // If is not logged in make a redirection to login page.
         $loggedIn = $this->sessionStorage()->getVariable('loggedIn');
         if (is_bool($loggedIn) && !$loggedIn) {
             return $this->redirectToRoute('login');
         }
 
-        /**
-         * Regenerate the session ID.
-         */
+        // Regenerate the session ID.
         $this->session()->regenerateID(true);
 
         return $this->renderWithResponse('filemanager', [
@@ -109,7 +104,7 @@ class FilemanagerController extends Controller
     {
         try {
             return new JsonResponse([
-                'result' => $this->ftpAdapter()->getFileContent($this->request->getParameters()['file']),
+                'result' => utf8_encode($this->ftpAdapter()->getFileContent($this->request->getParameters()['file'])),
             ]);
         } catch (FtpAdapterException $ex) {
             return new JsonResponse(['error' => $ex->getMessage()], 500);

@@ -3,7 +3,7 @@ const config = {
     /**
      * Specify the maximum file size in MG allowed for upload transfers.
      */
-    maximumUploadSize: 8,
+    maximumUploadSize: 2,
 
     /**
      * Fetch configs.

@@ -200,7 +200,8 @@ class FilemanagerController extends Controller
             return new JsonResponse([
                 'result' => $this->ftpAdapter()->upload(
                     $file['tmp_name'],
-                    $this->getParameters()['path'] . $file['name']
+                    $this->getParameters()['path'] . $file['name'],
+                    self::getConfig()['ftp']['resumeUpload']
                 ),
             ]);
         } catch (FtpAdapterException $ex) {

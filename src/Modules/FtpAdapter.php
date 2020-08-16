@@ -137,12 +137,12 @@ interface FtpAdapter
      * Uploading the giving file to the server.
      *
      * @param string $filePath
-     *
      * @param string $remotePath
+     * @param bool   $resume
      *
      * @return bool
      *
      * @throws FtpAdapterException
      */
-    public function upload($filePath, $remotePath);
+    public function upload($filePath, $remotePath, $resume);
 }

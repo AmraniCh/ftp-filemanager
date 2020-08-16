@@ -24,7 +24,7 @@
                     <input type="text" name="password" placeholder="Password">
                 </div>
                 <div class="input-area">
-                    <input type="text" name="port" placeholder="Port" value="21">
+                    <input type="number" name="port" placeholder="Port" value="21">
                 </div>
                 <label class="checkbox" for="useSsl">
                     <input type="checkbox" id="useSsl" name="useSsl">

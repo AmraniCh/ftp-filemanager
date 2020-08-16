@@ -30,7 +30,9 @@ function browse(path) {
         // back path
         state.path = state.path.substring(0, state.path.lastIndexOf('/'));
         // show the error message
-        alert('Error : ' + err);
+        if (typeof err !== 'undefined') {
+            alert('Error : ' + err);
+        }
     }, function () {
         hideLoading();
     });

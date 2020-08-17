@@ -6,4 +6,3 @@
 - [ ] IE supporting (Using babel polyfill for Gulp).
 
 ### Others.
-- [ ] replace the whoops dependency.

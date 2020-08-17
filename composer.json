@@ -21,7 +21,6 @@
         }
     },
     "require": {
-        "lazzard/php-ftp-client": "^1.0",
-        "filp/whoops": "^2.7"
+        "lazzard/php-ftp-client": "^1.0"
     }
 }

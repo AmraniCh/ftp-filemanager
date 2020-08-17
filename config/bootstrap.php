@@ -1,7 +1,6 @@
 <?php
 
-use Whoops\Handler\PrettyPageHandler;
-use Whoops\Run;
+use FTPApp\ErrorHandling\ErrorHandler;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -10,41 +9,43 @@ ini_set('log_errors', true);
 ini_set('display_errors', true);
 ini_set('display_startup_errors', true);
 
-$configFile = dirname(__DIR__).'/config/app.php';
+$configFile = dirname(__DIR__) . '/config/app.php';
 
 if (!file_exists($configFile)) {
     throw new RuntimeException("Application config file was missing.");
 }
 
 $config = include($configFile);
-$whoops = new Run;
 
 if ($config['debug']) {
-    // Using whoops PrettyPageHandler to show errors in debug mode
-    $whoops->pushHandler(new PrettyPageHandler);
-}
-
-if (!$config['debug']) {
-    // Pushing a custom callback handler to the whoops handlers stack
-    $whoops->pushHandler(function (Exception $e) {
-        // Build a message string
-        $message = sprintf(
-            "[%s] [%s] [%s] [Line : %s]\n",
-            date('Y:m:d h:m:s'),
-            $e->getFile(),
-            $e->getMessage(),
-            $e->getLine()
-        );
-
-        // Error logging
-        error_log($message, 3, dirname(__DIR__).'/storage/logs/errors.log');
-
-        // Send a friendly message to the user.
-        (new \FTPApp\Http\HttpResponse("Oops! Something goes wrong.", 500))
-            ->removeXPoweredByHeader()
-            ->send();
+    $handler = new ErrorHandler(function (\Exception $exx) {
+        echo "<h1>" . get_class($exx) . "</h1>";
+        echo "<h3>" . $exx->getMessage() . "</h3>";
+        echo "<p>File : " . $exx->getFile() . "</p>";
+        echo "<p>Line : " . $exx->getLine() . "</p>";
+        echo "<pre>Trace : " . $exx->getTraceAsString() . "</pre>";
     });
 }
 
-// Register this whoops instance as the error & exception handler
-$whoops->register();
+if (!$config['debug']) {
+    $handler = new ErrorHandler(function (\Exception $ex) {
+        // Build the message string
+        $message = sprintf(
+            "[%s] [%s] [%s] [Line : %s]\n%s\n",
+            date('Y:m:d h:m:s'),
+            $ex->getMessage(),
+            $ex->getFile(),
+            $ex->getLine(),
+            $ex->getTraceAsString()
+        );
+
+        // Logging error to a log file
+        error_log($message, 3, dirname(__DIR__) . '/storage/logs/'.date('Y-m-d').'.log');
+
+        // Send a friendly message to the user.
+        echo "<h3 style='color:#333;letter-spacing: 2px;'>Oops! Something goes wrong.</h3>";
+        exit();
+    });
+}
+
+$handler->start();

@@ -146,8 +146,6 @@ const App = function () {
                 file = e.target.closest('.file-item'),
                 fileName = decodeURI(file.dataset.name);
 
-            // Clear table content
-            getElement('.files-table tbody').textContent = '';
             // Close siblings opened directories
             closeSiblingTreeOf(file);
             // Update path
@@ -162,7 +160,6 @@ const App = function () {
 
     var editFileAction = function () {
         bindEvent('click', '#updateFileBtn', function () {
-            console.log(state);
             edit(state.editableFile, fmEditor.get());
         });
     };

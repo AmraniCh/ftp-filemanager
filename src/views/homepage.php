@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <?= $renderer->render('includes/meta.html') ?>
-        <?= $renderer->render('includes/styles.html') ?>
+        <?= $renderer->render('includes/styles.php') ?>
         <title>A flexible FTP web application</title>
     </head>
     <body>

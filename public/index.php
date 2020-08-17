@@ -22,5 +22,5 @@ $app->init();
 
 $response = $app->handle();
 if ($response instanceof Response) {
-    $response->removeXPoweredByHeader()->send();
+    $response->send();
 }

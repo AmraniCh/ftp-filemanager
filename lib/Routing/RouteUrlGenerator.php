@@ -36,7 +36,7 @@ class RouteUrlGenerator
         }
 
         if (!$this->hasMatchType($route->getPath())) {
-            return $route->getPath();
+            return $this->getRoutingPath() . $route->getPath();
         }
 
         $subject = $route->getPath();
@@ -46,7 +46,7 @@ class RouteUrlGenerator
             $subject = $replace;
         }
 
-        return $replace;
+        return $this->getRoutingPath() . $replace;
     }
 
     /**
@@ -74,5 +74,18 @@ class RouteUrlGenerator
     protected function hasMatchType($routeName)
     {
         return preg_match('/:(\w+)/i', $routeName) === 1;
+    }
+
+    /**
+     * Gets the actual routing path.
+     *
+     * @return string
+     */
+    protected function getRoutingPath()
+    {
+        $query = str_replace('/', '\\/', $_SERVER['QUERY_STRING']);
+        $uri = preg_replace('/\?/', '&', $_SERVER['REQUEST_URI'], 1);
+        $result =  preg_replace('/'.$query.'$|index.php$|&$/', '', $uri);
+        return preg_replace('/\/$/', '', $result);
     }
 }

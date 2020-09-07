@@ -22,8 +22,14 @@ import config from "./config/app";
 
 const App = function () {
 
+    /**
+     * A registry for events methods.
+     */
     var registry = [];
 
+    /**
+     * Registers events methods.
+     */
     this.registerEvents = function () {
         registry.push(load);
 
@@ -58,6 +64,9 @@ const App = function () {
         registry.push(updateUploadModal);
     };
 
+    /**
+     * Call and bind the events listeners.
+     */
     this.init = function () {
         registry.forEach(function (fn) {
             fn();
@@ -132,7 +141,7 @@ const App = function () {
         });
 
         // Update editor content when clicking in the footer edit button
-        bindEvent('click', 'button[data-action="edit"]', function (e) {
+        bindEvent('click', 'button[data-action="edit"]', function () {
             const selectedFile = getElement('.files-table .file-item.selected[data-type="file"] .file-name');
             if (typeof selectedFile === 'object') {
                 state.editableFile = state.path + selectedFile.textContent;
@@ -357,8 +366,8 @@ const App = function () {
                 getElement('.file-error .text', item).textContent = '';
             });
 
-            var formData = new FormData();
-            var upload = new Upload();
+            const formData = new FormData();
+            const upload = new Upload();
             state.uploadedFiles.forEach(function (file) {
                 const fileItem = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`);
 

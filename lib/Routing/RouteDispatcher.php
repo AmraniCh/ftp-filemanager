@@ -12,10 +12,10 @@ class RouteDispatcher
      * @var array
      */
     const MATCH_TYPES = [
-        'i'      => '[0-9]+',
-        's'      => '[a-zA-z]+',
+        'i'       => '[0-9]+',
+        's'       => '[a-zA-z]+',
         'encoded' => '[^;,/?:@&=+$]+',
-        'any'    => '.*',
+        'any'     => '.*',
     ];
 
     /** @var RouteCollection */
@@ -41,12 +41,12 @@ class RouteDispatcher
      *
      * @param RouteCollection $routes
      * @param string          $uri
-     * @param                 $method
+     * @param string          $method
      */
     public function __construct(RouteCollection $routes, $uri, $method)
     {
         $this->routes = $routes;
-        $this->uri    = $uri;
+        $this->uri    = $this->getRequestUri($uri);
         $this->method = $method;
     }
 
@@ -192,5 +192,25 @@ class RouteDispatcher
         }
 
         return !in_array($this->method, $methods);
+    }
+
+    /**
+     * Gets the actual requested uri.
+     *
+     * @param string $uri
+     *
+     * @return string
+     */
+    protected function getRequestUri($uri)
+    {
+        if ($uri == '') {
+            return '/';
+        } else {
+            /**
+             * Fix the [QSA] flag which replace the question
+             * mark for the query sting with an '&' char.
+             */
+            return '/' . preg_replace('/&/', '?', $uri, 1);
+        }
     }
 }

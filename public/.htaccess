@@ -1,0 +1,15 @@
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Ignore routing the static files & directories
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-l
+
+    # Rewrite every thnig else to the app hanlder
+    RewriteRule ^(.*)$ index.php?$1 [L,QSA]
+</IfModule>

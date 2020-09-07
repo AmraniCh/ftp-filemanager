@@ -12,7 +12,7 @@ require __DIR__ . '/../config/bootstrap.php';
 $request    = new Request();
 $dispatcher = new RouteDispatcher(
     new RouteCollection(include(dirname(__DIR__) . '/config/routes.php')),
-    $request->getUri(),
+    $request->getQueryString(),
     $request->getMethod()
 );
 $container  = new DIC(include(dirname(__DIR__) . '/config/services.php'));
@@ -22,5 +22,5 @@ $app->init();
 
 $response = $app->handle();
 if ($response instanceof Response) {
-    $response->removeXPoweredByHeader()->send();
+    $response->send();
 }

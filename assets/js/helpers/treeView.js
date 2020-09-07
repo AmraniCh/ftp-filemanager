@@ -41,6 +41,7 @@ function closeSiblingTreeOf(element) {
     result.forEach(function (item) {
         if (item.classList.contains('dir-item') && item.dataset.open === 'true') {
             item.dataset.open = 'false';
+            getElement('.files-table tbody').textContent = '';
             item.querySelector('.sub-files').textContent = '';
 
             var child = item.querySelector('.dir-item[data-open="true"]');

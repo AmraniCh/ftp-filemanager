@@ -76,4 +76,19 @@ class Renderer
 
         return $content;
     }
+
+    /**
+     * Generates an absolute url for the giving path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function getAbsoluteUrl($path)
+    {
+        $query = str_replace('/', '\\/', $_SERVER['QUERY_STRING']);
+        $uri = preg_replace('/\?/', '&', $_SERVER['REQUEST_URI'], 1);
+        $result =  preg_replace('/('.$query.'.*)$|(index.*)$/', '', $uri);
+        return $result . preg_replace('/^\//', '', $path);
+    }
 }

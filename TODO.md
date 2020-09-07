@@ -6,4 +6,4 @@
 - [ ] IE supporting (Using babel polyfill for Gulp).
 
 ### Others.
-- [ ] replace the whoops dependency.
+- [ ] Makes the home page features (I have no time for that now xD).

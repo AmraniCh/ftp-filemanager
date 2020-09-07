@@ -19,6 +19,9 @@ return [
          */
         'timeout' => 90,
 
+        /**
+         * Enable auto seeking for transfer resuming operations.
+         */
         'autoSeek'     => true,
 
         /**
@@ -29,5 +32,4 @@ return [
          */
         'resumeUpload' => true,
     ],
-
 ];

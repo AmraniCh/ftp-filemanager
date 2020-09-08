@@ -3,7 +3,7 @@
 namespace FTPApp\Controllers\Login;
 
 use FTPApp\Controllers\Controller;
-use FTPApp\Modules\FtpAdapterException;
+use FTPApp\Modules\FtpAdapter\FtpAdapterException;
 
 class LoginController extends Controller
 {
@@ -33,6 +33,7 @@ class LoginController extends Controller
             $this->session()->start();
             $this->sessionStorage()->setVariable('config', $config);
             $this->sessionStorage()->setVariable('loggedIn', true);
+            $this->sessionStorage()->setVariable('lastLoginTime', time());
 
         } catch (FtpAdapterException $ex) {
             return $this->renderWithResponse('/login', [

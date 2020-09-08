@@ -3,8 +3,9 @@
 namespace FTPApp\Controllers\Filemanager;
 
 use FTPApp\Controllers\Controller;
+use FTPApp\Http\HttpResponse;
 use FTPApp\Http\JsonResponse;
-use FTPApp\Modules\FtpAdapterException;
+use FTPApp\Modules\FtpAdapter\FtpAdapterException;
 
 class FilemanagerController extends Controller
 {
@@ -14,7 +15,7 @@ class FilemanagerController extends Controller
      * Retrieves the connection configuration from the session and initialize
      * the ftp adapter connection for every request.
      *
-     * @return JsonResponse|void
+     * @return HttpResponse|void
      */
     public function before()
     {
@@ -22,8 +23,20 @@ class FilemanagerController extends Controller
             $this->session()->start();
 
             $loggedIn = $this->sessionStorage()->getVariable('loggedIn');
+            $lastLoginTime = $this->sessionStorage()->getVariable('lastLoginTime');
 
             if (is_bool($loggedIn) && $loggedIn) {
+                // Check inactivity timeout
+                if (time() - $lastLoginTime > self::getConfig()['inactivityTimeout'] * 60) {
+                    if ($this->request->isAjaxRequest()) {
+                        return new JsonResponse(['location' => $this->generateUrl('login')], 401);
+                    } else {
+                        return $this->redirectToRoute('login');
+                    }
+                }
+
+                // Restart inactivity timeout
+                $this->sessionStorage()->setVariable('lastLoginTime', time());
 
                 $config = array_merge($this->sessionStorage()->getVariable('config'), self::getConfig()['ftp']);
 
@@ -31,16 +44,8 @@ class FilemanagerController extends Controller
                     $this->ftpAdapter()->openConnection($config);
                 }
             } else {
-
-                /**
-                 * If the user is not logged and the request was sent using
-                 * ajax then a json response will be send to redirect the user
-                 * to the login page, this redirection will be handled in the client
-                 * side, since it an ajax request the location header has no effect in
-                 * this case.
-                 */
                 if ($this->request->isAjaxRequest()) {
-                    return new JsonResponse(['location' => '/login'], 401);
+                    return new JsonResponse(['location' => $this->generateUrl('login')], 401);
                 }
             }
         } catch (FtpAdapterException $ex) {
@@ -61,7 +66,7 @@ class FilemanagerController extends Controller
 
         return $this->renderWithResponse('filemanager', [
             'homeUrl'   => $this->generateUrl('home'),
-            'logoutUrl' => $this->generateUrl('login'),
+            'loginUrl' => $this->generateUrl('login'),
         ]);
     }
 

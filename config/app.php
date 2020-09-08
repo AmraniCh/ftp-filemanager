@@ -10,9 +10,14 @@ return [
     'debug' => true,
 
     /**
+     * The inactivity timeout in minutes.
+     */
+    'inactivityTimeout' => 1,
+
+    /**
      * Ftp configs.
      */
-    'ftp'   => [
+    'ftp' => [
 
         /**
          * Specify the FTP connection timeout in seconds.

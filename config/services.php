@@ -1,6 +1,6 @@
 <?php
 
-use FTPApp\Modules\FtpClient\FtpClientAdapter;
+use FTPApp\Modules\FtpAdapter\FtpClient\FtpClientAdapter;
 use FTPApp\Routing\RouteUrlGenerator;
 use FTPApp\Routing\RouteCollection;
 use FTPApp\Renderer\Renderer;

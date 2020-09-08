@@ -1,6 +1,6 @@
 <?php
 
-namespace FTPApp\Modules;
+namespace FTPApp\Modules\FtpAdapter;
 
 use FTPApp\Http\HttpResponse;
 

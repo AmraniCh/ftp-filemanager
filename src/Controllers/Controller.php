@@ -6,7 +6,7 @@ use FTPApp\DIC\DIC;
 use FTPApp\Http\HttpRedirect;
 use FTPApp\Http\HttpRequest;
 use FTPApp\Http\HttpResponse;
-use FTPApp\Modules\FtpAdapter;
+use FTPApp\Modules\FtpAdapter\FtpAdapter;
 use FTPApp\Session\Session;
 use FTPApp\Session\SessionStorage;
 

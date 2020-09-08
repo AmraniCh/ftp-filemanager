@@ -1,9 +1,9 @@
 <?php
 
-namespace FTPApp\Modules\FtpClient;
+namespace FTPApp\Modules\FtpAdapter\FtpClient;
 
 use FTPApp\Http\HttpResponse;
-use FTPApp\Modules\FtpAdapter;
+use FTPApp\Modules\FtpAdapter\FtpAdapter;
 use Lazzard\FtpClient\Config\FtpConfig;
 use Lazzard\FtpClient\Connection\ConnectionInterface;
 use Lazzard\FtpClient\Connection\FtpConnection;

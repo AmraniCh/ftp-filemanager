@@ -1,9 +1,8 @@
 <?php
 
-namespace FTPApp\Modules;
+namespace FTPApp\Modules\FtpAdapter;
 
 interface FtpAdapterException
 {
-
     public function getMessage();
 }

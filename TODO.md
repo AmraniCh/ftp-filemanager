@@ -1,7 +1,7 @@
 # TODO
 
 ### Features to add.
-- [ ] Allowing compress ftp files.
+- [ ] Add compress ftp files action.
 - [ ] Add extract compressed files option while uploading.
 - [ ] IE supporting (Using babel polyfill for Gulp).
 

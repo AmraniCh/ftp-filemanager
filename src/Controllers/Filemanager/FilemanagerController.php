@@ -22,8 +22,8 @@ class FilemanagerController extends Controller
         try {
             $this->session()->start();
 
-            $loggedIn = $this->sessionStorage()->getVariable('loggedIn');
-            $lastLoginTime = $this->sessionStorage()->getVariable('lastLoginTime');
+            $loggedIn = $this->sessionStorage()->get('loggedIn');
+            $lastLoginTime = $this->sessionStorage()->get('lastLoginTime');
 
             if (is_bool($loggedIn) && $loggedIn) {
                 // Check inactivity timeout
@@ -36,9 +36,9 @@ class FilemanagerController extends Controller
                 }
 
                 // Restart inactivity timeout
-                $this->sessionStorage()->setVariable('lastLoginTime', time());
+                $this->sessionStorage()->set('lastLoginTime', time());
 
-                $config = array_merge($this->sessionStorage()->getVariable('config'), self::getConfig()['ftp']);
+                $config = array_merge($this->sessionStorage()->get('config'), self::getConfig()['ftp']);
 
                 if (is_array($config) && is_bool($loggedIn) && $loggedIn) {
                     $this->ftpAdapter()->openConnection($config);
@@ -56,7 +56,7 @@ class FilemanagerController extends Controller
     public function index()
     {
         // If is not logged in make a redirection to login page.
-        $loggedIn = $this->sessionStorage()->getVariable('loggedIn');
+        $loggedIn = $this->sessionStorage()->get('loggedIn');
         if (is_bool($loggedIn) && !$loggedIn) {
             return $this->redirectToRoute('login');
         }

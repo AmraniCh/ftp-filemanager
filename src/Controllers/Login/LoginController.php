@@ -31,9 +31,9 @@ class LoginController extends Controller
 
             // Store the client connection configuration in the session
             $this->session()->start();
-            $this->sessionStorage()->setVariable('config', $config);
-            $this->sessionStorage()->setVariable('loggedIn', true);
-            $this->sessionStorage()->setVariable('lastLoginTime', time());
+            $this->sessionStorage()->set('config', $config);
+            $this->sessionStorage()->set('loggedIn', true);
+            $this->sessionStorage()->set('lastLoginTime', time());
 
         } catch (FtpAdapterException $ex) {
             return $this->renderWithResponse('/login', [

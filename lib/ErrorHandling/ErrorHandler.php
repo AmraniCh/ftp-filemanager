@@ -25,7 +25,7 @@ class ErrorHandler
     public function start()
     {
         $this->setExceptionHandler($this->handler);
-        $this->setErrorHandler($this->handler);
+        $this->setErrorHandler();
     }
 
     public function restore()
@@ -42,9 +42,9 @@ class ErrorHandler
         });
     }
 
-    protected function setErrorHandler($handler)
+    protected function setErrorHandler()
     {
-        set_error_handler(function ($errno, $errstr, $errfile, $errline) use ($handler) {
+        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
             if (ini_get('error_reporting') == 0) {
                 trigger_error($errstr);
                 return;

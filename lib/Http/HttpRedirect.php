@@ -19,16 +19,4 @@ class HttpRedirect extends HttpResponse
         parent::__construct($statusCode, null, $headers);
         $this->addHeader('Location', $uri);
     }
-
-    /**
-     * Makes an Http redirection to the uri using the 'Location' Http header.
-     */
-    /*
-    public function redirect()
-    {
-        $this->addHeader('Location', $this->uri);
-        $this->sendRawHeaders();
-        $this->setResponseCode();
-        exit();
-    }*/
 }

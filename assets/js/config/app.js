@@ -6,6 +6,11 @@ const config = {
     maximumUploadSize: 2,
 
     /**
+     * The maximum files allowed to be uploaded for one upload operation.
+     */
+    maximumFilesUpload : 10,
+
+    /**
      * Fetch configs.
      */
     fetch: {

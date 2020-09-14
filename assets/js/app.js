@@ -324,6 +324,12 @@ const App = function () {
         // Append files
         bindEvent('change', '#uploadFilesBtn', function () {
             const files = Array.from(getElement('#uploadFilesBtn').files);
+            if (files.length === 0) return;
+
+            if (state.uploadedFiles.length > config.maximumFilesUpload) {
+                modal('#uploadModal').showError(`Cannot upload more than ${config.maximumFilesUpload} files at time.`);
+                return false;
+            }
 
             files.forEach(function (file) {
                 DOMRender(uploadModalFileItem(new File(file)), '.files-to-upload');
@@ -366,19 +372,24 @@ const App = function () {
             const formData = new FormData();
             const upload = new Upload();
             state.uploadedFiles.forEach(function (file) {
-                const fileItem = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`);
+                const 
+                    fileItem = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`),
+                    errorEle = getElement('.file-error .text', fileItem),
+                    percentageEle = getElement('.percentage', fileItem),
+                    progressEle =  getElement('.progress-bar', fileItem),
+                    uploadStateEle = getElement('.upload-state', fileItem);
 
                 formData.append('file', file);
                 formData.append('path', state.path);
-
                 upload.push(state.path, formData, function (progress) {
-                    getElement('.percentage', fileItem).textContent = progress + '%';
-                    getElement('.progress-bar', fileItem).style.width = progress + '%';
+                    percentageEle.textContent = progress + '%';
+                    progressEle.style.width = progress + '%';
+
                     if (progress === 100) {
-                        getElement('.upload-state', fileItem).textContent = 'Uploading to the server ...';
-                    }
+                        uploadStateEle.textContent = 'Wait!! Uploading to the server ...';
+                    }        
                 }, function (err) {
-                    getElement('.file-error .text', fileItem).textContent = err;
+                    errorEle.textContent = err;
                 });
             });
 

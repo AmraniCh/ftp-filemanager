@@ -46,10 +46,16 @@ class FilemanagerController extends Controller
             } else {
                 if ($this->request->isAjaxRequest()) {
                     return new JsonResponse(['location' => $this->generateUrl('login')], 401);
+                } else {
+                    return $this->redirectToRoute('login');
                 }
             }
         } catch (FtpAdapterException $ex) {
-            return new JsonResponse(['error' => $ex->getMessage()], 500);
+            if ($this->request->isAjaxRequest()) {
+                return new JsonResponse(['error' => $ex->getMessage()], 500);
+            } else {
+                return $this->redirectToRoute('login');
+            }
         }
     }
 

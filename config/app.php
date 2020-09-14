@@ -7,12 +7,12 @@ return [
      * the end user, if disabled the errors will be logged to the logs
      * file.
      */
-    'debug' => true,
+    'debug' => false,
 
     /**
      * The inactivity timeout in minutes.
      */
-    'inactivityTimeout' => 1,
+    'inactivityTimeout' => 15,
 
     /**
      * Ftp configs.

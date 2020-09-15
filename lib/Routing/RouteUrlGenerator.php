@@ -4,6 +4,9 @@ namespace FTPApp\Routing;
 
 use FTPApp\Routing\Exception\RouteInvalidArgumentException;
 
+/**
+ * RouteUrlGenerator allows generating URLs and paths for the routes collection.
+ */
 class RouteUrlGenerator
 {
     /** @var RouteCollection */
@@ -20,8 +23,7 @@ class RouteUrlGenerator
     }
 
     /**
-     * Generates a path based on the current request path upon
-     * the giving route name and passed parameters.
+     * Generates a path for the giving route based on current request path.
      *
      * @param string $routeName
      * @param array  $params

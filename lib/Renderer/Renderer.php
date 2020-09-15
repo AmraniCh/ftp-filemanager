@@ -89,7 +89,7 @@ class Renderer
     {
         $query = str_replace('/', '\\/', $_SERVER['QUERY_STRING']);
         $uri = preg_replace('/\?/', '&', $_SERVER['REQUEST_URI'], 1);
-        $result =  preg_replace('/('.$query.'.*)$|(index.*)$/', '', $uri);
+        $result = preg_replace('/'.$query.'$|index.php$|&$/', '', $uri);
         return $result . preg_replace('/^\//', '', $path);
     }
 }

@@ -1,1 +1,1 @@
-<link rel="stylesheet" href="<?= $renderer->getAbsoluteUrl('dist/style.min.css') ?>">
+<link rel="stylesheet" href="<?= $renderer->path('dist/style.min.css') ?>">

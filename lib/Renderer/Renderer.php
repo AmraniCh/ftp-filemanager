@@ -78,13 +78,14 @@ class Renderer
     }
 
     /**
-     * Generates an absolute url for the giving path.
+     * Generates a relative path for the giving path parameter
+     * based on the current request path.
      *
      * @param string $path
      *
      * @return string
      */
-    public function getAbsoluteUrl($path)
+    public function path($path)
     {
         $query = str_replace('/', '\\/', $_SERVER['QUERY_STRING']);
         $uri = preg_replace('/\?/', '&', $_SERVER['REQUEST_URI'], 1);

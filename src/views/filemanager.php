@@ -3,7 +3,7 @@
     <head>
         <?= $renderer->render('includes/meta.html') ?>
         <?= $renderer->render('includes/styles.php') ?>
-        <link rel="stylesheet" href="./vendor/filemanager-template.min.css">
+        <link rel="stylesheet" href="<?= $renderer->path('vendor/filemanager-template.min.css') ?>">
         <title>FTP File Manager</title>
     </head>
     <body>
@@ -734,9 +734,9 @@
                 </div>
             </div>
         </div>
-        <script src="./vendor/filemanager-template.min.js"></script>
-        <script src="./vendor/promises-polyfill.min.js"></script>
-        <script src="./vendor/fetch-umd-polyfill.min.js"></script>
-        <script src="./dist/app.min.js"></script>
+        <script src="<?= $renderer->path('vendor/filemanager-template.min.js') ?>"></script>
+        <script src="<?= $renderer->path('vendor/promises-polyfill.min.js') ?>"></script>
+        <script src="<?= $renderer->path('vendor/fetch-umd-polyfill.min.js') ?>"></script>
+        <script src="<?= $renderer->path('dist/app.min.js') ?>"></script>
     </body>
 </html>

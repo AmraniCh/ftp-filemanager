@@ -1,8 +1,6 @@
 <?php
 
-
 namespace FTPApp\Routing;
-
 
 use FTPApp\Routing\Exception\RouteInvalidArgumentException;
 
@@ -22,7 +20,8 @@ class RouteUrlGenerator
     }
 
     /**
-     * Generates a route url upon the route name and passed parameters.
+     * Generates a path based on the current request path upon
+     * the giving route name and passed parameters.
      *
      * @param string $routeName
      * @param array  $params

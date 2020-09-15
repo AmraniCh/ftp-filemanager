@@ -7,7 +7,7 @@ return [
      * the end user, if disabled the errors will be logged to the logs
      * file.
      */
-    'debug' => false,
+    'debug' => true,
 
     /**
      * The inactivity timeout in minutes.

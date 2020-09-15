@@ -387,6 +387,7 @@ const App = function () {
 
                     if (progress === 100) {
                         uploadStateEle.textContent = 'Wait!! Uploading to the server ...';
+                        percentageEle.textContent = '';
                     }        
                 }, function (err) {
                     errorEle.textContent = err;

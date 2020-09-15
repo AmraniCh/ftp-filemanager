@@ -153,7 +153,7 @@ class FilemanagerController extends Controller
             $params = $this->request->getJSONBodyParameters();
             $path   = $params['path'];
             return new JsonResponse([
-                'result' => $this->ftpAdapter()->rename($path . $params['file'], $path . $params['newName']),
+                'result' => $this->ftpAdapter()->rename(ltrim($path . $params['file'], '/'), $path . $params['newName']),
             ]);
         } catch (FtpAdapterException $ex) {
             return new JsonResponse(['error' => $ex->getMessage()], 500);

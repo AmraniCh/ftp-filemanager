@@ -2,6 +2,9 @@
 
 namespace FTPApp\DIC;
 
+/**
+ * A very simple dependency injector container
+ */
 class DIC
 {
     protected $definitions = [];

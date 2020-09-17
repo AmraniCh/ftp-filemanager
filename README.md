@@ -2,6 +2,8 @@
 
 > A web based FTP client application to manage your FTP files, built with a simple MVC architecture, no frameworks or libraries are used (except my owns).
 
+![](https://user-images.githubusercontent.com/49124992/93536723-9d91f400-f941-11ea-86c4-2f942f00b842.gif)
+
 ## Features
 * Download & upload.
 * CRUD operations.
@@ -82,5 +84,5 @@ This project is a full stack project, a lot of things is covered here either in 
   
 ## Contribution
 
-All contributions are welcome, for a features ideas check the TODO.md file. Thank you. 
+All contributions are welcome, for a features ideas check the `TODO.md` file. Thank you. 
 

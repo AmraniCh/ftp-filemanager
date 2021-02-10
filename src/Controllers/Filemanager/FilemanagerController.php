@@ -73,6 +73,7 @@ class FilemanagerController extends Controller
         return $this->renderWithResponse('filemanager', [
             'homeUrl'   => $this->generateUrl('home'),
             'loginUrl' => $this->generateUrl('login'),
+            'appName' => self::getConfig()['appName']
         ]);
     }
 

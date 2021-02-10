@@ -2,6 +2,8 @@
 
 return [
 
+    'appName' => 'FTP FileManager',
+
     /**
      * If the debug mode enabled all exception and errors will be shows to
      * the end user, if disabled the errors will be logged to the logs
@@ -12,7 +14,7 @@ return [
     /**
      * The inactivity timeout in minutes.
      */
-    'inactivityTimeout' => 15,
+    'inactivityTimeout' => 100,
 
     /**
      * Ftp configs.

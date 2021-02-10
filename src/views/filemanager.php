@@ -11,7 +11,7 @@
             <aside class="sidebar float-lt">
                 <div class="brand text-center loading">
                     <a class="link" href="#">
-                        <h3 class="name">FileManager</h3>
+                        <h3 class="name"><?= $appName ?></h3>
                     </a>
                 </div>
                 <div class="files-section">

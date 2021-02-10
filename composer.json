@@ -21,6 +21,8 @@
         }
     },
     "require": {
-        "lazzard/php-ftp-client": "^1.0"
+        "php": ">=5.6.0",
+        "ext-ftp": "*",
+        "lazzard/php-ftp-client": "^1.1"
     }
 }

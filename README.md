@@ -1,6 +1,6 @@
 # ftp-filemanager
 
-> A web based FTP client application to manage your FTP files, built with a simple MVC architecture, no frameworks or libraries are used (except my owns).
+A web based FTP client application to manage your FTP files, built with a simple MVC architecture, no frameworks or libraries are used (except my owns).
 
 ![](https://user-images.githubusercontent.com/49124992/93536723-9d91f400-f941-11ea-86c4-2f942f00b842.gif)
 
@@ -26,13 +26,13 @@ This application uses :
 
 ## How to setup this project
 
-Clone the repository using this git command :
+Download the repo or clone it using git:
 
 ```
 git clone https://github.com/ELAMRANI744/ftp-filemanager
 ```
 
-Install composer dependencies :
+Then install composer dependencies :
 
 ```
 composer install
@@ -40,13 +40,13 @@ composer install
 
 ## Deployment
 
-1. Move project files to the production server folder (topically `public_html` folder).
+1. Move project files to the production server folder (tipically `public_html` folder).
 2. Install the application dependencies (install composer dependencies).
 3. Disable the debugging mode in `config/app.php`, and you ready to start.
 
 ## Development
 
-For development environment, you need to install npm dependencies (You need also to install composer dependencies) :
+For development environment, you need to install npm dependencies (You need also install composer dependencies):
 
 ```
 npm install
@@ -58,7 +58,7 @@ Before the development process, one of the requirements was building an applicat
 
 ## Concepts
 
-This project is a full stack project, a lot of things is covered here either in front end or backend part, however the project covered this web programming techniques : 
+This is a full stack project, a lot of things covered here either in front end or backend part, however the project covered this web programming techniques : 
 
 * Design UI/UX
     * This project is designed taking into consideration the UI/UX approach, you can check the design muckop in [behance](https://www.behance.net/gallery/104400253/FTP-Client-web-application).
@@ -66,10 +66,9 @@ This project is a full stack project, a lot of things is covered here either in 
 * Web integration :
 	* Using css preprocessors (SASS).
 	* Vanilla javascript (trying to make a clean code).
-	* Using ajax technique (Fetch API & XMLHttpRequest).
+	* Using AJAX (Fetch API & XMLHttpRequest).
 	* Using some of ES6 features.
 	* Using Gulp Task runner.
-
 
 * Server side development : 
     * Dependency injection container (The base Controller injection).
@@ -78,7 +77,7 @@ This project is a full stack project, a lot of things is covered here either in 
     * A basic routing component (The hard part for me).
     * PHP session management & some of security concerns.
     * Handling PHP errors & exceptions.
-    * SOLID principles (Not sure if all of them are applied in the project).
+    * SOLID principles.
     * Dependency injection.
     * The Front controller pattern.
   

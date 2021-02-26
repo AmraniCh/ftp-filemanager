@@ -21,8 +21,8 @@ A web based FTP client application to manage your FTP files, built with a simple
 ## Dependencies
 
 This application uses :
-* [php-ftp-client](https://github.com/lazzard/php-ftp-client) : A library that's wraps the PHP FTP extension functions in OOP oriented objet way. 
-* [filemanager-template](https://github.com/ELAMRANI744/filemanager-template) : A filemanager template that's offer a clean and modern UI, and other important features.
+* [php-ftp-client](https://github.com/lazzard/php-ftp-client) : A library that's wraps the PHP FTP extension functions in an oriented objet way. 
+* [filemanager-template](https://github.com/ELAMRANI744/filemanager-template) : A filemanager template that's offer a clean interface, and some other important features.
 
 ## How to setup this project
 

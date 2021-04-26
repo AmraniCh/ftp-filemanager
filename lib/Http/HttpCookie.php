@@ -2,6 +2,8 @@
 
 namespace FTPApp\Http;
 
+use FTPApp\Http\Exception\HttpRuntimeException;
+
 final class HttpCookie
 {
     const EXPIRE_SESSION = 0;
@@ -46,6 +48,8 @@ final class HttpCookie
      * @param bool   $secure
      * @param bool   $httpOnly
      * @param string $sameSite
+     * 
+     * @throws HttpRuntimeException
      */
     public function __construct(
         $name,
@@ -65,6 +69,10 @@ final class HttpCookie
         $this->secure   = $secure;
         $this->httpOnly = $httpOnly;
         $this->sameSite = $sameSite;
+
+        if (!setcookie($name, $value, $expire, $path, $domain, $secure, $sameSite)) {
+            throw new HttpRuntimeException("Cannot create cookie with name $name");
+        }
     }
 
     /**

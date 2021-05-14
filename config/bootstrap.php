@@ -21,8 +21,8 @@ $whoops = new Run;
 $whoops->pushHandler(new PrettyPageHandler);
 
 $configFile = dirname(__DIR__) . '/config/app.php';
-if (!file_exists($configFile)) {
-    $whoops->handleException(new \RuntimeException("Application config file is missing."));
+if (!file_exists($configFile) || !is_readable($configFile)) {
+    $whoops->handleException(new \RuntimeException("The application config file is missing or isn't readable."));
 }
 
 $config = include($configFile);

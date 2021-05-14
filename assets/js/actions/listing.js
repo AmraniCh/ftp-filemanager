@@ -1,5 +1,5 @@
 import {hideLoading, showLoading} from "../helpers/loading";
-import {getAppendToSelector} from "../helpers/treeView";
+import {getAppendToSelector} from "../helpers/treeViewer";
 import {fetchGet} from "../helpers/fetch";
 import DOMRender from "../helpers/DOMRender";
 import sidebarFileItem from "../templates/sidebarFileItem";

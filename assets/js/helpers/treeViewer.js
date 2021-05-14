@@ -61,8 +61,17 @@ function closeSiblingTreeOf(element) {
  */
 function getAppendToSelector(path)
 {
-    if (path !== '/') {
-        const name = path.slice(0, -1).split('/').pop();
+    path = path.replace(/^\/|\/$/g, '');
+    
+    if (path !== '') {
+        const name = path.split('/').pop(),
+            chunks = path.split('/'),
+            dir = chunks[chunks.length - 2];
+
+        if (dir) {
+            return `.sidebar .dir-item[data-name="${encodeURI(dir)}"] .dir-item[data-name="${encodeURI(name)}"] .sub-files`;
+        } 
+ 
         return `.sidebar .dir-item[data-name="${encodeURI(name)}"] .sub-files`;
     }
 

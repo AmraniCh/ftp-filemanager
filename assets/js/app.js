@@ -1,5 +1,5 @@
 import {bindEvent, getElement, getElements, on} from "./helpers/functions";
-import {closeSiblingTreeOf, getSelectedPath} from "./helpers/treeView";
+import {closeSiblingTreeOf, getSelectedPath} from "./helpers/treeViewer";
 import refresh from "./actions/refresh";
 import state from "./state";
 import addFile from "./actions/addFile";

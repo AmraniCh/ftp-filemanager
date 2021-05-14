@@ -1,5 +1,5 @@
 import {getElement} from "../helpers/functions";
-import {getAppendToSelector} from "../helpers/treeView";
+import {getAppendToSelector} from "../helpers/treeViewer";
 import {browse} from "./listing";
 
 function refresh(path) {

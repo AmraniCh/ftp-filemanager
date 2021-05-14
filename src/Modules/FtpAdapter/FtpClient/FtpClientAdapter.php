@@ -67,7 +67,7 @@ class FtpClientAdapter implements FtpAdapter
     public function browse($dir)
     {
         try {
-            $list = $this->client->listDirectoryDetails($dir);
+            $list = $this->client->listDirDetails(trim($dir, '/'));
 
             $files = [];
             $dirs = [];
@@ -161,7 +161,7 @@ class FtpClientAdapter implements FtpAdapter
     public function getDirectoryTree()
     {
         try {
-            return $this->client->listDirectoryDetails('/', true, FtpClient::DIR_TYPE);
+            return $this->client->listDirDetails('/', true, FtpClient::DIR_TYPE);
         } catch (FtpClientException $ex) {
             throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }

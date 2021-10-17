@@ -34,9 +34,9 @@ class ErrorHandler
         restore_error_handler();
     }
 
-    protected function setExceptionHandler($handler)
+    protected function setExceptionHandler()
     {
-        set_exception_handler(function ($ex) use ($handler) {
+        set_exception_handler(function ($ex) {
             http_response_code(500);
             call_user_func_array($this->handler, [$ex]);
         });

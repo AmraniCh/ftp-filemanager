@@ -1,12 +1,12 @@
-import {bindEvent, getElement, getElements, on} from "./helpers/functions";
-import {closeSiblingTreeOf, getSelectedPath} from "./helpers/treeViewer";
+import { bindEvent, getElement, getElements, on } from "./helpers/functions";
+import { closeSiblingTreeOf, getSelectedPath } from "./helpers/treeViewer";
 import refresh from "./actions/refresh";
 import state from "./state";
 import addFile from "./actions/addFile";
 import addFolder from "./actions/addFolder";
 import modal from "./helpers/modal";
 import getFileContent from "./actions/getFileContent";
-import {browse, back, forward, home} from "./actions/listing";
+import { browse, back, forward, home } from "./actions/listing";
 import edit from "./actions/edit";
 import remove from "./actions/remove";
 import rename from "./actions/rename";
@@ -21,385 +21,413 @@ import Upload from "./actions/upload";
 import config from "./config/app";
 
 const App = function () {
+  /**
+   * A registry for events methods.
+   */
+  var registry = [];
+
+  /**
+   * Registers events methods.
+   */
+  this.registerEvents = function () {
+    registry.push(load);
 
     /**
-     * A registry for events methods.
+     * Directory listing actions.
      */
-    var registry = [];
+    registry.push(sidebarDirectoryListing);
+    registry.push(tableDirectoryListing);
+    registry.push(toolbarActions);
 
     /**
-     * Registers events methods.
+     * Actions.
      */
-    this.registerEvents = function () {
-        registry.push(load);
-
-        /**
-         * Directory listing actions.
-         */
-        registry.push(sidebarDirectoryListing);
-        registry.push(tableDirectoryListing);
-        registry.push(toolbarActions);
-
-        /**
-         * Actions.
-         */
-        registry.push(refreshAction);
-        registry.push(addFileAction);
-        registry.push(addFolderAction);
-        registry.push(removeFilesAction);
-        registry.push(renameAction);
-        registry.push(moveFileAction);
-        registry.push(editFileAction);
-        registry.push(changePermissionsAction);
-        registry.push(downloadAction);
-        registry.push(uploadAction);
-
-        /**
-         * Modal components events.
-         */
-        registry.push(updateEditorModal);
-        registry.push(updateMoveModal);
-        registry.push(updatePermissionsModal);
-        registry.push(updateInfoModal);
-        registry.push(updateUploadModal);
-    };
+    registry.push(refreshAction);
+    registry.push(addFileAction);
+    registry.push(addFolderAction);
+    registry.push(removeFilesAction);
+    registry.push(renameAction);
+    registry.push(moveFileAction);
+    registry.push(editFileAction);
+    registry.push(changePermissionsAction);
+    registry.push(downloadAction);
+    registry.push(uploadAction);
 
     /**
-     * Call and bind the events listeners.
+     * Modal components events.
      */
-    this.init = function () {
-        registry.forEach(function (fn) {
-            fn();
-        });
-    };
+    registry.push(updateEditorModal);
+    registry.push(updateMoveModal);
+    registry.push(updatePermissionsModal);
+    registry.push(updateInfoModal);
+    registry.push(updateUploadModal);
+  };
 
-    var load = function () {
-        bindEvent('DOMContentLoaded', document, browse(state.path));
-    };
+  /**
+   * Call and bind the events listeners.
+   */
+  this.init = function () {
+    registry.forEach(function (fn) {
+      fn();
+    });
+  };
 
-    var sidebarDirectoryListing = function () {
-        on('click', '.sidebar .dir-item', function (e) {
-            if (!e.target.closest('.file-item')) { // ignore file items click
-                const item = e.target.closest('.dir-item');
+  var load = function () {
+    bindEvent("DOMContentLoaded", document, browse(state.path));
+  };
 
-                item.dataset.open = 'true';
-                item.querySelector('.sub-files').textContent = '';
+  var sidebarDirectoryListing = function () {
+    on("click", ".sidebar .dir-item", function (e) {
+      if (!e.target.closest(".file-item")) {
+        // ignore file items click
+        const item = e.target.closest(".dir-item");
 
-                closeSiblingTreeOf(item);
-                browse(state.path = getSelectedPath());
+        item.dataset.open = "true";
+        item.querySelector(".sub-files").textContent = "";
+
+        closeSiblingTreeOf(item);
+        browse((state.path = getSelectedPath()));
+      }
+    });
+  };
+
+  var tableDirectoryListing = function () {
+    on("dblclick", '.files-table .file-item[data-type="dir"]', function (e) {
+      const item = e.target.closest('.file-item[data-type="dir"]'),
+        fileName = getElement(".file-name", item).textContent.trim();
+
+      const path = getSelectedPath() + fileName + "/";
+
+      // find the sidebar alternative file and make it open
+      if (path !== "/") {
+        getElement(
+          '.sidebar .dir-item[data-name="' + encodeURI(fileName) + '"]'
+        ).dataset.open = "true";
+      }
+
+      browse((state.path = path));
+
+      // Disable footer right buttons
+      getElements(".right-buttons *[data-action]").forEach(function (button) {
+        button.disabled = true;
+      });
+    });
+  };
+
+  var refreshAction = function () {
+    bindEvent("click", 'button[data-action="refresh"]', function () {
+      refresh(state.path);
+    });
+  };
+
+  var addFileAction = function () {
+    bindEvent("click", "#addFileBtn", function () {
+      addFile(getElement("#addFileModal #fileName").value, state.path);
+    });
+  };
+
+  var addFolderAction = function () {
+    bindEvent("click", "#addFolderBtn", function () {
+      addFolder(getElement("#addFolderModal #folderName").value, state.path);
+    });
+  };
+
+  var updateEditorModal = function () {
+    // Get editor file content when double clicking in a table file item
+    on("dblclick", '.files-table .file-item[data-type="file"]', function (e) {
+      modal("#editorModal").show();
+      const clickedFileName = getElement(
+        ".file-name",
+        e.target.closest(".file-item")
+      ).textContent;
+      state.editableFile = state.path + clickedFileName;
+      getFileContent(state.editableFile);
+    });
+
+    // Update editor content when clicking in the footer edit button
+    bindEvent("click", 'button[data-action="edit"]', function () {
+      alert();
+      const selectedFile = getElement(
+        '.files-table .file-item.selected[data-type="file"] .file-name'
+      );
+      if (typeof selectedFile === "object") {
+        state.editableFile = state.path + selectedFile.textContent;
+        getFileContent(state.editableFile);
+      }
+    });
+
+    // Get editor file content when clicking in a sidebar file item
+    on("click", ".sidebar .file-item", function (e) {
+      const file = e.target.closest(".file-item"),
+        fileName = decodeURI(file.dataset.name);
+
+      // Close siblings opened directories
+      closeSiblingTreeOf(file);
+      // Update path
+      state.path = getSelectedPath();
+      // Show editor modal
+      modal("#editorModal").show();
+      // Get file content
+      state.editableFile = state.path + fileName;
+      getFileContent(state.editableFile);
+    });
+  };
+
+  var editFileAction = function () {
+    bindEvent("click", "#updateFileBtn", function () {
+      edit(state.editableFile, fmEditor.get());
+    });
+  };
+
+  var removeFilesAction = function () {
+    bindEvent("click", "#removeFileBtn", function () {
+      const selectedItems = getElements(".files-table .file-item.selected"),
+        files = [];
+
+      selectedItems.forEach(function (item) {
+        const name = getElement(".file-name", item).textContent;
+        files.push(state.path + name);
+      });
+
+      remove(files);
+    });
+  };
+
+  var renameAction = function () {
+    bindEvent("click", "#renameFileBtn", function () {
+      const file = getElement("#renameFileModal .name-for").textContent,
+        newName = getElement("#newFileName").value;
+
+      rename(state.path, file, newName);
+    });
+  };
+
+  var updateMoveModal = function () {
+    bindEvent("click", 'button[data-action="move"]', function () {
+      getDirectoryTree();
+    });
+  };
+
+  var moveFileAction = function () {
+    bindEvent("click", "#moveFileBtn", function () {
+      const file = getElement("#moveFileModal .source").textContent,
+        newPath = getElement("#moveFileModal .destination").textContent;
+
+      move(state.path, file, newPath);
+    });
+  };
+
+  var changePermissionsAction = function () {
+    bindEvent("click", "#changePermBtn", function () {
+      const file = getElement("#permissionsModal .filename").textContent,
+        chmod = getElement("#permissionsModal .numeric-chmod").textContent;
+
+      permissions(state.path, file, chmod);
+    });
+  };
+
+  var updatePermissionsModal = function () {
+    bindEvent("click", 'button[data-action="permissions"]', function () {
+      const file = state.getFileByName(
+          getElement("#permissionsModal .filename").textContent
+        ),
+        permissions = file.permissions,
+        chunks = permissions.slice(1).split(""),
+        perms = {
+          owner: chunks.slice(0, 3),
+          group: chunks.slice(3, 6),
+          others: chunks.slice(6),
+        },
+        translate = {
+          r: "read",
+          w: "write",
+          x: "execute",
+        },
+        rules = {
+          r: 4,
+          w: 2,
+          x: 1,
+        };
+
+      var chmod = [0, 0, 0];
+      for (var prop in perms) {
+        if (perms.hasOwnProperty(prop)) {
+          perms[prop].forEach(function (perm) {
+            if (perm !== "-") {
+              getElement(
+                `#permissionsModal .checkbox[data-action="${translate[perm]}"][data-group="${prop}"] input[type=checkbox]`
+              ).checked = true;
+
+              switch (prop) {
+                case "owner":
+                  chmod[0] += rules[perm];
+                  break;
+                case "group":
+                  chmod[1] += rules[perm];
+                  break;
+                case "others":
+                  chmod[2] += rules[perm];
+                  break;
+              }
             }
-        });
-    };
+          });
+        }
+      }
 
-    var tableDirectoryListing = function () {
-        on('dblclick', '.files-table .file-item[data-type="dir"]', function (e) {
-            const
-                item = e.target.closest('.file-item[data-type="dir"]'),
-                fileName = getElement('.file-name', item).textContent.trim();
+      getElement(
+        "#permissionsModal .numeric-chmod"
+      ).textContent = `0${chmod.join("")}`;
+    });
+  };
 
-            const path = getSelectedPath() + fileName + '/';
+  var updateInfoModal = function () {
+    bindEvent("click", 'button[data-action="info"]', function () {
+      const selectedFilename = getElement(
+          ".files-table .file-item.selected .file-name"
+        ).textContent,
+        file = new File(state.getFileByName(selectedFilename));
 
-            // find the sidebar alternative file and make it open
-            if (path !== '/') {
-                getElement('.sidebar .dir-item[data-name="' + encodeURI(fileName) + '"]').dataset.open = 'true';
+      for (var prop in file) {
+        if (file.hasOwnProperty(prop)) {
+          const infoItem = getElement(`.info-modal .info-item.${prop}`);
+          if (typeof infoItem !== "undefined") {
+            var info = file[prop];
+            if (prop === "size") {
+              info = file.bytesToSize();
             }
+            getElement(".info-text", infoItem).textContent = info;
+          }
+        }
+      }
+    });
+  };
 
-            browse(state.path = path);
+  var toolbarActions = function () {
+    bindEvent("click", '.toolbar button[data-action="back"]', back);
+    bindEvent("click", '.toolbar button[data-action="forward"]', forward);
+    bindEvent("click", '.toolbar button[data-action="home"]', home);
+  };
 
-            // Disable footer right buttons
-            getElements('.right-buttons *[data-action]').forEach(function (button) {
-                button.disabled = true;
-            });
-        });
-    };
+  var downloadAction = function () {
+    bindEvent("click", 'button[data-action="download"]', function () {
+      const selectedFiles = Array.from(
+        getElements(".files-table .file-item.selected .file-name")
+      );
 
-    var refreshAction = function () {
-        bindEvent('click', 'button[data-action="refresh"]', function () {
-            refresh(state.path);
-        });
-    };
+      var files = selectedFiles.map(function (item) {
+        return item.textContent;
+      });
 
-    var addFileAction = function () {
-        bindEvent('click', '#addFileBtn', function () {
-            addFile(getElement('#addFileModal #fileName').value, state.path);
-        });
-    };
+      download(state.path, files);
+    });
+  };
 
-    var addFolderAction = function () {
-        bindEvent('click', '#addFolderBtn', function () {
-            addFolder(getElement('#addFolderModal #folderName').value, state.path);
-        });
-    };
+  var updateUploadModal = function () {
+    // Update the uploading path and remove existing state files
+    bindEvent("click", 'button[data-action="upload"]', function () {
+      const uploadingFolder = getElement("#uploadModal .uploading-folder");
+      uploadingFolder.textContent = state.path;
+      state.uploadedFiles = [];
+      getElement(".files-to-upload").textContent = "";
+    });
 
-    var updateEditorModal = function () {
-        // Get editor file content when double clicking in a table file item
-        on('dblclick', '.files-table .file-item[data-type="file"]', function (e) {
-            modal('#editorModal').show();
-            const clickedFileName = getElement('.file-name', e.target.closest('.file-item')).textContent;
-            state.editableFile = state.path + clickedFileName;
-            getFileContent(state.editableFile);
-        });
+    // Append files
+    bindEvent("change", "#uploadFilesBtn", function () {
+      const files = Array.from(getElement("#uploadFilesBtn").files);
+      if (files.length === 0) return;
 
-        // Update editor content when clicking in the footer edit button
-        bindEvent('click', 'button[data-action="edit"]', function () {
-            const selectedFile = getElement('.files-table .file-item.selected[data-type="file"] .file-name');
-            if (typeof selectedFile === 'object') {
-                state.editableFile = state.path + selectedFile.textContent;
-                getFileContent(state.editableFile);
+      if (state.uploadedFiles.length > config.maximumFilesUpload) {
+        modal("#uploadModal").showError(
+          `Cannot upload more than ${config.maximumFilesUpload} files at time.`
+        );
+        return false;
+      }
+
+      files.forEach(function (file) {
+        DOMRender(uploadModalFileItem(new File(file)), ".files-to-upload");
+        // Check for the max file size
+        if (
+          new File(file).size <=
+          config.maximumUploadSize * Math.pow(1024, 2)
+        ) {
+          // Storing the files
+          state.uploadedFiles.push(file);
+        } else {
+          const fileItem = getElement(
+            `#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`
+          );
+          getElement(
+            ".file-error .text",
+            fileItem
+          ).textContent = `Maximum upload size ${config.maximumUploadSize} MG exceeded, this file will be skipped.`;
+        }
+      });
+
+      // Reset the form
+      getElement("#uploadFilesForm").reset();
+    });
+
+    // Remove the files
+    on("click", ".remove-upload-file", function (e) {
+      const removedFile = getElement(
+        ".name",
+        e.target.closest(".file-item")
+      ).textContent;
+      state.uploadedFiles.forEach(function (file, i) {
+        if (file.name === removedFile) {
+          delete state.uploadedFiles[i];
+        }
+      });
+    });
+  };
+
+  var uploadAction = function () {
+    bindEvent("click", "#uploadBtn", function () {
+      // reset all progress info
+      getElements("#uploadModal .file-item").forEach(function (item) {
+        getElement(".progress-bar", item).style.width = "0";
+        getElement(".percentage", item).textContent = "0%";
+        getElement(".upload-state", item).textContent = "Uploading ...";
+        getElement(".file-error .text", item).textContent = "";
+      });
+
+      const formData = new FormData();
+      const upload = new Upload();
+      state.uploadedFiles.forEach(function (file) {
+        const fileItem = getElement(
+            `#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`
+          ),
+          errorEle = getElement(".file-error .text", fileItem),
+          percentageEle = getElement(".percentage", fileItem),
+          progressEle = getElement(".progress-bar", fileItem),
+          uploadStateEle = getElement(".upload-state", fileItem);
+
+        formData.append("file", file);
+        formData.append("path", state.path);
+        upload.push(
+          state.path,
+          formData,
+          function (progress) {
+            percentageEle.textContent = progress + "%";
+            progressEle.style.width = progress + "%";
+
+            if (progress === 100) {
+              uploadStateEle.textContent = "Wait!! Uploading to the server ...";
+              percentageEle.textContent = "";
             }
-        });
+          },
+          function (err) {
+            errorEle.textContent = err;
+          }
+        );
+      });
 
-        // Get editor file content when clicking in a sidebar file item
-        on('click', '.sidebar .file-item', function (e) {
-            const
-                file = e.target.closest('.file-item'),
-                fileName = decodeURI(file.dataset.name);
-
-            // Close siblings opened directories
-            closeSiblingTreeOf(file);
-            // Update path
-            state.path = getSelectedPath();
-            // Show editor modal
-            modal('#editorModal').show();
-            // Get file content
-            state.editableFile = state.path + fileName;
-            getFileContent(state.editableFile);
-        });
-    };
-
-    var editFileAction = function () {
-        bindEvent('click', '#updateFileBtn', function () {
-            edit(state.editableFile, fmEditor.get());
-        });
-    };
-
-    var removeFilesAction = function () {
-        bindEvent('click', '#removeFileBtn', function () {
-            const
-                selectedItems = getElements('.files-table .file-item.selected'),
-                files = [];
-
-            selectedItems.forEach(function (item) {
-                const name = getElement('.file-name', item).textContent;
-                files.push(state.path + name);
-            });
-
-            remove(files);
-        });
-    };
-
-    var renameAction = function () {
-        bindEvent('click', '#renameFileBtn', function () {
-            const
-                file = getElement('#renameFileModal .name-for').textContent,
-                newName = getElement('#newFileName').value;
-
-            rename(state.path, file, newName);
-        });
-    };
-
-    var updateMoveModal = function () {
-        bindEvent('click', 'button[data-action="move"]', function () {
-            getDirectoryTree();
-        });
-    };
-
-    var moveFileAction = function () {
-        bindEvent('click', '#moveFileBtn', function () {
-            const
-                file = getElement('#moveFileModal .source').textContent,
-                newPath = getElement("#moveFileModal .destination").textContent;
-
-            move(state.path, file, newPath);
-        });
-    };
-
-    var changePermissionsAction = function () {
-        bindEvent('click', '#changePermBtn', function () {
-            const
-                file = getElement('#permissionsModal .filename').textContent,
-                chmod = getElement('#permissionsModal .numeric-chmod').textContent;
-
-            permissions(state.path, file, chmod);
-        });
-    };
-
-    var updatePermissionsModal = function () {
-        bindEvent('click', 'button[data-action="permissions"]', function () {
-            const
-                file = state.getFileByName(getElement('#permissionsModal .filename').textContent),
-                permissions = file.permissions,
-                chunks = permissions.slice(1).split(''),
-                perms = {
-                    owner: chunks.slice(0, 3),
-                    group: chunks.slice(3, 6),
-                    others: chunks.slice(6)
-                },
-                translate = {
-                    'r': 'read',
-                    'w': 'write',
-                    'x': 'execute'
-                },
-                rules = {
-                    'r': 4,
-                    'w': 2,
-                    'x': 1,
-                };
-
-            var chmod = [0, 0, 0];
-            for (var prop in perms) {
-                if (perms.hasOwnProperty(prop)) {
-                    perms[prop].forEach(function (perm) {
-                        if (perm !== '-') {
-                            getElement(`#permissionsModal .checkbox[data-action="${translate[perm]}"][data-group="${prop}"] input[type=checkbox]`).checked = true;
-
-                            switch (prop) {
-                                case 'owner':
-                                    chmod[0] += rules[perm];
-                                    break;
-                                case 'group':
-                                    chmod[1] += rules[perm];
-                                    break;
-                                case 'others':
-                                    chmod[2] += rules[perm];
-                                    break;
-                            }
-                        }
-                    });
-                }
-            }
-
-            getElement('#permissionsModal .numeric-chmod').textContent = `0${chmod.join('')}`;
-        });
-    };
-
-    var updateInfoModal = function () {
-        bindEvent('click', 'button[data-action="info"]', function () {
-            const
-                selectedFilename = getElement('.files-table .file-item.selected .file-name').textContent,
-                file = new File(state.getFileByName(selectedFilename));
-
-            for (var prop in file) {
-                if (file.hasOwnProperty(prop)) {
-                    const infoItem = getElement(`.info-modal .info-item.${prop}`);
-                    if (typeof infoItem !== 'undefined') {
-                        var info = file[prop];
-                        if (prop === 'size') {
-                            info = file.bytesToSize();
-                        }
-                        getElement('.info-text', infoItem).textContent = info;
-                    }
-                }
-            }
-        });
-    };
-
-    var toolbarActions = function () {
-        bindEvent('click', '.toolbar button[data-action="back"]', back);
-        bindEvent('click', '.toolbar button[data-action="forward"]', forward);
-        bindEvent('click', '.toolbar button[data-action="home"]', home);
-    };
-
-    var downloadAction = function () {
-        bindEvent('click', 'button[data-action="download"]', function () {
-            const selectedFiles = Array.from(getElements('.files-table .file-item.selected .file-name'));
-
-            var files = selectedFiles.map(function (item) {
-                return item.textContent;
-            });
-
-            download(state.path, files);
-        });
-    };
-
-    var updateUploadModal = function () {
-        // Update the uploading path and remove existing state files
-        bindEvent('click', 'button[data-action="upload"]', function () {
-            const uploadingFolder = getElement('#uploadModal .uploading-folder');
-            uploadingFolder.textContent = state.path;
-            state.uploadedFiles = [];
-            getElement('.files-to-upload').textContent = '';
-        });
-
-        // Append files
-        bindEvent('change', '#uploadFilesBtn', function () {
-            const files = Array.from(getElement('#uploadFilesBtn').files);
-            if (files.length === 0) return;
-
-            if (state.uploadedFiles.length > config.maximumFilesUpload) {
-                modal('#uploadModal').showError(`Cannot upload more than ${config.maximumFilesUpload} files at time.`);
-                return false;
-            }
-
-            files.forEach(function (file) {
-                DOMRender(uploadModalFileItem(new File(file)), '.files-to-upload');
-                // Check for the max file size
-                if ((new File(file)).size <= config.maximumUploadSize * Math.pow(1024, 2)) {
-                    // Storing the files
-                    state.uploadedFiles.push(file);
-                } else {
-                    const fileItem = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`);
-                    getElement('.file-error .text', fileItem).textContent =
-                        `Maximum upload size ${config.maximumUploadSize} MG exceeded, this file will be skipped.`;
-                }
-            });
-
-            // Reset the form
-            getElement('#uploadFilesForm').reset();
-        });
-
-        // Remove the files
-        on('click', '.remove-upload-file', function (e) {
-            const removedFile = getElement('.name', e.target.closest('.file-item')).textContent;
-            state.uploadedFiles.forEach(function (file, i) {
-                if (file.name === removedFile) {
-                    delete state.uploadedFiles[i];
-                }
-            });
-        });
-    };
-
-    var uploadAction = function () {
-        bindEvent('click', '#uploadBtn', function () {
-            // reset all progress info
-            getElements('#uploadModal .file-item').forEach(function (item) {
-                getElement('.progress-bar', item).style.width = '0';
-                getElement('.percentage', item).textContent = '0%';
-                getElement('.upload-state', item).textContent = 'Uploading ...';
-                getElement('.file-error .text', item).textContent = '';
-            });
-
-            const formData = new FormData();
-            const upload = new Upload();
-            state.uploadedFiles.forEach(function (file) {
-                const 
-                    fileItem = getElement(`#uploadModal .file-item[data-name="${encodeURI(file.name)}"]`),
-                    errorEle = getElement('.file-error .text', fileItem),
-                    percentageEle = getElement('.percentage', fileItem),
-                    progressEle =  getElement('.progress-bar', fileItem),
-                    uploadStateEle = getElement('.upload-state', fileItem);
-
-                formData.append('file', file);
-                formData.append('path', state.path);
-                upload.push(state.path, formData, function (progress) {
-                    percentageEle.textContent = progress + '%';
-                    progressEle.style.width = progress + '%';
-
-                    if (progress === 100) {
-                        uploadStateEle.textContent = 'Wait!! Uploading to the server ...';
-                        percentageEle.textContent = '';
-                    }        
-                }, function (err) {
-                    errorEle.textContent = err;
-                });
-            });
-
-            upload.resolveStack(function () {
-                modal('#uploadModal').close();
-                refresh(state.path);
-            });
-        });
-    };
+      upload.resolveStack(function () {
+        modal("#uploadModal").close();
+        refresh(state.path);
+      });
+    });
+  };
 };
 
 export default App;

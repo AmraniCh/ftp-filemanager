@@ -28,11 +28,11 @@ if (!file_exists($configFile) || !is_readable($configFile)) {
 $config = include($configFile);
 
 if ($config['debug']) {
-    $handler = new ErrorHandler(function (\Exception $ex) use($whoops) {
+    $handler = new ErrorHandler(function ($ex) use($whoops) {
         $whoops->handleException($ex);
     });
 } elseif (!$config['debug']) {
-    $handler = new ErrorHandler(function (\Exception $ex) use($whoops) {
+    $handler = new ErrorHandler(function ($ex) use($whoops) {
         // Build the message string
         $message = sprintf(
             "[%s] [%s] [%s] [Line : %s]\n%s\n",

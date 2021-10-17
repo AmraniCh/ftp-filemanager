@@ -7,7 +7,7 @@ use FTPApp\Http\HttpResponse as Response;
 use FTPApp\Routing\RouteCollection;
 use FTPApp\Routing\RouteDispatcher;
 
-require __DIR__ . '/../config/bootstrap.php';
+require __DIR__ . '/../bootstrap/bootstrap.php';
 
 $request    = new Request();
 $dispatcher = new RouteDispatcher(

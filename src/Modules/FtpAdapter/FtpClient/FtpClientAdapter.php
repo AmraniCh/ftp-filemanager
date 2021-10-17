@@ -108,7 +108,7 @@ class FtpClientAdapter implements FtpAdapter
     public function addFolder($dir)
     {
         try {
-            return $this->client->createDirectory(urldecode(ltrim($dir, '/')));
+            return $this->client->createDir(urldecode(ltrim($dir, '/')));
         } catch (FtpClientException $ex) {
             throw new FtpClientAdapterException($this->normalizeExceptionMessage($ex->getMessage()));
         }
@@ -138,7 +138,7 @@ class FtpClientAdapter implements FtpAdapter
         try {
             foreach ($files as $file) {
                 if ($this->client->isDir($file)) {
-                    $this->client->removeDirectory($file);
+                    $this->client->removeDir($file);
                 } else {
                     $this->client->removeFile($file);
                 }

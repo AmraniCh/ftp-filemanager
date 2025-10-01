@@ -4,6 +4,16 @@ A web based FTP client application to manage your FTP files, built with a simple
 
 ![](https://user-images.githubusercontent.com/49124992/93536723-9d91f400-f941-11ea-86c4-2f942f00b842.gif)
 
+---
+
+## ⚠️ Warning
+
+**This is a personal learning project and should NOT be used in production environments.** 
+
+This application was built for educational purposes to understand MVC architecture and web development concepts. It has not been security-audited and may contain vulnerabilities. For production use, please consider established and maintained FTP client solutions or frameworks with proper security measures.
+
+---
+
 ## Features
 * Download & upload.
 * CRUD operations.
